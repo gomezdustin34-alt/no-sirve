@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<link rel="icon" type="image/png" href="/assets/img/logo.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Descubre | Dígalo con Flores</title>
+<link rel="stylesheet" href="/css/design-system.css" />
+<link rel="stylesheet" href="/css/components.css" />
+<link rel="stylesheet" href="/css/descubre.css" />
+</head>
+<body>
+
+<header class="navbar">
+  <div class="wrap navbar-inner">
+    <a href="/index.html" class="navbar-brand"><img src="/assets/img/logo.png" class="brand-mark" alt="Dígalo con Flores" /><span class="logo-mark">Dígalo <span>con</span> Flores</span></a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="/index.html">Inicio</a></li>
+        <li><a href="/catalogo.html">Flores</a></li>
+        <li><a href="/descubre.html" aria-current="page">Descubre</a></li>
+        <li><a href="/personalizar.html">Personaliza</a></li>
+        <li><a href="/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+    <div class="nav-actions">
+      <a href="/carrito.html" class="icon-btn" aria-label="Carrito">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 0 0 2 1.6h7.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
+        <span class="cart-count" data-cart-count>0</span>
+      </a>
+      <button class="nav-toggle" aria-label="Abrir menú">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="discover-head reveal">
+    <p class="eyebrow">El recomendador</p>
+    <h1 class="h-section">Cuéntanos qué quieres decir</h1>
+    <p class="lede">Responde estas preguntas y encontramos las flores adecuadas para ti.</p>
+  </section>
+
+  <form id="discover-form" class="discover-form">
+    <div class="field">
+      <label for="for-whom">¿Para quién es?</label>
+      <select id="for-whom">
+        <option value="pareja">Mi pareja</option>
+        <option value="madre">Mi madre</option>
+        <option value="amiga">Una amistad</option>
+        <option value="colega">Un colega</option>
+        <option value="mi-mismo">Para mí</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="category">¿Qué tipo de arreglo buscas?</label>
+      <select id="category"><option value="">Cualquiera</option></select>
+    </div>
+    <div class="field">
+      <label for="budget">¿Cuál es tu presupuesto?</label>
+      <select id="budget">
+        <option value="70000">Hasta $70.000</option>
+        <option value="120000" selected>Hasta $120.000</option>
+        <option value="200000">Hasta $200.000</option>
+        <option value="999999999">Sin límite</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="style">¿Qué estilo buscas?</label>
+      <select id="style">
+        <option value="clasico">Clásico y elegante</option>
+        <option value="silvestre">Silvestre y natural</option>
+        <option value="minimal">Minimalista</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Encontrar mis flores</button>
+  </form>
+
+  <section id="results" class="discover-results" style="display:none;">
+    <p class="eyebrow">Encontramos estas flores para ti 🌷</p>
+    <div id="results-grid" class="results-grid"></div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- DILO POR MÍ: sugerencias de mensaje generadas localmente (sin IA externa) -->
+  <section class="say-it-form reveal">
+    <p class="eyebrow">¿No sabes cómo decirlo?</p>
+    <h2 class="h-section">Dilo por mí</h2>
+    <p class="lede">Cuéntanos brevemente qué quieres expresar y te sugerimos frases para tu tarjeta.</p>
+
+    <div class="field">
+      <label for="say-context">Ej: "Quiero pedirle perdón a mi novia"</label>
+      <input type="text" id="say-context" placeholder="Quiero..." />
+    </div>
+    <div class="say-tone-options">
+      <button type="button" class="tone-chip is-active" data-tone="romantico">Romántico</button>
+      <button type="button" class="tone-chip" data-tone="profundo">Profundo</button>
+      <button type="button" class="tone-chip" data-tone="corto">Corto</button>
+      <button type="button" class="tone-chip" data-tone="elegante">Elegante</button>
+      <button type="button" class="tone-chip" data-tone="divertido">Divertido</button>
+    </div>
+    <button type="button" id="generate-message" class="btn btn-outline">Generar sugerencias</button>
+
+    <div id="message-suggestions" class="message-suggestions"></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Dígalo con Flores</span>
+      <a href="/personalizar.html">Poner este mensaje en mi tarjeta</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/api.js"></script>
+<script src="/js/admin-access.js"></script>
+<script src="/js/whatsapp-button.js"></script>
+<script src="/js/cart.js"></script>
+<script src="/js/main.js"></script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  api.get("/api/categories").then((cats) => {
+    const select = document.getElementById("category");
+    select.innerHTML = '<option value="">Cualquiera</option>' + cats.map((c) => `<option value="${c.slug}">${c.name}</option>`).join("");
+  }).catch(() => {});
+
+  document.getElementById("discover-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const category = document.getElementById("category").value;
+    const budget = Number(document.getElementById("budget").value);
+
+    const query = category ? `?category=${category}` : "";
+    const products = await api.get(`/api/products${query}`);
+    const available = products.filter((p) => !p.soldOut);
+    const matches = available.filter((p) => p.basePrice <= budget);
+    const results = matches.length ? matches : available;
+
+    const grid = document.getElementById("results-grid");
+    grid.innerHTML = results.slice(0, 6).map((p) => `
+      <a class="product-card" href="/producto.html?slug=${p.slug}">
+        <figure><img src="${p.images[0]}" alt="${p.name}" /></figure>
+        <figcaption><p class="p-name">${p.name}</p><p class="p-price">${formatMoney(p.basePrice)}</p></figcaption>
+      </a>
+    `).join("") || "<p>No encontramos flores con ese presupuesto, prueba ampliándolo.</p>";
+
+    document.getElementById("results").style.display = "block";
+    document.getElementById("results").scrollIntoView({ behavior: "smooth" });
+  });
+
+  // --- Dilo por mí: plantillas locales por tono (no depende de ninguna API externa) ---
+  let activeTone = "romantico";
+  document.querySelectorAll(".tone-chip").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      document.querySelectorAll(".tone-chip").forEach((c) => c.classList.remove("is-active"));
+      chip.classList.add("is-active");
+      activeTone = chip.dataset.tone;
+    });
+  });
+
+  const TEMPLATES = {
+    romantico: (ctx) => [`${ctx}. Cada flor de este arreglo lleva un pedazo de lo que siento por ti.`, `No encontré las palabras exactas, así que dejé que las flores hablaran por mí: ${ctx.toLowerCase()}.`],
+    profundo: (ctx) => [`${ctx}. A veces el corazón necesita más tiempo que las palabras, pero esto es un comienzo.`, `Estas flores son mi manera de decir, sin prisa, lo que realmente siento: ${ctx.toLowerCase()}.`],
+    corto: () => [`Con todo mi cariño.`, `Esto es para ti.`, `Sin palabras, solo flores.`],
+    elegante: (ctx) => [`${ctx}, con el respeto y el cariño que mereces.`, `Un pequeño gesto para expresar lo que las palabras no alcanzan a decir.`],
+    divertido: (ctx) => [`${ctx} (y sí, elegí las flores más lindas para lograrlo 😄).`, `Flores porque los memes ya no eran suficientes: ${ctx.toLowerCase()}.`],
+  };
+
+  document.getElementById("generate-message").addEventListener("click", () => {
+    const ctx = document.getElementById("say-context").value.trim() || "Quiero decirte algo importante";
+    const suggestions = TEMPLATES[activeTone](ctx);
+    const box = document.getElementById("message-suggestions");
+    box.innerHTML = suggestions.map((text) => `
+      <div class="suggestion-card">
+        <p>"${text}"</p>
+        <button type="button" class="btn-ghost use-message" data-text="${text.replace(/"/g, '&quot;')}">Poner este mensaje en mi tarjeta</button>
+      </div>
+    `).join("");
+
+    box.querySelectorAll(".use-message").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        sessionStorage.setItem("dcf_suggested_message", btn.dataset.text);
+        location.href = "/personalizar.html";
+      });
+    });
+  });
+</script>
+</body>
+</html>

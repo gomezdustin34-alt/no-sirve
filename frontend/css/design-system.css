@@ -1,0 +1,227 @@
+/* ============================================================
+   DÍGALO CON FLORES — Sistema de diseño
+   Paleta inspirada en flores reales. Jerarquía, no saturación.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&family=Caveat:wght@500;600&display=swap');
+
+:root {
+  /* Fondos */
+  --bg-main: #FFF8F2;
+  --bg-warm-white: #FFFDF9;
+
+  /* Botánicos */
+  --green-deep: #365B4A;
+  --green-soft: #729681;
+
+  /* Florales */
+  --pink-dusty: #E7A5A5;
+  --pink-pale: #F8DCDC;
+  --peach: #F6C7A7;
+  --lavender: #DCCEEA;
+  --yellow-floral: #F6D77A;
+  --gold: #C9A66B;
+
+  /* Texto */
+  --text-primary: #2E302F;
+  --text-secondary: #74716D;
+  --border-soft: #EDE3DB;
+
+  /* Tipografía */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-script: 'Caveat', cursive;
+
+  /* Ritmo */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.75rem;
+  --space-lg: 3rem;
+  --space-xl: 5rem;
+  --space-2xl: 8rem;
+
+  --radius-soft: 3px;
+  --max-width: 1320px;
+
+  --shadow-soft: 0 8px 24px -12px rgba(46, 48, 47, 0.18);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+@media (max-width: 780px) {
+  .wrap { padding: 0 var(--space-sm); }
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  margin: 0;
+  color: var(--text-primary);
+  letter-spacing: 0.01em;
+}
+
+.h-display {
+  font-size: clamp(2.6rem, 5vw, 4.4rem);
+  line-height: 1.05;
+  font-weight: 500;
+}
+
+.h-section {
+  font-size: clamp(1.9rem, 3vw, 2.7rem);
+  line-height: 1.15;
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--green-deep);
+  font-weight: 600;
+}
+
+.script {
+  font-family: var(--font-script);
+  font-size: 1.6rem;
+  color: var(--gold);
+}
+
+p { margin: 0 0 var(--space-sm); color: var(--text-secondary); }
+
+.lede {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+/* Botones — tratamiento propio, no genérico */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  font-weight: 600;
+  padding: 0.9rem 1.8rem;
+  border-radius: var(--radius-soft);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.btn-primary {
+  background: var(--green-deep);
+  color: var(--bg-warm-white);
+}
+.btn-primary:hover { background: #2b4a3c; transform: translateY(-1px); }
+
+.btn-outline {
+  background: transparent;
+  border-color: var(--green-deep);
+  color: var(--green-deep);
+}
+.btn-outline:hover { background: var(--green-deep); color: var(--bg-warm-white); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-primary);
+  padding: 0.6rem 0.2rem;
+  border-bottom: 1px solid var(--text-primary);
+  border-radius: 0;
+}
+
+.btn-full { width: 100%; justify-content: center; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--border-soft);
+  margin: var(--space-lg) 0;
+}
+
+.card-editorial {
+  background: var(--bg-warm-white);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-soft);
+}
+
+.tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: var(--pink-pale);
+  color: var(--green-deep);
+  font-weight: 600;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+}
+
+:focus-visible {
+  outline: 2px solid var(--green-deep);
+  outline-offset: 3px;
+}
+
+/* Pétalos — detalle de lujo, no infantil. Moderado, ver petals.js */
+.petal {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.55;
+  filter: drop-shadow(0 3px 6px rgba(46,48,47,0.08));
+  animation: petal-drift 9s ease-in-out infinite;
+}
+
+@keyframes petal-drift {
+  0%   { transform: translateY(0) rotate(var(--r0, 0deg)); }
+  50%  { transform: translateY(10px) rotate(var(--r1, 8deg)); }
+  100% { transform: translateY(0) rotate(var(--r0, 0deg)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .petal { animation: none; }
+}
+
+/* Aparición suave al hacer scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<link rel="icon" type="image/png" href="/assets/img/logo.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Contacto | Dígalo con Flores</title>
+<link rel="stylesheet" href="/css/design-system.css" />
+<link rel="stylesheet" href="/css/components.css" />
+<style>
+  .contact-layout { padding: var(--space-xl) 0 var(--space-2xl); max-width: 560px; }
+  .contact-card { padding: var(--space-md); margin-top: var(--space-lg); }
+  .contact-card p { margin-bottom: 0.7rem; font-size: 0.95rem; color: var(--text-primary); }
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="wrap navbar-inner">
+    <a href="/index.html" class="navbar-brand"><img src="/assets/img/logo.png" class="brand-mark" alt="Dígalo con Flores" /><span class="logo-mark">Dígalo <span>con</span> Flores</span></a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="/index.html">Inicio</a></li>
+        <li><a href="/catalogo.html">Flores</a></li>
+        <li><a href="/descubre.html">Descubre</a></li>
+        <li><a href="/personalizar.html">Personaliza</a></li>
+        <li><a href="/contacto.html" aria-current="page">Contacto</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap contact-layout">
+  <p class="eyebrow">Hablemos</p>
+  <h1 class="h-section">Estamos para ayudarte</h1>
+  <p class="lede">Escríbenos si tienes dudas sobre tu pedido o quieres un arreglo hecho a la medida.</p>
+
+  <div id="contact-info" class="contact-card card-editorial"></div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap"><div class="footer-bottom"><span>© <span id="year"></span> Dígalo con Flores</span></div></div>
+</footer>
+
+<script src="/js/api.js"></script>
+<script src="/js/admin-access.js"></script>
+<script src="/js/whatsapp-button.js"></script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+  api.get("/api/settings/public").then((info) => {
+    document.getElementById("contact-info").innerHTML = `
+      <p><strong>WhatsApp:</strong> ${info.whatsappNumber || "—"}</p>
+      <p><strong>Correo:</strong> ${info.contactEmail || "—"}</p>
+      <p><strong>Horario:</strong> ${info.openingHours || "—"}</p>
+    `;
+  }).catch(() => {
+    document.getElementById("contact-info").innerHTML = "<p>No se pudo cargar la información de contacto.</p>";
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<link rel="icon" type="image/png" href="/assets/img/logo.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Productos | Admin Dígalo con Flores</title>
+<link rel="stylesheet" href="/css/design-system.css" />
+<link rel="stylesheet" href="/css/components.css" />
+<link rel="stylesheet" href="/css/admin.css" />
+<style>
+  .product-editor { margin-top: var(--space-lg); padding: var(--space-md); max-width: 640px; }
+  .stock-input-row { display: flex; align-items: center; gap: 0.6rem; }
+  .stock-input-row input { width: 100px; }
+</style>
+</head>
+<body class="admin-body">
+
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <div class="brand"><img src="/assets/img/logo.png" class="brand-mark" alt="Dígalo con Flores" /><span class="brand-text">Dígalo con Flores<span>Panel admin</span></span></div>
+    <ul class="admin-nav">
+      <li><a href="/admin/dashboard.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>Dashboard</a></li>
+      <li><a href="/admin/pedidos.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>Pedidos</a></li>
+      <li><a href="/admin/productos.html" aria-current="page"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M12 12v9"/><path d="M8 21h8"/></svg>Productos</a></li>
+      <li><a href="/admin/inventario.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3h18v6H3z"/><path d="M3 9v12h18V9M9 13h6"/></svg>Inventario</a></li>
+      <li><a href="/admin/configuracion.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>Configuración</a></li>
+    </ul>
+    <div class="admin-sidebar-footer"><a href="#" onclick="adminLogout()">↩ Cerrar sesión</a></div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1 class="h-section" style="font-size:1.6rem;">Productos</h1>
+      <button class="btn btn-primary" id="new-product">+ Nuevo producto</button>
+    </div>
+
+    <table class="admin-table">
+      <thead><tr><th></th><th>Nombre</th><th>Precio</th><th>Categoría</th><th>Stock</th><th>Estado</th><th></th></tr></thead>
+      <tbody id="products-body"></tbody>
+    </table>
+
+    <form id="product-form" class="product-editor card-editorial" style="display:none;">
+      <h2 class="h-section" style="font-size:1.2rem;" id="editor-title">Nuevo producto</h2>
+      <input type="hidden" id="p-id" />
+
+      <div class="field">
+        <label>Fotos del producto</label>
+        <div class="image-uploader" id="image-uploader">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="margin:0 auto;color:var(--text-secondary);"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <p>Arrastra o haz clic para subir fotos (JPG, PNG, WEBP)</p>
+          <input type="file" id="image-input" accept="image/jpeg,image/png,image/webp" multiple hidden />
+        </div>
+        <div class="image-preview-grid" id="image-preview"></div>
+      </div>
+
+      <div class="field"><label for="p-name">Nombre</label><input id="p-name" required /></div>
+      <div class="field"><label for="p-slug">Slug (url)</label><input id="p-slug" required pattern="[a-z0-9-]+" /></div>
+      <div class="field-row">
+        <div class="field"><label for="p-price">Precio base (COP)</label><input id="p-price" type="number" required /></div>
+        <div class="field"><label for="p-stock">Stock disponible</label><input id="p-stock" type="number" min="0" value="0" required /></div>
+      </div>
+      <div class="field"><label for="p-description">Descripción</label><textarea id="p-description" rows="3" required></textarea></div>
+      <div class="field"><label for="p-meaning">Significado</label><input id="p-meaning" /></div>
+      <div class="field"><label for="p-flowers">Flores utilizadas</label><input id="p-flowers" /></div>
+      <div class="field-row">
+        <div class="field">
+          <label for="p-category">Categoría</label>
+          <select id="p-category"><option value="">Sin categoría</option></select>
+        </div>
+        <div class="field"><label for="p-occasion">Ocasión</label><input id="p-occasion" /></div>
+      </div>
+      <div class="field" id="new-category-field" style="display:none;">
+        <label for="p-new-category">Nombre de la nueva categoría</label>
+        <div style="display:flex;gap:0.5rem;">
+          <input id="p-new-category" placeholder="Ej. Rosas Premium" />
+          <button type="button" class="btn btn-outline" id="save-new-category">Crear</button>
+        </div>
+      </div>
+      <button type="button" class="btn-ghost" id="toggle-new-category" style="margin-bottom:var(--space-sm);">+ Crear nueva categoría</button>
+
+      <div class="field"><label><input type="checkbox" id="p-featured" /> Producto destacado (aparece en el inicio)</label></div>
+
+      <div style="display:flex;gap:0.6rem;">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn-ghost" id="cancel-edit">Cancelar</button>
+      </div>
+    </form>
+  </main>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/admin-guard.js"></script>
+<script src="/js/admin-toast.js"></script>
+<script>
+  let products = [];
+  let categories = [];
+  let currentImages = [];
+
+  async function loadCategories() {
+    categories = await api.get("/api/categories");
+    const select = document.getElementById("p-category");
+    select.innerHTML = '<option value="">Sin categoría</option>' + categories.map((c) => `<option value="${c.id}">${c.name}</option>`).join("");
+  }
+
+  function categoryName(id) {
+    return categories.find((c) => c.id === id)?.name || "—";
+  }
+
+  async function loadProducts() {
+    products = await api.get("/api/products/admin/all");
+    document.getElementById("products-body").innerHTML = products.map((p) => `
+      <tr>
+        <td><img class="row-thumb" src="${p.images[0] || '/assets/img/placeholder-arreglo-1.svg'}" alt="" /></td>
+        <td>${p.name}</td>
+        <td>${formatMoney(p.basePrice)}</td>
+        <td>${p.category?.name || "—"}</td>
+        <td>${p.stock}</td>
+        <td>
+          ${!p.isAvailable ? '<span class="status-badge rejected">Inactivo</span>' : p.soldOut ? '<span class="status-badge soldout">Agotado</span>' : '<span class="status-badge instock">Disponible</span>'}
+        </td>
+        <td>
+          <button class="icon-action" data-edit="${p.id}" title="Editar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+          ${p.isAvailable ? `<button class="icon-action" data-deactivate="${p.id}" title="Desactivar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M4.9 4.9l14.2 14.2"/></svg></button>` : ""}
+        </td>
+      </tr>
+    `).join("") || '<tr><td colspan="7">Aún no hay productos.</td></tr>';
+
+    document.querySelectorAll("[data-edit]").forEach((el) => el.addEventListener("click", () => openEditor(el.dataset.edit)));
+    document.querySelectorAll("[data-deactivate]").forEach((el) => el.addEventListener("click", async () => {
+      if (!confirm("¿Desactivar este producto? Ya no será visible para los clientes.")) return;
+      try {
+        await withToast(() => api.del(`/api/products/${el.dataset.deactivate}`), "Producto desactivado correctamente");
+        loadProducts();
+      } catch {}
+    }));
+  }
+
+  function renderImagePreview() {
+    const grid = document.getElementById("image-preview");
+    grid.innerHTML = currentImages.map((url, i) => `
+      <div class="image-preview-item">
+        <img src="${url}" alt="" />
+        <button type="button" data-remove-img="${i}" title="Quitar">✕</button>
+      </div>
+    `).join("");
+    grid.querySelectorAll("[data-remove-img]").forEach((btn) => {
+      btn.addEventListener("click", () => { currentImages.splice(Number(btn.dataset.removeImg), 1); renderImagePreview(); });
+    });
+  }
+
+  async function handleFiles(fileList) {
+    const files = [...fileList].slice(0, 6 - currentImages.length);
+    if (!files.length) return;
+
+    const placeholderCount = files.length;
+    for (let i = 0; i < placeholderCount; i++) {
+      const div = document.createElement("div");
+      div.className = "image-preview-item is-uploading";
+      div.innerHTML = `<img src="${URL.createObjectURL(files[i])}" alt="" />`;
+      document.getElementById("image-preview").appendChild(div);
+    }
+
+    const formData = new FormData();
+    files.forEach((f) => formData.append("images", f));
+    try {
+      const result = await api.postForm("/api/products/upload-images", formData);
+      currentImages.push(...result.urls);
+      showToast(`${result.urls.length} foto(s) subida(s) correctamente`);
+    } catch (err) {
+      showToast(err.message || "No se pudieron subir las imágenes", "error");
+    }
+    renderImagePreview();
+  }
+
+  const uploader = document.getElementById("image-uploader");
+  const imageInput = document.getElementById("image-input");
+  uploader.addEventListener("click", () => imageInput.click());
+  imageInput.addEventListener("change", () => handleFiles(imageInput.files));
+  ["dragover", "dragenter"].forEach((evt) => uploader.addEventListener(evt, (e) => { e.preventDefault(); uploader.classList.add("is-dragover"); }));
+  ["dragleave", "drop"].forEach((evt) => uploader.addEventListener(evt, (e) => { e.preventDefault(); uploader.classList.remove("is-dragover"); }));
+  uploader.addEventListener("drop", (e) => handleFiles(e.dataTransfer.files));
+
+  function openEditor(id) {
+    const form = document.getElementById("product-form");
+    form.style.display = "block";
+    const product = products.find((p) => p.id === id);
+    document.getElementById("editor-title").textContent = product ? "Editar producto" : "Nuevo producto";
+    document.getElementById("p-id").value = product?.id || "";
+    document.getElementById("p-name").value = product?.name || "";
+    document.getElementById("p-slug").value = product?.slug || "";
+    document.getElementById("p-price").value = product ? product.basePrice / 100 : "";
+    document.getElementById("p-stock").value = product?.stock ?? 0;
+    document.getElementById("p-description").value = product?.description || "";
+    document.getElementById("p-meaning").value = product?.meaning || "";
+    document.getElementById("p-flowers").value = product?.flowersUsed || "";
+    document.getElementById("p-category").value = product?.categoryId || "";
+    document.getElementById("p-occasion").value = product?.occasion || "";
+    document.getElementById("p-featured").checked = !!product?.isFeatured;
+    currentImages = product?.images ? [...product.images] : [];
+    renderImagePreview();
+    form.scrollIntoView({ behavior: "smooth" });
+  }
+
+  document.getElementById("new-product").addEventListener("click", () => openEditor(null));
+  document.getElementById("cancel-edit").addEventListener("click", () => (document.getElementById("product-form").style.display = "none"));
+
+  document.getElementById("toggle-new-category").addEventListener("click", () => {
+    const field = document.getElementById("new-category-field");
+    field.style.display = field.style.display === "none" ? "block" : "none";
+  });
+
+  document.getElementById("save-new-category").addEventListener("click", async () => {
+    const name = document.getElementById("p-new-category").value.trim();
+    if (!name) return;
+    const slug = name.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    try {
+      const category = await withToast(() => api.post("/api/categories", { name, slug }), `Categoría "${name}" creada correctamente`);
+      await loadCategories();
+      document.getElementById("p-category").value = category.id;
+      document.getElementById("p-new-category").value = "";
+      document.getElementById("new-category-field").style.display = "none";
+    } catch {}
+  });
+
+  document.getElementById("product-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!currentImages.length) { showToast("Sube al menos una foto del producto", "error"); return; }
+    const id = document.getElementById("p-id").value;
+    const payload = {
+      name: document.getElementById("p-name").value,
+      slug: document.getElementById("p-slug").value,
+      basePrice: Math.round(Number(document.getElementById("p-price").value) * 100),
+      stock: Number(document.getElementById("p-stock").value),
+      description: document.getElementById("p-description").value,
+      meaning: document.getElementById("p-meaning").value,
+      flowersUsed: document.getElementById("p-flowers").value,
+      categoryId: document.getElementById("p-category").value || undefined,
+      occasion: document.getElementById("p-occasion").value,
+      images: currentImages,
+      isFeatured: document.getElementById("p-featured").checked,
+      isAvailable: true,
+    };
+    try {
+      await withToast(
+        () => (id ? api.put(`/api/products/${id}`, payload) : api.post("/api/products", payload)),
+        id ? "Producto actualizado correctamente" : "Producto creado correctamente"
+      );
+      document.getElementById("product-form").style.display = "none";
+      loadProducts();
+    } catch {}
+  });
+
+  document.addEventListener("admin-ready", async () => {
+    await loadCategories();
+    await loadProducts();
+  });
+</script>
+</body>
+</html>

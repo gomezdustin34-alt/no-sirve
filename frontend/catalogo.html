@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<link rel="icon" type="image/png" href="/assets/img/logo.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Catálogo | Dígalo con Flores</title>
+<meta name="description" content="Explora nuestra colección de arreglos florales para cada ocasión." />
+<link rel="stylesheet" href="/css/design-system.css" />
+<link rel="stylesheet" href="/css/components.css" />
+<link rel="stylesheet" href="/css/catalogo.css" />
+</head>
+<body>
+
+<header class="navbar">
+  <div class="wrap navbar-inner">
+    <a href="/index.html" class="navbar-brand"><img src="/assets/img/logo.png" class="brand-mark" alt="Dígalo con Flores" /><span class="logo-mark">Dígalo <span>con</span> Flores</span></a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="/index.html">Inicio</a></li>
+        <li><a href="/catalogo.html" aria-current="page">Flores</a></li>
+        <li><a href="/descubre.html">Descubre</a></li>
+        <li><a href="/personalizar.html">Personaliza</a></li>
+        <li><a href="/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+    <div class="nav-actions">
+      <a href="/seguimiento.html" class="icon-btn" aria-label="Seguir mi pedido">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
+      </a>
+      <a href="/carrito.html" class="icon-btn" aria-label="Carrito">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 0 0 2 1.6h7.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
+        <span class="cart-count" data-cart-count>0</span>
+      </a>
+      <button class="nav-toggle" aria-label="Abrir menú">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="wrap catalog-head">
+    <p class="eyebrow" id="catalog-eyebrow">Colección completa</p>
+    <h1 class="h-section" id="catalog-title">Todos nuestros arreglos</h1>
+
+    <div class="catalog-filters" id="catalog-filters">
+      <a data-filter="" class="filter-chip is-active">Todas</a>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div id="catalog-grid" class="catalog-grid"></div>
+    <p id="catalog-empty" style="display:none;color:var(--text-secondary);">No encontramos flores en esta categoría todavía.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Dígalo con Flores</span>
+      <a href="/index.html">Volver al inicio</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/api.js"></script>
+<script src="/js/admin-access.js"></script>
+<script src="/js/whatsapp-button.js"></script>
+<script src="/js/cart.js"></script>
+<script src="/js/main.js"></script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  let categories = [];
+  const params = new URLSearchParams(location.search);
+  const initialCategory = params.get("category") || "";
+
+  function renderGrid(products) {
+    const grid = document.getElementById("catalog-grid");
+    const empty = document.getElementById("catalog-empty");
+    if (!products.length) { grid.innerHTML = ""; empty.style.display = "block"; return; }
+    empty.style.display = "none";
+    grid.innerHTML = products.map((p, i) => `
+      <a class="product-card ${i % 5 === 0 ? 'product-card--lg' : ''} ${p.soldOut ? 'is-sold-out' : ''}" href="/producto.html?slug=${p.slug}">
+        <figure><img src="${p.images[0]}" alt="${p.name}" loading="lazy" />${p.soldOut ? '<span class="soldout-ribbon">Agotado</span>' : ''}</figure>
+        <figcaption>
+          <p class="p-name">${p.name}</p>
+          <p class="p-price">${formatMoney(p.basePrice)}</p>
+        </figcaption>
+      </a>
+    `).join("");
+  }
+
+  function setActiveChip(categorySlug) {
+    document.querySelectorAll(".filter-chip").forEach((chip) => {
+      chip.classList.toggle("is-active", chip.dataset.filter === categorySlug);
+    });
+    const category = categories.find((c) => c.slug === categorySlug);
+    document.getElementById("catalog-title").textContent = category ? category.name : "Todos nuestros arreglos";
+  }
+
+  function loadCatalog(categorySlug) {
+    const query = categorySlug ? `?category=${encodeURIComponent(categorySlug)}` : "";
+    api.get(`/api/products${query}`).then(renderGrid).catch(() => {
+      document.getElementById("catalog-grid").innerHTML = "<p>No se pudo cargar el catálogo. ¿Está el backend corriendo?</p>";
+    });
+    setActiveChip(categorySlug);
+  }
+
+  function bindChips() {
+    document.querySelectorAll(".filter-chip").forEach((chip) => {
+      chip.addEventListener("click", (e) => {
+        e.preventDefault();
+        const categorySlug = chip.dataset.filter;
+        const url = categorySlug ? `/catalogo.html?category=${categorySlug}` : "/catalogo.html";
+        history.pushState({}, "", url);
+        loadCatalog(categorySlug);
+      });
+    });
+  }
+
+  api.get("/api/categories").then((cats) => {
+    categories = cats;
+    const filtersEl = document.getElementById("catalog-filters");
+    filtersEl.innerHTML = '<a data-filter="" class="filter-chip">Todas</a>' +
+      cats.map((c) => `<a data-filter="${c.slug}" class="filter-chip">${c.name}</a>`).join("");
+    bindChips();
+    loadCatalog(initialCategory);
+  }).catch(() => {
+    bindChips();
+    loadCatalog(initialCategory);
+  });
+</script>
+</body>
+</html>

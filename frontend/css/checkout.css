@@ -1,0 +1,39 @@
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: var(--space-lg);
+  padding: var(--space-xl) 0 var(--space-2xl);
+  align-items: start;
+}
+
+.stepper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.4rem;
+  list-style: none;
+  padding: 0;
+  margin-bottom: var(--space-lg);
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+.stepper li { position: relative; padding-bottom: 0.6rem; }
+.stepper li.is-active { color: var(--green-deep); font-weight: 600; }
+.stepper li.is-done { color: var(--gold); }
+.stepper li.is-active::after {
+  content: ""; position: absolute; left: 0; bottom: 0; width: 100%; height: 2px; background: var(--green-deep);
+}
+
+.checkout-panel { display: none; max-width: 560px; }
+.checkout-panel.is-active { display: block; }
+.checkout-panel h2 { margin-bottom: var(--space-sm); }
+.checkout-panel .btn-ghost { margin-right: 1rem; }
+
+.bank-info { padding: 1.2rem 1.4rem; }
+.bank-info p { margin: 0 0 0.4rem; font-size: 0.92rem; color: var(--text-primary); }
+
+.checkout-summary { padding: var(--space-md); position: sticky; top: 100px; }
+
+@media (max-width: 900px) {
+  .checkout-layout { grid-template-columns: 1fr; }
+  .checkout-summary { position: static; }
+}

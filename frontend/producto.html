@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<link rel="icon" type="image/png" href="/assets/img/logo.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title id="page-title">Producto | Dígalo con Flores</title>
+<link rel="stylesheet" href="/css/design-system.css" />
+<link rel="stylesheet" href="/css/components.css" />
+<link rel="stylesheet" href="/css/producto.css" />
+</head>
+<body>
+
+<header class="navbar">
+  <div class="wrap navbar-inner">
+    <a href="/index.html" class="navbar-brand"><img src="/assets/img/logo.png" class="brand-mark" alt="Dígalo con Flores" /><span class="logo-mark">Dígalo <span>con</span> Flores</span></a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="/index.html">Inicio</a></li>
+        <li><a href="/catalogo.html">Flores</a></li>
+        <li><a href="/descubre.html">Descubre</a></li>
+        <li><a href="/personalizar.html">Personaliza</a></li>
+        <li><a href="/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+    <div class="nav-actions">
+      <a href="/seguimiento.html" class="icon-btn" aria-label="Seguir mi pedido">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
+      </a>
+      <a href="/carrito.html" class="icon-btn" aria-label="Carrito">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 0 0 2 1.6h7.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
+        <span class="cart-count" data-cart-count>0</span>
+      </a>
+      <button class="nav-toggle" aria-label="Abrir menú">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="product-root" style="display:none;">
+  <div class="product-layout">
+    <div class="product-gallery" data-petals="2">
+      <img id="product-image" src="" alt="" />
+    </div>
+
+    <div class="product-info">
+      <p class="tag" id="product-category" style="display:none;">Categoría</p>
+      <p class="tag" id="product-soldout-tag" style="display:none;background:var(--text-primary);color:var(--bg-warm-white);">Agotado</p>
+      <h1 class="h-section" id="product-name" style="margin-top:0.6rem;"></h1>
+      <p class="p-price" id="product-price" style="font-size:1.3rem;color:var(--green-deep);font-weight:600;"></p>
+      <p id="product-description"></p>
+
+      <div class="botanical-line"></div>
+      <p class="script" id="product-meaning"></p>
+      <p style="font-size:0.85rem;color:var(--text-secondary)"><strong>Flores utilizadas:</strong> <span id="product-flowers"></span></p>
+
+      <p id="soldout-message" class="form-message" style="display:none;background:#EDE3DB;color:var(--text-primary);">Este arreglo está agotado por ahora. Vuelve pronto o escríbenos para avisarte cuando esté disponible.</p>
+
+      <form id="customize-form">
+        <div class="field">
+          <label for="size">Tamaño</label>
+          <select id="size" name="size">
+            <option value="pequeno">Pequeño</option>
+            <option value="mediano" selected>Mediano</option>
+            <option value="grande">Grande</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="wrapping">Envoltura</label>
+          <select id="wrapping" name="wrapping">
+            <option value="clasica" selected>Clásica</option>
+            <option value="premium">Premium</option>
+            <option value="de-lujo">De lujo</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Extras</label>
+          <div class="extras-options">
+            <label><input type="checkbox" name="extras" value="chocolates" /> Chocolates</label>
+            <label><input type="checkbox" name="extras" value="peluche" /> Peluche</label>
+            <label><input type="checkbox" name="extras" value="vela" /> Vela aromática</label>
+          </div>
+        </div>
+        <div class="field">
+          <label for="cardMessage">Mensaje para la tarjeta</label>
+          <textarea id="cardMessage" name="cardMessage" rows="3" placeholder="Escribe lo que quieres decir..."></textarea>
+        </div>
+        <div class="field" style="max-width:140px;">
+          <label for="quantity">Cantidad</label>
+          <input type="number" id="quantity" name="quantity" min="1" max="20" value="1" />
+        </div>
+
+        <div id="live-price" class="live-price"></div>
+
+        <button type="submit" class="btn btn-primary btn-full">QUIERO DECIRLO CON FLORES</button>
+        <p id="cart-feedback" class="form-message success" style="display:none;">Agregado al carrito 🌷</p>
+      </form>
+    </div>
+  </div>
+</main>
+
+<p class="wrap" id="not-found" style="display:none;padding:var(--space-xl) 0;">No encontramos ese producto.</p>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Dígalo con Flores</span>
+      <a href="/catalogo.html">Ver más flores</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/api.js"></script>
+<script src="/js/admin-access.js"></script>
+<script src="/js/whatsapp-button.js"></script>
+<script src="/js/cart.js"></script>
+<script src="/js/petals.js"></script>
+<script src="/js/main.js"></script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+  const slug = new URLSearchParams(location.search).get("slug");
+  let currentProduct = null;
+
+  function readCustomization() {
+    const form = document.getElementById("customize-form");
+    return {
+      size: form.size.value,
+      wrapping: form.wrapping.value,
+      extras: [...form.querySelectorAll('input[name="extras"]:checked')].map((el) => el.value),
+    };
+  }
+
+  function refreshPrice() {
+    if (!currentProduct) return;
+    const quantity = Number(document.getElementById("quantity").value) || 1;
+    api.post("/api/orders/price", {
+      items: [{ productId: currentProduct.id, quantity, customization: readCustomization() }],
+      city: "default",
+    }).then((result) => {
+      document.getElementById("live-price").textContent = `Total: ${formatMoney(result.total - result.shippingCost + result.discount)}`;
+    }).catch(() => {});
+  }
+
+  if (!slug) {
+    document.getElementById("not-found").style.display = "block";
+  } else {
+    api.get(`/api/products/${slug}`).then((p) => {
+      currentProduct = p;
+      document.getElementById("page-title").textContent = `${p.name} | Dígalo con Flores`;
+      document.getElementById("product-image").src = p.images[0];
+      document.getElementById("product-image").alt = p.name;
+      if (p.category) {
+        document.getElementById("product-category").textContent = p.category.name;
+        document.getElementById("product-category").style.display = "inline-block";
+      }
+      document.getElementById("product-name").textContent = p.name;
+      document.getElementById("product-price").textContent = `Desde ${formatMoney(p.basePrice)}`;
+      document.getElementById("product-description").textContent = p.description;
+      document.getElementById("product-meaning").textContent = p.meaning ? `"${p.meaning}"` : "";
+      document.getElementById("product-flowers").textContent = p.flowersUsed || "—";
+      document.getElementById("product-root").style.display = "block";
+
+      if (p.soldOut) {
+        document.getElementById("product-soldout-tag").style.display = "inline-block";
+        document.getElementById("soldout-message").style.display = "block";
+        document.getElementById("customize-form").style.display = "none";
+      } else {
+        document.getElementById("quantity").max = String(p.stock);
+        refreshPrice();
+      }
+    }).catch(() => {
+      document.getElementById("not-found").style.display = "block";
+    });
+  }
+
+  document.getElementById("customize-form").addEventListener("change", refreshPrice);
+
+  document.getElementById("customize-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!currentProduct) return;
+    const quantity = Number(document.getElementById("quantity").value) || 1;
+    Cart.add({
+      productId: currentProduct.id,
+      slug: currentProduct.slug,
+      name: currentProduct.name,
+      image: currentProduct.images[0],
+      quantity,
+      customization: { ...readCustomization(), cardMessage: document.getElementById("cardMessage").value },
+    });
+    const feedback = document.getElementById("cart-feedback");
+    feedback.style.display = "block";
+    setTimeout(() => (feedback.style.display = "none"), 2500);
+  });
+</script>
+</body>
+</html>

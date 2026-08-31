@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<link rel="icon" type="image/png" href="/assets/img/logo.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pedidos | Admin Dígalo con Flores</title>
+<link rel="stylesheet" href="/css/design-system.css" />
+<link rel="stylesheet" href="/css/components.css" />
+<link rel="stylesheet" href="/css/admin.css" />
+<style>
+  .order-detail { margin-top: var(--space-lg); padding: var(--space-md); animation: admin-fade-in 0.35s ease; }
+  .order-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); }
+  .order-detail dl { display: grid; grid-template-columns: 140px 1fr; gap: 0.5rem 1rem; font-size: 0.88rem; margin-bottom: var(--space-md); }
+  .order-detail dt { color: var(--text-secondary); }
+  .order-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: var(--space-sm); }
+  .edit-fields .field { margin-bottom: 0.7rem; }
+  .edit-fields textarea { min-height: 70px; }
+  @media (max-width: 900px) { .order-detail-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body class="admin-body">
+
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <div class="brand"><img src="/assets/img/logo.png" class="brand-mark" alt="Dígalo con Flores" /><span class="brand-text">Dígalo con Flores<span>Panel admin</span></span></div>
+    <ul class="admin-nav">
+      <li><a href="/admin/dashboard.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>Dashboard</a></li>
+      <li><a href="/admin/pedidos.html" aria-current="page"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>Pedidos</a></li>
+      <li><a href="/admin/productos.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M12 12v9"/><path d="M8 21h8"/></svg>Productos</a></li>
+      <li><a href="/admin/inventario.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3h18v6H3z"/><path d="M3 9v12h18V9M9 13h6"/></svg>Inventario</a></li>
+      <li><a href="/admin/configuracion.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>Configuración</a></li>
+    </ul>
+    <div class="admin-sidebar-footer"><a href="#" onclick="adminLogout()">↩ Cerrar sesión</a></div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1 class="h-section" style="font-size:1.6rem;">Pedidos</h1>
+      <select id="status-filter">
+        <option value="">Todos los estados</option>
+        <option value="RECEIVED">Recibido</option>
+        <option value="PAYMENT_VERIFIED">Pago verificado</option>
+        <option value="PREPARING">Preparando</option>
+        <option value="ON_THE_WAY">En camino</option>
+        <option value="DELIVERED">Entregado</option>
+        <option value="CANCELLED">Cancelado</option>
+      </select>
+    </div>
+
+    <table class="admin-table">
+      <thead><tr><th>Código</th><th>Cliente</th><th>Total</th><th>Pago</th><th>Estado</th><th></th></tr></thead>
+      <tbody id="orders-body"></tbody>
+    </table>
+
+    <div id="order-detail" class="order-detail card-editorial" style="display:none;"></div>
+  </main>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/admin-guard.js"></script>
+<script src="/js/admin-toast.js"></script>
+<script>
+  const STATUS_LABELS = { RECEIVED: "Recibido", PAYMENT_VERIFIED: "Pago verificado", PREPARING: "Preparando", ON_THE_WAY: "En camino", DELIVERED: "Entregado", CANCELLED: "Cancelado" };
+  const PAYMENT_BADGE = { PENDING_VERIFICATION: ["pending", "Pendiente"], CONFIRMED: ["confirmed", "Confirmado"], REJECTED: ["rejected", "Rechazado"] };
+  let ownerWhatsapp = "";
+
+  function whatsappOrderLink(o) {
+    if (!ownerWhatsapp) return "";
+    const items = o.items.map((i) => `• ${i.quantity} × ${i.productName}`).join("\n");
+    const text = [
+      `🌷 Pedido ${o.code}`,
+      `Cliente: ${o.customerName} (${o.customerPhone})`,
+      `Destinatario: ${o.recipientName}`,
+      `Entrega: ${o.deliveryAddress}, ${o.deliveryCity} — ${new Date(o.deliveryDate).toLocaleDateString("es-CO")} (${o.deliveryWindow})`,
+      `Total: ${formatMoney(o.total)}`,
+      "",
+      items,
+      o.cardMessage ? `\nMensaje: "${o.cardMessage}"` : "",
+    ].join("\n");
+    return `https://wa.me/${ownerWhatsapp}?text=${encodeURIComponent(text)}`;
+  }
+
+  async function loadOrders() {
+    const status = document.getElementById("status-filter").value;
+    const orders = await api.get(`/api/orders/admin/all${status ? `?status=${status}` : ""}`);
+    document.getElementById("orders-body").innerHTML = orders.map((o) => {
+      const badge = o.payment ? PAYMENT_BADGE[o.payment.status] : ["pending", "Sin comprobante"];
+      return `
+        <tr>
+          <td>${o.code}</td>
+          <td>${o.customerName}</td>
+          <td>${formatMoney(o.total)}</td>
+          <td><span class="status-badge ${badge[0]}">${badge[1]}</span></td>
+          <td>${STATUS_LABELS[o.status]}</td>
+          <td><button class="icon-action" data-view="${o.id}" title="Ver detalle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"/><circle cx="12" cy="12" r="3"/></svg></button></td>
+        </tr>`;
+    }).join("") || '<tr><td colspan="6">No hay pedidos con este filtro.</td></tr>';
+
+    document.querySelectorAll("[data-view]").forEach((link) => link.addEventListener("click", () => viewOrder(link.dataset.view)));
+  }
+
+  async function viewOrder(id) {
+    const o = await api.get(`/api/orders/admin/${id}`);
+    const detail = document.getElementById("order-detail");
+    detail.style.display = "block";
+
+    const itemsHtml = o.items.map((i) => `<li>${i.quantity} × ${i.productName}</li>`).join("");
+    const paymentHtml = o.payment ? `
+      <p><strong>Comprobante:</strong> <a href="${API_BASE}/api/admin/receipts/${o.id}" target="_blank" rel="noopener">Ver archivo</a></p>
+      <p><strong>Referencia:</strong> ${o.payment.referenceNumber} — ${o.payment.bankName} — ${formatMoney(o.payment.amount)}</p>
+      ${o.payment.status === "PENDING_VERIFICATION" ? `
+      <div class="order-actions">
+        <button class="btn btn-primary" data-approve>Aprobar pago</button>
+        <button class="btn btn-outline" data-reject>Rechazar pago</button>
+      </div>` : `<p><span class="status-badge ${PAYMENT_BADGE[o.payment.status][0]}">${PAYMENT_BADGE[o.payment.status][1]}</span></p>`}` : "<p>Sin comprobante subido todavía.</p>";
+
+    const isoDate = new Date(o.deliveryDate).toISOString().slice(0, 10);
+
+    const waLink = whatsappOrderLink(o);
+
+    detail.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:0.6rem;">
+        <h2 class="h-section" style="font-size:1.3rem;">Pedido ${o.code}</h2>
+        ${waLink ? `<a href="${waLink}" target="_blank" rel="noopener" class="btn btn-outline" style="display:inline-flex;align-items:center;gap:0.5rem;border-color:#25D366;color:#1c8a4a;">
+          <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.096 3 3.5 8.596 3.5 15.5c0 2.362.656 4.57 1.795 6.455L3 29l7.223-2.257A12.44 12.44 0 0 0 16.001 28C22.905 28 28.5 22.404 28.5 15.5S22.905 3 16.001 3Z"/></svg>
+          Reenviar por WhatsApp
+        </a>` : ""}
+      </div>
+      <div class="order-detail-grid">
+        <div>
+          <dl>
+            <dt>Cliente</dt><dd>${o.customerName} · ${o.customerEmail} · ${o.customerPhone}</dd>
+            <dt>Productos</dt><dd><ul style="margin:0;padding-left:1.1rem;">${itemsHtml}</ul></dd>
+            <dt>Total</dt><dd>${formatMoney(o.total)}</dd>
+          </dl>
+          ${paymentHtml}
+          <div class="field" style="max-width:280px;margin-top:var(--space-md);">
+            <label for="status-select">Estado del pedido</label>
+            <select id="status-select">
+              ${Object.entries(STATUS_LABELS).map(([k, v]) => `<option value="${k}" ${k === o.status ? "selected" : ""}>${v}</option>`).join("")}
+            </select>
+          </div>
+          <button class="btn btn-primary" id="save-status" style="margin-top:0.6rem;">Actualizar estado</button>
+        </div>
+
+        <form id="edit-details-form" class="edit-fields">
+          <p class="eyebrow" style="margin-bottom:0.6rem;">Editar detalles del pedido</p>
+          <div class="field"><label>Destinatario</label><input id="e-recipientName" value="${o.recipientName}" /></div>
+          <div class="field"><label>Teléfono destinatario</label><input id="e-recipientPhone" value="${o.recipientPhone || ""}" /></div>
+          <div class="field"><label>Dirección de entrega</label><input id="e-deliveryAddress" value="${o.deliveryAddress}" /></div>
+          <div class="field"><label>Ciudad</label><input id="e-deliveryCity" value="${o.deliveryCity}" /></div>
+          <div class="field-row">
+            <div class="field"><label>Fecha de entrega</label><input type="date" id="e-deliveryDate" value="${isoDate}" /></div>
+            <div class="field"><label>Horario</label><input id="e-deliveryWindow" value="${o.deliveryWindow}" /></div>
+          </div>
+          <div class="field"><label>Mensaje de la tarjeta</label><textarea id="e-cardMessage">${o.cardMessage || ""}</textarea></div>
+          <div class="field"><label>Notas internas (solo admin)</label><textarea id="e-adminNotes">${o.adminNotes || ""}</textarea></div>
+          <button type="submit" class="btn btn-outline">Guardar cambios</button>
+          <span id="save-details-feedback" style="display:none;color:var(--green-deep);font-size:0.82rem;margin-left:0.6rem;">Guardado ✓</span>
+        </form>
+      </div>
+    `;
+
+    detail.querySelector("[data-approve]")?.addEventListener("click", () => reviewPayment(o.id, "CONFIRMED"));
+    detail.querySelector("[data-reject]")?.addEventListener("click", () => reviewPayment(o.id, "REJECTED"));
+    detail.querySelector("#save-status").addEventListener("click", async () => {
+      try {
+        await withToast(
+          () => api.patch(`/api/orders/admin/${o.id}/status`, { status: detail.querySelector("#status-select").value }),
+          "Estado del pedido actualizado correctamente"
+        );
+        await loadOrders();
+        await viewOrder(o.id);
+      } catch {}
+    });
+    detail.querySelector("#edit-details-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try {
+        await withToast(() => api.patch(`/api/orders/admin/${o.id}/details`, {
+          recipientName: detail.querySelector("#e-recipientName").value,
+          recipientPhone: detail.querySelector("#e-recipientPhone").value,
+          deliveryAddress: detail.querySelector("#e-deliveryAddress").value,
+          deliveryCity: detail.querySelector("#e-deliveryCity").value,
+          deliveryDate: detail.querySelector("#e-deliveryDate").value,
+          deliveryWindow: detail.querySelector("#e-deliveryWindow").value,
+          cardMessage: detail.querySelector("#e-cardMessage").value,
+          adminNotes: detail.querySelector("#e-adminNotes").value,
+        }), "Cambios guardados correctamente");
+        loadOrders();
+      } catch {}
+    });
+  }
+
+  async function reviewPayment(orderId, decision) {
+    try {
+      await withToast(
+        () => api.patch(`/api/orders/admin/${orderId}/payment`, { decision }),
+        decision === "CONFIRMED" ? "Pago aprobado correctamente" : "Pago rechazado correctamente"
+      );
+      await loadOrders();
+      await viewOrder(orderId);
+    } catch {}
+  }
+
+  document.getElementById("status-filter").addEventListener("change", loadOrders);
+
+  document.addEventListener("admin-ready", async () => {
+    try {
+      const settings = await api.get("/api/admin/settings");
+      ownerWhatsapp = (settings.whatsappNumber || "").replace(/\D/g, "");
+    } catch {}
+
+    loadOrders();
+    const preset = new URLSearchParams(location.search).get("order");
+    if (preset) viewOrder(preset);
+    const statusParam = new URLSearchParams(location.search).get("status");
+    if (statusParam) { document.getElementById("status-filter").value = statusParam; loadOrders(); }
+  });
+</script>
+</body>
+</html>

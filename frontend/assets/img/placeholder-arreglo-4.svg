@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Placeholder: Siempre Tú">
+  <defs><linearGradient id="g4" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#FFFDF9"/><stop offset="100%" stop-color="#F8DCDC"/>
+  </linearGradient></defs>
+  <rect width="800" height="1000" fill="url(#g4)"/>
+  <circle cx="400" cy="440" r="150" fill="#E7A5A5" opacity="0.4"/>
+  <circle cx="440" cy="380" r="70" fill="#729681" opacity="0.35"/>
+  <text x="400" y="880" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#2E302F">Siempre Tú</text>
+  <text x="400" y="920" text-anchor="middle" font-family="sans-serif" font-size="14" letter-spacing="1" fill="#74716D">PLACEHOLDER — REEMPLAZAR CON FOTOGRAFÍA REAL</text>
+</svg>

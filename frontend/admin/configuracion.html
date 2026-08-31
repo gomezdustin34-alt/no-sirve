@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<link rel="icon" type="image/png" href="/assets/img/logo.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Configuración | Admin Dígalo con Flores</title>
+<link rel="stylesheet" href="/css/design-system.css" />
+<link rel="stylesheet" href="/css/components.css" />
+<link rel="stylesheet" href="/css/admin.css" />
+<style>.settings-form { margin-top: var(--space-lg); padding: var(--space-md); max-width: 560px; }</style>
+</head>
+<body class="admin-body">
+
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <div class="brand"><img src="/assets/img/logo.png" class="brand-mark" alt="Dígalo con Flores" /><span class="brand-text">Dígalo con Flores<span>Panel admin</span></span></div>
+    <ul class="admin-nav">
+      <li><a href="/admin/dashboard.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>Dashboard</a></li>
+      <li><a href="/admin/pedidos.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>Pedidos</a></li>
+      <li><a href="/admin/productos.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M12 12v9"/><path d="M8 21h8"/></svg>Productos</a></li>
+      <li><a href="/admin/inventario.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3h18v6H3z"/><path d="M3 9v12h18V9M9 13h6"/></svg>Inventario</a></li>
+      <li><a href="/admin/configuracion.html" aria-current="page"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>Configuración</a></li>
+    </ul>
+    <div class="admin-sidebar-footer"><a href="#" onclick="adminLogout()">↩ Cerrar sesión</a></div>
+  </aside>
+
+  <main class="admin-main">
+    <h1 class="h-section" style="font-size:1.6rem;">Configuración del negocio</h1>
+
+    <form id="settings-form" class="settings-form card-editorial">
+      <div class="field"><label for="businessName">Nombre del negocio</label><input id="businessName" /></div>
+
+      <h3 class="h-section" style="font-size:1.05rem;margin-top:var(--space-md);">Datos bancarios (visibles en checkout)</h3>
+      <div class="field"><label for="bankName">Banco</label><input id="bankName" /></div>
+      <div class="field"><label for="bankAccountType">Tipo de cuenta</label><input id="bankAccountType" /></div>
+      <div class="field"><label for="bankAccountNumber">Número de cuenta</label><input id="bankAccountNumber" /></div>
+      <div class="field"><label for="bankAccountHolder">Titular</label><input id="bankAccountHolder" /></div>
+      <div class="field"><label for="bankHolderDocument">Documento / NIT</label><input id="bankHolderDocument" /></div>
+
+      <h3 class="h-section" style="font-size:1.05rem;margin-top:var(--space-md);">Contacto</h3>
+      <div class="field"><label for="whatsappNumber">WhatsApp (con indicativo, ej. 573000000000)</label><input id="whatsappNumber" /></div>
+      <div class="field"><label for="contactEmail">Correo de contacto</label><input id="contactEmail" /></div>
+      <div class="field"><label for="openingHours">Horario de atención</label><input id="openingHours" /></div>
+
+      <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    </form>
+
+    <p style="margin-top:var(--space-lg);color:var(--text-secondary);font-size:0.85rem;max-width:560px;">
+      Las credenciales técnicas (WhatsApp Business API, proveedor de email, base de datos) se configuran en el
+      archivo <code>.env</code> del servidor, no aquí — nunca deben quedar expuestas al navegador. Consulta el
+      <code>README.md</code> del backend para la lista completa.
+    </p>
+  </main>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/admin-guard.js"></script>
+<script src="/js/admin-toast.js"></script>
+<script>
+  const FIELDS = ["businessName", "bankName", "bankAccountType", "bankAccountNumber", "bankAccountHolder", "bankHolderDocument", "whatsappNumber", "contactEmail", "openingHours"];
+
+  async function loadSettings() {
+    const settings = await api.get("/api/admin/settings");
+    FIELDS.forEach((f) => (document.getElementById(f).value = settings[f] || ""));
+  }
+
+  document.getElementById("settings-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const payload = {};
+    FIELDS.forEach((f) => (payload[f] = document.getElementById(f).value));
+    try {
+      await withToast(() => api.put("/api/admin/settings", payload), "Configuración guardada correctamente");
+    } catch {}
+  });
+
+  document.addEventListener("admin-ready", loadSettings);
+</script>
+</body>
+</html>

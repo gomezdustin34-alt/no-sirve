@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<link rel="icon" type="image/png" href="/assets/img/logo.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Inventario | Admin Dígalo con Flores</title>
+<link rel="stylesheet" href="/css/design-system.css" />
+<link rel="stylesheet" href="/css/components.css" />
+<link rel="stylesheet" href="/css/admin.css" />
+<style>
+  .inventory-summary { display: flex; gap: 1.5rem; margin-bottom: var(--space-md); flex-wrap: wrap; }
+  .inventory-summary span { font-size: 0.85rem; color: var(--text-secondary); }
+  .inventory-summary strong { color: var(--green-deep); font-family: var(--font-display); font-size: 1.1rem; }
+</style>
+</head>
+<body class="admin-body">
+
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <div class="brand"><img src="/assets/img/logo.png" class="brand-mark" alt="Dígalo con Flores" /><span class="brand-text">Dígalo con Flores<span>Panel admin</span></span></div>
+    <ul class="admin-nav">
+      <li><a href="/admin/dashboard.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>Dashboard</a></li>
+      <li><a href="/admin/pedidos.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>Pedidos</a></li>
+      <li><a href="/admin/productos.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M12 12v9"/><path d="M8 21h8"/></svg>Productos</a></li>
+      <li><a href="/admin/inventario.html" aria-current="page"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3h18v6H3z"/><path d="M3 9v12h18V9M9 13h6"/></svg>Inventario</a></li>
+      <li><a href="/admin/configuracion.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>Configuración</a></li>
+    </ul>
+    <div class="admin-sidebar-footer"><a href="#" onclick="adminLogout()">↩ Cerrar sesión</a></div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1 class="h-section" style="font-size:1.6rem;">Inventario</h1>
+      <input type="search" id="search" placeholder="Buscar producto..." />
+    </div>
+
+    <div class="inventory-summary">
+      <span>Unidades totales en stock: <strong id="sum-units">—</strong></span>
+      <span>Productos agotados: <strong id="sum-outofstock">—</strong></span>
+      <span>Con menos de 5 unidades: <strong id="sum-low">—</strong></span>
+    </div>
+
+    <table class="admin-table">
+      <thead><tr><th></th><th>Producto</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Estado</th></tr></thead>
+      <tbody id="inventory-body"></tbody>
+    </table>
+  </main>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/admin-guard.js"></script>
+<script src="/js/admin-toast.js"></script>
+<script>
+  let products = [];
+
+  function statusBadge(p) {
+    if (!p.isAvailable) return '<span class="status-badge rejected">Inactivo</span>';
+    if (p.soldOut) return '<span class="status-badge soldout">Agotado</span>';
+    if (p.stock < 5) return '<span class="status-badge pending">Stock bajo</span>';
+    return '<span class="status-badge instock">Disponible</span>';
+  }
+
+  function renderSummary() {
+    const active = products.filter((p) => p.isAvailable);
+    document.getElementById("sum-units").textContent = active.reduce((s, p) => s + p.stock, 0);
+    document.getElementById("sum-outofstock").textContent = active.filter((p) => p.soldOut).length;
+    document.getElementById("sum-low").textContent = active.filter((p) => p.stock > 0 && p.stock < 5).length;
+  }
+
+  function renderTable(list) {
+    const body = document.getElementById("inventory-body");
+    body.innerHTML = list.map((p) => `
+      <tr class="${p.isAvailable && p.stock < 5 ? 'low-stock-row' : ''}" data-row="${p.id}">
+        <td><img class="row-thumb" src="${p.images[0] || '/assets/img/placeholder-arreglo-1.svg'}" alt="" /></td>
+        <td>${p.name}</td>
+        <td>${p.category?.name || "—"}</td>
+        <td>${formatMoney(p.basePrice)}</td>
+        <td>
+          <div class="stock-editor">
+            <button type="button" class="icon-action" data-step="-1" data-id="${p.id}">−</button>
+            <input type="number" min="0" value="${p.stock}" data-stock-input="${p.id}" />
+            <button type="button" class="icon-action" data-step="1" data-id="${p.id}">+</button>
+            <button type="button" class="icon-action" data-save="${p.id}" title="Guardar">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+            </button>
+          </div>
+        </td>
+        <td><span data-status="${p.id}">${statusBadge(p)}</span></td>
+      </tr>
+    `).join("") || '<tr><td colspan="6">No hay productos.</td></tr>';
+
+    body.querySelectorAll("[data-step]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const input = body.querySelector(`[data-stock-input="${btn.dataset.id}"]`);
+        const next = Math.max(0, Number(input.value) + Number(btn.dataset.step));
+        input.value = next;
+      });
+    });
+
+    body.querySelectorAll("[data-save]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const id = btn.dataset.save;
+        const input = body.querySelector(`[data-stock-input="${id}"]`);
+        const stock = Number(input.value);
+        try {
+          const updated = await withToast(
+            () => api.patch(`/api/products/${id}/stock`, { stock }),
+            "Stock actualizado correctamente"
+          );
+          const product = products.find((p) => p.id === id);
+          Object.assign(product, updated);
+          body.querySelector(`[data-status="${id}"]`).innerHTML = statusBadge(product);
+          renderSummary();
+        } catch {}
+      });
+    });
+  }
+
+  async function load() {
+    products = await api.get("/api/products/admin/all");
+    renderTable(products);
+    renderSummary();
+  }
+
+  document.getElementById("search").addEventListener("input", (e) => {
+    const q = e.target.value.trim().toLowerCase();
+    renderTable(products.filter((p) => p.name.toLowerCase().includes(q)));
+  });
+
+  document.addEventListener("admin-ready", load);
+</script>
+</body>
+</html>

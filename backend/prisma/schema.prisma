@@ -1,0 +1,191 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// SQLite no soporta enums nativos en Prisma: estos campos se guardan como
+// String y se validan/tipan en la capa de aplicación (ver src/lib/status.ts).
+// Role: "CUSTOMER" | "ADMIN"
+// PaymentStatus: "PENDING_VERIFICATION" | "CONFIRMED" | "REJECTED"
+// OrderStatus: "RECEIVED" | "PAYMENT_VERIFIED" | "PREPARING" | "ON_THE_WAY" | "DELIVERED" | "CANCELLED"
+// NotificationChannel: "WHATSAPP" | "EMAIL"
+// NotificationStatus: "PENDING" | "SENT" | "FAILED"
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  phone        String?
+  role         String   @default("CUSTOMER")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  orders  Order[]
+  reviews Review[]
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  slug      String    @unique
+  imagePath String?
+  sortOrder Int       @default(0)
+  products  Product[]
+}
+
+model Product {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  name          String
+  description   String
+  meaning       String? // significado / historia del arreglo
+  flowersUsed   String? // texto libre: "Rosas, peonías, eucalipto"
+  basePrice     Int // en centavos de la moneda local, nunca confiar en precio del cliente
+  images        String // JSON.stringify(string[])
+  occasion      String?
+  stock         Int      @default(0) // 0 = agotado, se muestra al cliente
+  isFeatured    Boolean  @default(false)
+  isAvailable   Boolean  @default(true)
+  categoryId    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  category   Category?   @relation(fields: [categoryId], references: [id])
+  orderItems OrderItem[]
+  reviews    Review[]
+}
+
+model Order {
+  id                String      @id @default(cuid())
+  code              String      @unique // ej. DF-1024
+  userId            String?
+  customerName      String
+  customerEmail     String
+  customerPhone     String
+  recipientName     String
+  recipientPhone    String?
+  deliveryAddress   String
+  deliveryCity      String
+  deliveryDate      DateTime
+  deliveryWindow    String
+  cardMessage       String?
+  adminNotes        String?
+  subtotal          Int
+  shippingCost      Int         @default(0)
+  discount          Int         @default(0)
+  total             Int
+  status            String      @default("RECEIVED")
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  user          User?          @relation(fields: [userId], references: [id])
+  items         OrderItem[]
+  payment       Payment?
+  notifications Notification[]
+}
+
+model OrderItem {
+  id              String  @id @default(cuid())
+  orderId         String
+  productId       String
+  productName     String
+  unitPrice       Int
+  quantity        Int
+  customization   String? // JSON.stringify({color, tamaño, envoltura, extras})
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model Payment {
+  id              String        @id @default(cuid())
+  orderId         String        @unique
+  method          String        @default("bank_transfer")
+  bankName        String
+  amount          Int
+  transferDate    DateTime
+  referenceNumber String
+  holderName      String
+  receiptFilename String
+  status          String        @default("PENDING_VERIFICATION")
+  reviewedByAdminId String?
+  reviewedAt      DateTime?
+  createdAt       DateTime      @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model Reminder {
+  id        String   @id @default(cuid())
+  userId    String?
+  label     String
+  date      DateTime
+  recurring Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  productId String
+  userId    String?
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id])
+  user    User?   @relation(fields: [userId], references: [id])
+}
+
+model Coupon {
+  id            String    @id @default(cuid())
+  code          String    @unique
+  percentOff    Int?
+  amountOff     Int?
+  minPurchase   Int       @default(0)
+  maxUses       Int?
+  usedCount     Int       @default(0)
+  expiresAt     DateTime?
+  isActive      Boolean   @default(true)
+}
+
+model BusinessSettings {
+  id                String  @id @default("singleton")
+  businessName      String  @default("Dígalo con Flores")
+  bankName           String  @default("")
+  bankAccountType    String  @default("")
+  bankAccountNumber  String  @default("")
+  bankAccountHolder  String  @default("")
+  bankHolderDocument String  @default("")
+  whatsappNumber     String  @default("")
+  contactEmail       String  @default("")
+  openingHours       String  @default("")
+  updatedAt          DateTime @updatedAt
+}
+
+model Notification {
+  id        String              @id @default(cuid())
+  orderId   String
+  channel   String
+  status    String              @default("PENDING")
+  error     String?
+  sentAt    DateTime?
+  createdAt DateTime            @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  actorRole String?
+  action    String
+  entity    String
+  entityId  String?
+  metadata  String? // JSON.stringify(details)
+  createdAt DateTime @default(now())
+}

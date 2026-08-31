@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<link rel="icon" type="image/png" href="/assets/img/logo.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Carrito | Dígalo con Flores</title>
+<link rel="stylesheet" href="/css/design-system.css" />
+<link rel="stylesheet" href="/css/components.css" />
+<link rel="stylesheet" href="/css/carrito.css" />
+</head>
+<body>
+
+<header class="navbar">
+  <div class="wrap navbar-inner">
+    <a href="/index.html" class="navbar-brand"><img src="/assets/img/logo.png" class="brand-mark" alt="Dígalo con Flores" /><span class="logo-mark">Dígalo <span>con</span> Flores</span></a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="/index.html">Inicio</a></li>
+        <li><a href="/catalogo.html">Flores</a></li>
+        <li><a href="/descubre.html">Descubre</a></li>
+        <li><a href="/personalizar.html">Personaliza</a></li>
+        <li><a href="/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+    <div class="nav-actions">
+      <a href="/carrito.html" class="icon-btn" aria-label="Carrito">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 0 0 2 1.6h7.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
+        <span class="cart-count" data-cart-count>0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap cart-layout">
+  <section>
+    <h1 class="h-section">Tu carrito</h1>
+    <div id="cart-lines" class="cart-lines"></div>
+    <p id="cart-empty" style="display:none;color:var(--text-secondary);">Tu carrito está vacío. <a href="/catalogo.html" style="text-decoration:underline;">Explora el catálogo</a>.</p>
+  </section>
+
+  <aside class="cart-summary card-editorial">
+    <h2 class="h-section" style="font-size:1.4rem;">Resumen</h2>
+    <div class="summary-row"><span>Subtotal</span><span id="sum-subtotal">—</span></div>
+    <div class="summary-row"><span>Envío</span><span id="sum-shipping">—</span></div>
+    <div class="summary-row"><span>Descuento</span><span id="sum-discount">—</span></div>
+    <hr class="divider" style="margin: 1rem 0;" />
+    <div class="summary-row summary-total"><span>Total</span><span id="sum-total">—</span></div>
+    <a href="/checkout.html" class="btn btn-primary btn-full" id="checkout-btn">Ir al checkout</a>
+  </aside>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Dígalo con Flores</span>
+      <a href="/catalogo.html">Seguir comprando</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/api.js"></script>
+<script src="/js/admin-access.js"></script>
+<script src="/js/whatsapp-button.js"></script>
+<script src="/js/cart.js"></script>
+<script src="/js/main.js"></script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  function render() {
+    const lines = Cart.getLines();
+    const container = document.getElementById("cart-lines");
+    const empty = document.getElementById("cart-empty");
+    const checkoutBtn = document.getElementById("checkout-btn");
+
+    if (!lines.length) {
+      container.innerHTML = "";
+      empty.style.display = "block";
+      checkoutBtn.classList.add("btn-disabled-link");
+      checkoutBtn.addEventListener("click", (e) => e.preventDefault());
+      updateSummary({ subtotal: 0, shippingCost: 0, discount: 0, total: 0 });
+      return;
+    }
+    empty.style.display = "none";
+
+    container.innerHTML = lines.map((line, i) => `
+      <div class="cart-line">
+        <img src="${line.image}" alt="${line.name}" />
+        <div class="cart-line-info">
+          <p class="p-name">${line.name}</p>
+          <p style="font-size:0.82rem;color:var(--text-secondary);">
+            ${line.customization?.size || ''} · ${line.customization?.wrapping || ''}
+            ${line.customization?.extras?.length ? ' · ' + line.customization.extras.join(', ') : ''}
+          </p>
+          ${line.customization?.cardMessage ? `<p style="font-family:var(--font-display);font-style:italic;">"${line.customization.cardMessage}"</p>` : ''}
+          <div class="cart-line-actions">
+            <input type="number" min="1" max="20" value="${line.quantity}" data-qty="${i}" />
+            <button type="button" data-remove="${i}" class="btn-ghost">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    `).join("");
+
+    container.querySelectorAll("[data-qty]").forEach((input) => {
+      input.addEventListener("change", () => {
+        Cart.updateQuantityAt(Number(input.dataset.qty), Number(input.value));
+        render();
+      });
+    });
+    container.querySelectorAll("[data-remove]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        Cart.removeAt(Number(btn.dataset.remove));
+        render();
+      });
+    });
+
+    api.post("/api/orders/price", {
+      items: lines.map((l) => ({ productId: l.productId, quantity: l.quantity, customization: l.customization })),
+      city: "default",
+    }).then(updateSummary).catch(() => {
+      document.getElementById("sum-total").textContent = "No se pudo calcular";
+    });
+  }
+
+  function updateSummary(result) {
+    document.getElementById("sum-subtotal").textContent = formatMoney(result.subtotal);
+    document.getElementById("sum-shipping").textContent = formatMoney(result.shippingCost);
+    document.getElementById("sum-discount").textContent = "-" + formatMoney(result.discount);
+    document.getElementById("sum-total").textContent = formatMoney(result.total);
+  }
+
+  render();
+</script>
+</body>
+</html>

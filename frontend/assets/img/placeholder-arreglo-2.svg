@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Placeholder: Carta de Amor">
+  <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#E7A5A5"/><stop offset="100%" stop-color="#C9A66B"/>
+  </linearGradient></defs>
+  <rect width="800" height="1000" fill="url(#g2)"/>
+  <circle cx="420" cy="440" r="150" fill="#8A362D" opacity="0.35"/>
+  <circle cx="320" cy="500" r="80" fill="#FFFDF9" opacity="0.45"/>
+  <text x="400" y="880" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#2E302F">Carta de Amor</text>
+  <text x="400" y="920" text-anchor="middle" font-family="sans-serif" font-size="14" letter-spacing="1" fill="#3d2b26">PLACEHOLDER — REEMPLAZAR CON FOTOGRAFÍA REAL</text>
+</svg>

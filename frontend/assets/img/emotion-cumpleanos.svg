@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Placeholder: flores coloridas de cumpleaños">
+  <rect width="1200" height="800" fill="#F6D77A"/>
+  <circle cx="600" cy="380" r="220" fill="#F6C7A7" opacity="0.55"/>
+  <circle cx="440" cy="480" r="130" fill="#E7A5A5" opacity="0.4"/>
+  <text x="600" y="740" text-anchor="middle" font-family="sans-serif" font-size="14" letter-spacing="1" fill="#6b551f">PLACEHOLDER — FOTOGRAFÍA REAL: MIX COLORIDO DE TEMPORADA</text>
+</svg>

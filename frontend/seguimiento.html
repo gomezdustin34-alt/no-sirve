@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<link rel="icon" type="image/png" href="/assets/img/logo.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Seguimiento de pedido | Dígalo con Flores</title>
+<link rel="stylesheet" href="/css/design-system.css" />
+<link rel="stylesheet" href="/css/components.css" />
+<link rel="stylesheet" href="/css/seguimiento.css" />
+</head>
+<body>
+
+<header class="navbar">
+  <div class="wrap navbar-inner">
+    <a href="/index.html" class="navbar-brand"><img src="/assets/img/logo.png" class="brand-mark" alt="Dígalo con Flores" /><span class="logo-mark">Dígalo <span>con</span> Flores</span></a>
+    <div class="nav-actions"><a href="/index.html" class="btn-ghost">Volver al inicio</a></div>
+  </div>
+</header>
+
+<main class="wrap tracking-layout">
+  <div id="search-box" class="track-search">
+    <h1 class="h-section">Sigue tu pedido</h1>
+    <p class="lede">Ingresa el número de pedido que recibiste por correo.</p>
+    <form id="track-form">
+      <input type="text" id="order-id" placeholder="ID del pedido" required />
+      <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+    <p id="track-error" class="form-message error" style="display:none;"></p>
+  </div>
+
+  <div id="track-result" style="display:none;">
+    <p class="eyebrow">Pedido <span id="t-code"></span></p>
+    <h1 class="h-section" id="t-status"></h1>
+
+    <ol class="timeline">
+      <li data-status="RECEIVED">Pedido recibido</li>
+      <li data-status="PAYMENT_VERIFIED">Pago verificado</li>
+      <li data-status="PREPARING">Preparando tus flores</li>
+      <li data-status="ON_THE_WAY">En camino</li>
+      <li data-status="DELIVERED">Entregado</li>
+    </ol>
+
+    <div class="track-details card-editorial">
+      <p><strong>Entrega estimada:</strong> <span id="t-date"></span></p>
+      <p><strong>Horario:</strong> <span id="t-window"></span></p>
+      <p><strong>Total:</strong> <span id="t-total"></span></p>
+      <p><strong>Estado del pago:</strong> <span id="t-payment"></span></p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap"><div class="footer-bottom"><span>© <span id="year"></span> Dígalo con Flores</span></div></div>
+</footer>
+
+<script src="/js/api.js"></script>
+<script src="/js/admin-access.js"></script>
+<script src="/js/whatsapp-button.js"></script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const STATUS_ORDER = ["RECEIVED", "PAYMENT_VERIFIED", "PREPARING", "ON_THE_WAY", "DELIVERED"];
+  const PAYMENT_LABELS = { PENDING_VERIFICATION: "Pendiente de verificación", CONFIRMED: "Confirmado", REJECTED: "Rechazado — contáctanos" };
+
+  async function loadOrder(id) {
+    document.getElementById("track-error").style.display = "none";
+    try {
+      const order = await api.get(`/api/orders/${id}/tracking`);
+      document.getElementById("search-box").style.display = "none";
+      document.getElementById("track-result").style.display = "block";
+      document.getElementById("t-code").textContent = `#${order.code}`;
+      document.getElementById("t-status").textContent = order.statusLabel;
+      document.getElementById("t-date").textContent = new Date(order.deliveryDate).toLocaleDateString("es-CO");
+      document.getElementById("t-window").textContent = order.deliveryWindow;
+      document.getElementById("t-total").textContent = formatMoney(order.total);
+      document.getElementById("t-payment").textContent = order.paymentStatus ? PAYMENT_LABELS[order.paymentStatus] : "Sin registrar";
+
+      const currentIndex = STATUS_ORDER.indexOf(order.status);
+      document.querySelectorAll(".timeline li").forEach((li) => {
+        const idx = STATUS_ORDER.indexOf(li.dataset.status);
+        li.classList.toggle("is-done", idx <= currentIndex);
+        li.classList.toggle("is-current", idx === currentIndex);
+      });
+    } catch (err) {
+      document.getElementById("track-error").textContent = "No encontramos un pedido con ese número.";
+      document.getElementById("track-error").style.display = "block";
+    }
+  }
+
+  document.getElementById("track-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    loadOrder(document.getElementById("order-id").value.trim());
+  });
+
+  const preset = new URLSearchParams(location.search).get("id");
+  if (preset) { document.getElementById("order-id").value = preset; loadOrder(preset); }
+</script>
+</body>
+</html>

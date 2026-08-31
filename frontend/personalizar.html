@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<link rel="icon" type="image/png" href="/assets/img/logo.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Personaliza tu arreglo | Dígalo con Flores</title>
+<link rel="stylesheet" href="/css/design-system.css" />
+<link rel="stylesheet" href="/css/components.css" />
+<link rel="stylesheet" href="/css/personalizar.css" />
+</head>
+<body>
+
+<header class="navbar">
+  <div class="wrap navbar-inner">
+    <a href="/index.html" class="navbar-brand"><img src="/assets/img/logo.png" class="brand-mark" alt="Dígalo con Flores" /><span class="logo-mark">Dígalo <span>con</span> Flores</span></a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="/index.html">Inicio</a></li>
+        <li><a href="/catalogo.html">Flores</a></li>
+        <li><a href="/descubre.html">Descubre</a></li>
+        <li><a href="/personalizar.html" aria-current="page">Personaliza</a></li>
+        <li><a href="/contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+    <div class="nav-actions">
+      <a href="/carrito.html" class="icon-btn" aria-label="Carrito">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 12.4a2 2 0 0 0 2 1.6h7.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
+        <span class="cart-count" data-cart-count>0</span>
+      </a>
+      <button class="nav-toggle" aria-label="Abrir menú">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="personalize-head reveal">
+    <p class="eyebrow">Tu arreglo, a tu manera</p>
+    <h1 class="h-section">Personaliza tu arreglo</h1>
+    <p class="lede">Elige el punto de partida y ajusta cada detalle. El precio se actualiza al instante.</p>
+  </section>
+
+  <section class="personalize-body">
+    <form id="personalize-form" class="personalize-form">
+      <div class="field">
+        <label for="base-product">Arreglo base</label>
+        <select id="base-product" required></select>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="size">Tamaño</label>
+          <select id="size">
+            <option value="pequeno">Pequeño</option>
+            <option value="mediano" selected>Mediano</option>
+            <option value="grande">Grande</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="wrapping">Envoltura</label>
+          <select id="wrapping">
+            <option value="clasica" selected>Clásica</option>
+            <option value="premium">Premium</option>
+            <option value="de-lujo">De lujo</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Extras</label>
+        <div class="extras-options">
+          <label><input type="checkbox" name="extras" value="chocolates" /> Chocolates</label>
+          <label><input type="checkbox" name="extras" value="peluche" /> Peluche</label>
+          <label><input type="checkbox" name="extras" value="vela" /> Vela aromática</label>
+          <label><input type="checkbox" name="extras" value="globo" /> Globo</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="cardMessage">Tu mensaje en la tarjeta</label>
+        <textarea id="cardMessage" rows="3" placeholder="¿No sabes qué escribir? Prueba nuestro asistente en /descubre.html"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-full">Agregar al carrito</button>
+      <p id="feedback" class="form-message success" style="display:none;">Agregado al carrito 🌷</p>
+    </form>
+
+    <aside class="personalize-preview card-editorial">
+      <img id="preview-image" src="" alt="" style="border-radius: var(--radius-soft) var(--radius-soft) 0 0; aspect-ratio: 4/3; object-fit: cover;" />
+      <div style="padding: var(--space-md);">
+        <p class="eyebrow">Vista previa</p>
+        <p id="preview-name" class="h-section" style="margin: 0.4rem 0;"></p>
+        <p id="preview-price" style="font-family: var(--font-display); font-size: 1.6rem; color: var(--green-deep);"></p>
+      </div>
+    </aside>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Dígalo con Flores</span>
+      <a href="/carrito.html">Ir al carrito</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/api.js"></script>
+<script src="/js/admin-access.js"></script>
+<script src="/js/whatsapp-button.js"></script>
+<script src="/js/cart.js"></script>
+<script src="/js/main.js"></script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+  let products = [];
+
+  function currentCustomization() {
+    return {
+      size: document.getElementById("size").value,
+      wrapping: document.getElementById("wrapping").value,
+      extras: [...document.querySelectorAll('input[name="extras"]:checked')].map((el) => el.value),
+    };
+  }
+
+  function selectedProduct() {
+    const id = document.getElementById("base-product").value;
+    return products.find((p) => p.id === id);
+  }
+
+  function refreshPreview() {
+    const product = selectedProduct();
+    if (!product) return;
+    document.getElementById("preview-image").src = product.images[0];
+    document.getElementById("preview-image").alt = product.name;
+    document.getElementById("preview-name").textContent = product.name;
+
+    api.post("/api/orders/price", {
+      items: [{ productId: product.id, quantity: 1, customization: currentCustomization() }],
+      city: "default",
+    }).then((result) => {
+      document.getElementById("preview-price").textContent = formatMoney(result.subtotal);
+    }).catch(() => {});
+  }
+
+  api.get("/api/products").then((list) => {
+    products = list;
+    const select = document.getElementById("base-product");
+    select.innerHTML = list.map((p) => `<option value="${p.id}" ${p.soldOut ? "disabled" : ""}>${p.name}${p.soldOut ? " (Agotado)" : ""}</option>`).join("");
+    refreshPreview();
+  });
+
+  const suggested = sessionStorage.getItem("dcf_suggested_message");
+  if (suggested) {
+    document.getElementById("cardMessage").value = suggested;
+    sessionStorage.removeItem("dcf_suggested_message");
+  }
+
+  document.getElementById("personalize-form").addEventListener("change", refreshPreview);
+
+  document.getElementById("personalize-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const product = selectedProduct();
+    if (!product) return;
+    Cart.add({
+      productId: product.id,
+      slug: product.slug,
+      name: product.name,
+      image: product.images[0],
+      quantity: 1,
+      customization: { ...currentCustomization(), cardMessage: document.getElementById("cardMessage").value },
+    });
+    const feedback = document.getElementById("feedback");
+    feedback.style.display = "block";
+    setTimeout(() => (feedback.style.display = "none"), 2500);
+  });
+</script>
+</body>
+</html>

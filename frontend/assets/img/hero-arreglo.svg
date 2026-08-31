@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1100" role="img" aria-label="Placeholder: fotografía principal de arreglo floral">
+  <defs>
+    <linearGradient id="hero" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F8DCDC"/>
+      <stop offset="55%" stop-color="#F6C7A7"/>
+      <stop offset="100%" stop-color="#DCCEEA"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1100" fill="url(#hero)"/>
+  <circle cx="470" cy="480" r="210" fill="#E7A5A5" opacity="0.45"/>
+  <circle cx="330" cy="560" r="130" fill="#FFFDF9" opacity="0.5"/>
+  <circle cx="600" cy="600" r="110" fill="#729681" opacity="0.35"/>
+  <circle cx="520" cy="380" r="90" fill="#F6D77A" opacity="0.4"/>
+  <text x="450" y="1000" text-anchor="middle" font-family="Georgia, serif" font-size="28" fill="#2E302F">Arreglo protagonista del Hero</text>
+  <text x="450" y="1040" text-anchor="middle" font-family="sans-serif" font-size="15" letter-spacing="1" fill="#74716D">PLACEHOLDER — REEMPLAZAR CON FOTOGRAFÍA REAL DE LA FLORISTERÍA</text>
+</svg>

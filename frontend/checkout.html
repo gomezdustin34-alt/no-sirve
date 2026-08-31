@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<link rel="icon" type="image/png" href="/assets/img/logo.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Checkout | Dígalo con Flores</title>
+<link rel="stylesheet" href="/css/design-system.css" />
+<link rel="stylesheet" href="/css/components.css" />
+<link rel="stylesheet" href="/css/checkout.css" />
+</head>
+<body>
+
+<header class="navbar">
+  <div class="wrap navbar-inner">
+    <a href="/index.html" class="navbar-brand"><img src="/assets/img/logo.png" class="brand-mark" alt="Dígalo con Flores" /><span class="logo-mark">Dígalo <span>con</span> Flores</span></a>
+    <div class="nav-actions"><a href="/carrito.html" class="btn-ghost">Volver al carrito</a></div>
+  </div>
+</header>
+
+<main class="wrap checkout-layout">
+  <section>
+    <ol class="stepper" id="stepper">
+      <li data-step="1" class="is-active">Tus datos</li>
+      <li data-step="2">Destinatario</li>
+      <li data-step="3">Entrega</li>
+      <li data-step="4">Mensaje</li>
+      <li data-step="5">Pago</li>
+      <li data-step="6">Confirmación</li>
+    </ol>
+
+    <div id="checkout-error" class="form-message error" style="display:none;"></div>
+
+    <!-- Paso 1 -->
+    <form data-panel="1" class="checkout-panel is-active">
+      <h2 class="h-section" style="font-size:1.5rem;">Tus datos</h2>
+      <div class="field"><label for="customerName">Nombre completo</label><input id="customerName" required /></div>
+      <div class="field-row">
+        <div class="field"><label for="customerEmail">Correo</label><input id="customerEmail" type="email" required /></div>
+        <div class="field"><label for="customerPhone">Teléfono</label><input id="customerPhone" required /></div>
+      </div>
+      <button type="submit" class="btn btn-primary">Continuar</button>
+    </form>
+
+    <!-- Paso 2 -->
+    <form data-panel="2" class="checkout-panel">
+      <h2 class="h-section" style="font-size:1.5rem;">Destinatario y entrega</h2>
+      <div class="field-row">
+        <div class="field"><label for="recipientName">Nombre del destinatario</label><input id="recipientName" required /></div>
+        <div class="field"><label for="recipientPhone">Teléfono (opcional)</label><input id="recipientPhone" /></div>
+      </div>
+      <div class="field"><label for="deliveryAddress">Dirección de entrega</label><input id="deliveryAddress" required /></div>
+      <div class="field"><label for="deliveryCity">Ciudad</label><input id="deliveryCity" required /></div>
+      <button type="button" class="btn-ghost" data-back>Atrás</button>
+      <button type="submit" class="btn btn-primary">Continuar</button>
+    </form>
+
+    <!-- Paso 3 -->
+    <form data-panel="3" class="checkout-panel">
+      <h2 class="h-section" style="font-size:1.5rem;">Fecha y horario</h2>
+      <div class="field-row">
+        <div class="field"><label for="deliveryDate">Fecha de entrega</label><input id="deliveryDate" type="date" required /></div>
+        <div class="field">
+          <label for="deliveryWindow">Horario</label>
+          <select id="deliveryWindow">
+            <option>9:00 AM – 12:00 PM</option>
+            <option>12:00 PM – 3:00 PM</option>
+            <option>3:00 PM – 6:00 PM</option>
+          </select>
+        </div>
+      </div>
+      <button type="button" class="btn-ghost" data-back>Atrás</button>
+      <button type="submit" class="btn btn-primary">Continuar</button>
+    </form>
+
+    <!-- Paso 4 -->
+    <form data-panel="4" class="checkout-panel">
+      <h2 class="h-section" style="font-size:1.5rem;">Mensaje para la tarjeta</h2>
+      <div class="field"><label for="cardMessage">¿Qué quieres decir?</label><textarea id="cardMessage" rows="4"></textarea></div>
+      <button type="button" class="btn-ghost" data-back>Atrás</button>
+      <button type="submit" class="btn btn-primary">Continuar a pago</button>
+    </form>
+
+    <!-- Paso 5: transferencia -->
+    <form data-panel="5" class="checkout-panel">
+      <h2 class="h-section" style="font-size:1.5rem;">Transferencia bancaria</h2>
+      <p>Realiza la transferencia a la siguiente cuenta y luego confirma los datos de tu pago:</p>
+      <div id="bank-info" class="bank-info card-editorial"></div>
+
+      <div class="field-row" style="margin-top:var(--space-md)">
+        <div class="field"><label for="bankName">Tu banco</label><input id="bankName" required /></div>
+        <div class="field"><label for="amount">Monto transferido</label><input id="amount" type="number" required /></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label for="transferDate">Fecha de transferencia</label><input id="transferDate" type="date" required /></div>
+        <div class="field"><label for="referenceNumber">Número de referencia</label><input id="referenceNumber" required /></div>
+      </div>
+      <div class="field"><label for="holderName">Nombre del titular que transfirió</label><input id="holderName" required /></div>
+      <div class="field"><label for="receipt">Comprobante (JPG, PNG, WEBP o PDF)</label><input id="receipt" type="file" accept=".jpg,.jpeg,.png,.webp,.pdf" required /></div>
+
+      <p class="form-message" style="background:#F8DCDC;color:#7d4a4a;">Nunca te pediremos tu clave bancaria, PIN, OTP ni CVV. Solo los datos para identificar tu transferencia.</p>
+
+      <button type="button" class="btn-ghost" data-back>Atrás</button>
+      <button type="submit" class="btn btn-primary" id="submit-order">Confirmar pedido</button>
+    </form>
+
+    <!-- Paso 6 -->
+    <div data-panel="6" class="checkout-panel">
+      <h2 class="h-section" style="font-size:1.5rem;">¡Pedido recibido! 🌷</h2>
+      <p>Tu pedido <strong id="order-code"></strong> fue creado y tu comprobante está en revisión.</p>
+      <a href="#" id="tracking-link" class="btn btn-primary">Seguir mi pedido</a>
+    </div>
+  </section>
+
+  <aside class="checkout-summary card-editorial">
+    <h3 class="h-section" style="font-size:1.2rem;">Tu pedido</h3>
+    <div id="summary-lines"></div>
+    <hr class="divider" style="margin:1rem 0;" />
+    <div class="summary-row summary-total"><span>Total</span><span id="summary-total">—</span></div>
+  </aside>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap"><div class="footer-bottom"><span>© <span id="year"></span> Dígalo con Flores</span></div></div>
+</footer>
+
+<script src="/js/api.js"></script>
+<script src="/js/admin-access.js"></script>
+<script src="/js/whatsapp-button.js"></script>
+<script src="/js/cart.js"></script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+  const lines = Cart.getLines();
+  if (!lines.length) location.href = "/carrito.html";
+
+  let createdOrderId = null;
+  let createdOrderCode = null;
+
+  function goToStep(step) {
+    document.querySelectorAll(".checkout-panel").forEach((p) => p.classList.toggle("is-active", p.dataset.panel === String(step)));
+    document.querySelectorAll("#stepper li").forEach((li) => {
+      const n = Number(li.dataset.step);
+      li.classList.toggle("is-active", n === step);
+      li.classList.toggle("is-done", n < step);
+    });
+  }
+
+  document.querySelectorAll("[data-back]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const current = Number(btn.closest(".checkout-panel").dataset.panel);
+      goToStep(current - 1);
+    });
+  });
+
+  function showError(message) {
+    const box = document.getElementById("checkout-error");
+    box.textContent = message;
+    box.style.display = "block";
+  }
+  function hideError() { document.getElementById("checkout-error").style.display = "none"; }
+
+  document.querySelector('[data-panel="1"]').addEventListener("submit", (e) => { e.preventDefault(); goToStep(2); });
+  document.querySelector('[data-panel="2"]').addEventListener("submit", (e) => { e.preventDefault(); goToStep(3); });
+  document.querySelector('[data-panel="3"]').addEventListener("submit", (e) => { e.preventDefault(); goToStep(4); });
+  document.querySelector('[data-panel="4"]').addEventListener("submit", (e) => { e.preventDefault(); goToStep(5); });
+
+  // Datos bancarios públicos
+  api.get("/api/settings/public").then((info) => {
+    document.getElementById("bank-info").innerHTML = `
+      <p><strong>Banco:</strong> ${info.bankName}</p>
+      <p><strong>Tipo de cuenta:</strong> ${info.bankAccountType}</p>
+      <p><strong>Número de cuenta:</strong> ${info.bankAccountNumber}</p>
+      <p><strong>Titular:</strong> ${info.bankAccountHolder}</p>
+      <p><strong>Documento:</strong> ${info.bankHolderDocument}</p>
+    `;
+  }).catch(() => {
+    document.getElementById("bank-info").innerHTML = "<p>No se pudieron cargar los datos bancarios. Contáctanos por WhatsApp.</p>";
+  });
+
+  // Resumen lateral
+  api.post("/api/orders/price", {
+    items: lines.map((l) => ({ productId: l.productId, quantity: l.quantity, customization: l.customization })),
+    city: "default",
+  }).then((result) => {
+    document.getElementById("summary-lines").innerHTML = result.items.map((i) => `
+      <div class="summary-row"><span>${i.quantity} × ${i.productName}</span><span>${formatMoney(i.lineTotal)}</span></div>
+    `).join("");
+    document.getElementById("summary-total").textContent = formatMoney(result.total);
+  });
+
+  document.querySelector('[data-panel="5"]').addEventListener("submit", async (e) => {
+    e.preventDefault();
+    hideError();
+    const submitBtn = document.getElementById("submit-order");
+    submitBtn.disabled = true;
+
+    try {
+      if (!createdOrderId) {
+        const order = await api.post("/api/orders", {
+          customerName: document.getElementById("customerName").value,
+          customerEmail: document.getElementById("customerEmail").value,
+          customerPhone: document.getElementById("customerPhone").value,
+          recipientName: document.getElementById("recipientName").value,
+          recipientPhone: document.getElementById("recipientPhone").value,
+          deliveryAddress: document.getElementById("deliveryAddress").value,
+          deliveryCity: document.getElementById("deliveryCity").value,
+          deliveryDate: document.getElementById("deliveryDate").value,
+          deliveryWindow: document.getElementById("deliveryWindow").value,
+          cardMessage: document.getElementById("cardMessage").value,
+          items: lines.map((l) => ({ productId: l.productId, quantity: l.quantity, customization: l.customization })),
+        });
+        createdOrderId = order.id;
+        createdOrderCode = order.code;
+      }
+
+      const formData = new FormData();
+      formData.append("bankName", document.getElementById("bankName").value);
+      formData.append("amount", document.getElementById("amount").value);
+      formData.append("transferDate", document.getElementById("transferDate").value);
+      formData.append("referenceNumber", document.getElementById("referenceNumber").value);
+      formData.append("holderName", document.getElementById("holderName").value);
+      formData.append("receipt", document.getElementById("receipt").files[0]);
+
+      await api.postForm(`/api/orders/${createdOrderId}/transfer`, formData);
+
+      Cart.clear();
+      document.getElementById("order-code").textContent = `#${createdOrderCode}`;
+      document.getElementById("tracking-link").href = `/seguimiento.html?id=${createdOrderId}`;
+      goToStep(6);
+    } catch (err) {
+      showError(err.message || "Ocurrió un error al procesar tu pedido.");
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>

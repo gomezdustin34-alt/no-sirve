@@ -1,0 +1,331 @@
+/* ============================================================
+   Componentes compartidos: navbar, footer, producto, formularios
+   ============================================================ */
+
+/* --- Marca circular (logo real, usada en navbar, footer, admin y modal de login) --- */
+.brand-mark {
+  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+  object-fit: cover;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.5);
+}
+
+.navbar-brand { display: flex; align-items: center; gap: 0.6rem; }
+.navbar-brand .brand-mark { width: 40px; height: 40px; }
+
+/* --- Modal de acceso admin (inyectado por js/admin-access.js al fondo de cada página) --- */
+.admin-login-modal-overlay {
+  position: fixed; inset: 0; background: rgba(46,48,47,0.45);
+  display: flex; align-items: center; justify-content: center; z-index: 200;
+  opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+  padding: 1rem;
+}
+.admin-login-modal-overlay.is-open { opacity: 1; pointer-events: auto; }
+.admin-login-modal {
+  background: var(--bg-warm-white); border-radius: var(--radius-soft);
+  width: 320px; padding: var(--space-lg);
+  transform: translateY(12px) scale(0.98); transition: transform 0.25s ease;
+  box-shadow: 0 24px 60px -20px rgba(46,48,47,0.4);
+}
+.admin-login-modal-overlay.is-open .admin-login-modal { transform: translateY(0) scale(1); }
+.admin-login-modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; cursor: pointer; color: var(--text-secondary); }
+.footer-admin-trigger {
+  background: none; border: none; cursor: pointer; color: #A9BFB2; font-size: 0.78rem; padding: 0; font-family: var(--font-body);
+  text-decoration: underline; text-underline-offset: 2px;
+}
+.footer-admin-trigger:hover { color: var(--bg-warm-white); }
+
+/* --- Botón flotante de WhatsApp (inyectado por js/whatsapp-button.js) --- */
+.whatsapp-float {
+  position: fixed; bottom: 1.4rem; right: 1.4rem; z-index: 150;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: #25D366; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 26px -8px rgba(37,211,102,0.6);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  opacity: 0; transform: scale(0.6); pointer-events: none;
+}
+.whatsapp-float.is-visible { opacity: 1; transform: scale(1); pointer-events: auto; }
+.whatsapp-float:hover { transform: scale(1.08); box-shadow: 0 14px 32px -8px rgba(37,211,102,0.7); }
+.whatsapp-float::before {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(37,211,102,0.55);
+  animation: whatsapp-pulse 2.6s ease-out infinite;
+}
+@keyframes whatsapp-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.45); }
+  70% { box-shadow: 0 0 0 14px rgba(37,211,102,0); }
+  100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
+}
+@media (prefers-reduced-motion: reduce) { .whatsapp-float::before { animation: none; } }
+
+/* --- Navbar --- */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(255, 248, 242, 0.92);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 0;
+}
+
+.logo-mark {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--green-deep);
+  letter-spacing: 0.01em;
+}
+.logo-mark span { color: var(--gold); }
+
+.nav-links {
+  display: flex;
+  gap: 2.1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.86rem;
+  letter-spacing: 0.02em;
+}
+
+.nav-links a {
+  color: var(--text-primary);
+  position: relative;
+  padding-bottom: 4px;
+}
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 0; height: 1px;
+  background: var(--gold);
+  transition: width 0.3s ease;
+}
+.nav-links a:hover::after,
+.nav-links a[aria-current="page"]::after { width: 100%; }
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-primary);
+  position: relative;
+  display: inline-flex;
+}
+
+.cart-count {
+  position: absolute;
+  top: -7px; right: -9px;
+  background: var(--green-deep);
+  color: var(--bg-warm-white);
+  font-size: 0.62rem;
+  min-width: 16px; height: 16px;
+  border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 600;
+}
+
+.nav-toggle { display: none; }
+
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .nav-toggle {
+    display: inline-flex;
+    background: none; border: none; cursor: pointer;
+  }
+  .nav-links.is-open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    background: var(--bg-warm-white);
+    padding: var(--space-md) var(--space-sm);
+    border-bottom: 1px solid var(--border-soft);
+    gap: 1.2rem;
+  }
+}
+
+/* --- Footer --- */
+.site-footer {
+  background: var(--green-deep);
+  color: var(--bg-warm-white);
+  margin-top: var(--space-2xl);
+  padding: var(--space-xl) 0 var(--space-md);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: var(--space-lg);
+}
+
+.footer-grid h4 {
+  color: var(--bg-warm-white);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+
+.footer-grid a, .footer-grid p {
+  color: #D9E3DC;
+  font-size: 0.88rem;
+  display: block;
+  margin-bottom: 0.6rem;
+}
+
+.footer-quote {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--pink-pale);
+  max-width: 320px;
+  margin-top: 1rem;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.15);
+  margin-top: var(--space-lg);
+  padding-top: var(--space-sm);
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: #A9BFB2;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+@media (max-width: 780px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* --- Tarjeta de producto (catálogo / grillas) --- */
+.product-card {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius-soft);
+}
+
+.product-card figure {
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--pink-pale);
+}
+
+.product-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.product-card:hover img { transform: scale(1.04); }
+
+.product-card figcaption {
+  padding: 0.9rem 0.2rem 0;
+}
+
+.product-card .p-name {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  margin-bottom: 0.15rem;
+}
+
+.product-card .p-price {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.product-card--lg figcaption .p-name { font-size: 1.6rem; }
+
+.product-card.is-sold-out figure { position: relative; }
+.product-card.is-sold-out img { filter: grayscale(0.5) brightness(0.85); }
+.soldout-ribbon {
+  position: absolute; top: 0.8rem; left: 0.8rem; z-index: 2;
+  background: var(--text-primary); color: var(--bg-warm-white);
+  font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.3rem 0.7rem; border-radius: 999px; font-weight: 600;
+}
+
+/* --- Formularios --- */
+.field { margin-bottom: var(--space-sm); }
+
+.field label {
+  display: block;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  color: var(--text-secondary);
+  margin-bottom: 0.35rem;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-soft);
+  background: var(--bg-warm-white);
+  color: var(--text-primary);
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--green-soft);
+  outline: none;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+}
+@media (max-width: 600px) {
+  .field-row { grid-template-columns: 1fr; }
+}
+
+.error-text {
+  color: #B0483F;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
+.form-message {
+  padding: 0.9rem 1.1rem;
+  border-radius: var(--radius-soft);
+  font-size: 0.88rem;
+  margin-bottom: var(--space-sm);
+}
+.form-message.error { background: #FBEAE7; color: #8A362D; }
+.form-message.success { background: #E9F1EA; color: var(--green-deep); }
+
+/* --- Botánica decorativa --- */
+.botanical-line {
+  width: 44px; height: 1px;
+  background: var(--gold);
+  margin: 0.9rem 0;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: var(--space-sm);
+}

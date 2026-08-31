@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<link rel="icon" type="image/png" href="/assets/img/logo.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard | Admin Dígalo con Flores</title>
+<link rel="stylesheet" href="/css/design-system.css" />
+<link rel="stylesheet" href="/css/components.css" />
+<link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body class="admin-body">
+
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <div class="brand">
+      <img src="/assets/img/logo.png" class="brand-mark" alt="Dígalo con Flores" />
+      <span class="brand-text">Dígalo con Flores<span>Panel admin</span></span>
+    </div>
+    <ul class="admin-nav">
+      <li><a href="/admin/dashboard.html" aria-current="page">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
+        Dashboard
+      </a></li>
+      <li><a href="/admin/pedidos.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>
+        Pedidos
+      </a></li>
+      <li><a href="/admin/productos.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M12 12v9"/><path d="M8 21h8"/></svg>
+        Productos
+      </a></li>
+      <li><a href="/admin/inventario.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3h18v6H3z"/><path d="M3 9v12h18V9M9 13h6"/></svg>
+        Inventario
+      </a></li>
+      <li><a href="/admin/configuracion.html">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
+        Configuración
+      </a></li>
+    </ul>
+    <div class="admin-sidebar-footer">
+      <a href="#" onclick="adminLogout()">↩ Cerrar sesión</a>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="dashboard-hero">
+      <div>
+        <p class="eyebrow" style="color:#D9E3DC;">Bienvenido de vuelta</p>
+        <h1 class="h-section" style="color:#FFFDF9;font-size:1.8rem;" id="greeting">Dashboard</h1>
+        <p id="today-date" style="color:#B9CFC0;font-size:0.85rem;margin:0;"></p>
+      </div>
+      <a href="/admin/pedidos.html?status=RECEIVED" class="btn btn-primary" style="background:var(--bg-warm-white);color:var(--green-deep);">Pedidos por revisar</a>
+    </div>
+
+    <p class="eyebrow" style="margin-bottom:0.6rem;">Resumen financiero</p>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="icon-badge"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <p class="label">Ventas totales</p><p class="value" id="s-sales">$0</p>
+      </div>
+      <div class="stat-card">
+        <div class="icon-badge"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+        <p class="label">Ventas este mes</p><p class="value" id="s-monthly">$0</p>
+      </div>
+      <div class="stat-card">
+        <div class="icon-badge"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/></svg></div>
+        <p class="label">Pedidos totales</p><p class="value" id="s-total">0</p>
+      </div>
+      <div class="stat-card is-warning">
+        <div class="icon-badge"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 2"/></svg></div>
+        <p class="label">Pagos pendientes</p><p class="value" id="s-pending">0</p>
+      </div>
+    </div>
+
+    <p class="eyebrow" style="margin-bottom:0.6rem;">Inventario y actividad</p>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <p class="label">Pedidos hoy</p><p class="value" id="s-today" style="font-size:1.6rem;">0</p>
+      </div>
+      <div class="stat-card">
+        <p class="label">Unidades vendidas</p><p class="value" id="s-units" style="font-size:1.6rem;">0</p>
+      </div>
+      <div class="stat-card">
+        <p class="label">Productos activos</p><p class="value" id="s-active" style="font-size:1.6rem;">0</p>
+      </div>
+      <a href="/admin/inventario.html" class="stat-card is-warning" style="text-decoration:none;display:block;">
+        <p class="label">Agotados — ver inventario</p><p class="value" id="s-outofstock" style="font-size:1.6rem;">0</p>
+      </a>
+    </div>
+
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>Ventas — últimos 7 días</h3>
+        <div id="sales-chart" class="bar-chart"></div>
+      </div>
+      <div class="chart-card">
+        <h3>Productos más vendidos</h3>
+        <div id="top-products" class="hbar-list"></div>
+      </div>
+    </div>
+
+    <div class="chart-card" style="margin-top:var(--space-sm);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;">
+        <h3 style="margin:0;">Pedidos recientes</h3>
+        <a href="/admin/pedidos.html" class="btn-ghost" style="font-size:0.8rem;">Ver todos</a>
+      </div>
+      <table class="admin-table">
+        <thead><tr><th>Código</th><th>Cliente</th><th>Total</th><th>Estado</th><th>Fecha</th></tr></thead>
+        <tbody id="recent-orders-body"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/admin-guard.js"></script>
+<script src="/js/admin-charts.js"></script>
+<script>
+  const STATUS_LABELS = { RECEIVED: "Recibido", PAYMENT_VERIFIED: "Pago verificado", PREPARING: "Preparando", ON_THE_WAY: "En camino", DELIVERED: "Entregado", CANCELLED: "Cancelado" };
+
+  document.getElementById("today-date").textContent = new Date().toLocaleDateString("es-CO", { weekday: "long", day: "numeric", month: "long" });
+
+  document.addEventListener("admin-ready", async (e) => {
+    document.getElementById("greeting").textContent = `Hola, ${e.detail.name.split(" ")[0]} 🌷`;
+
+    const stats = await api.get("/api/admin/dashboard");
+    document.getElementById("s-sales").textContent = formatMoney(stats.totalSales);
+    document.getElementById("s-monthly").textContent = formatMoney(stats.monthlyRevenue);
+    animateCounter(document.getElementById("s-total"), stats.totalOrders);
+    animateCounter(document.getElementById("s-pending"), stats.pendingPayments);
+    animateCounter(document.getElementById("s-today"), stats.ordersToday);
+    animateCounter(document.getElementById("s-units"), stats.unitsSold);
+    animateCounter(document.getElementById("s-active"), stats.activeProducts);
+    animateCounter(document.getElementById("s-outofstock"), stats.outOfStock);
+
+    renderSalesBarChart(document.getElementById("sales-chart"), stats.salesByDay);
+    renderTopProductsChart(document.getElementById("top-products"), stats.topProducts);
+
+    document.getElementById("recent-orders-body").innerHTML = stats.recentOrders.map((o) => `
+      <tr>
+        <td>${o.code}</td>
+        <td>${o.customerName}</td>
+        <td>${formatMoney(o.total)}</td>
+        <td>${STATUS_LABELS[o.status] || o.status}</td>
+        <td>${new Date(o.createdAt).toLocaleDateString("es-CO")}</td>
+      </tr>
+    `).join("") || '<tr><td colspan="5">Todavía no hay pedidos.</td></tr>';
+  });
+</script>
+</body>
+</html>
