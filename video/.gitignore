@@ -5,3 +5,9 @@ dist
 
 # Ignore the output video from Git but not videos you import into src/.
 out
+
+# Material crudo del aftermovie (pesa demasiado para git)
+public/omi/clips/*
+!public/omi/clips/.gitkeep
+public/omi/musica/*
+!public/omi/musica/.gitkeep
