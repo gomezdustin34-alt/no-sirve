@@ -59,8 +59,12 @@ export type Clip = {
 
 /** Música de fondo. Pon tu pista en public/omi/musica/ */
 export const MUSICA = {
-  /** Ejemplo: "omi/musica/pista.mp3". null = sin música. */
-  archivo: null as string | null,
+  /**
+   * Ejemplo: "omi/musica/pista.mp3". null = sin música.
+   * "musica/omi-provisional.wav" es una pista provisional generada por
+   * scripts/generar-musica.mjs; cámbiala por una canción real.
+   */
+  archivo: "musica/omi-provisional.wav" as string | null,
   /** Tempo de la pista. Búscalo con cualquier "BPM tapper" en internet. */
   bpm: 120,
   /** Segundo de la canción donde empieza el video (para saltar intros largas). */
@@ -89,21 +93,41 @@ export const BARRAS_CINE = false;
 /** Pantalla final. `firma` es opcional: colegio, ciudad o fecha REAL del evento. */
 export const CIERRE = {
   texto: "Una experiencia para recordar.",
-  firma: null as string | null, // ej.: "OMI 2026 · Nombre del colegio"
+  // Datos tomados de los letreros del evento (videos 16 y 17).
+  firma: "OLIMPIADAS MATEMÁTICAS · INETFRADPAS 2026" as string | null,
   segundos: 4,
 };
 
+/** Tus 17 videos (en public/omi/clips/). */
+const V1 = "omi/clips/v1-cuchara-ruleta-palitos.mp4";
+const V2 = "omi/clips/v2-cancha-tarjetas-pensando.mp4";
+const V3 = "omi/clips/v3-profesor-mesa-tarjetas.mp4";
+const V4 = "omi/clips/v4-mesa-tarjetas.mp4";
+const V5 = "omi/clips/v5-conos-tangram.mp4";
+const V6 = "omi/clips/v6-museo-corto.mp4";
+const V7 = "omi/clips/v7-expo-naturaleza.mp4";
+const V8 = "omi/clips/v8-expo-piano.mp4";
+const V9 = "omi/clips/v9-expo-geometria.mp4";
+const V10 = "omi/clips/v10-expo-robots.mp4";
+const V11 = "omi/clips/v11-expo-origen-numeros.mp4";
+const V12 = "omi/clips/v12-mesa-diagramas.mp4";
+const V13 = "omi/clips/v13-expo-frecuencia.mp4";
+const V14 = "omi/clips/v14-tablero-numeros.mp4";
+const V15 = "omi/clips/v15-caza-de-datos-120fps.mp4";
+const V16 = "omi/clips/v16-llegada-bienvenidos-auditorio.mp4";
+const V17 = "omi/clips/v17-mesa-premios-120fps.mp4";
+
 /**
  * LISTA DE PLANOS, en orden.
- * Los nombres son sugerencias de qué tipo de toma poner en cada lugar.
+ * Montaje con las mejores tomas de tus 17 videos (todos aparecen).
  * Cambia, borra o agrega clips libremente.
  */
 export const CLIPS: Clip[] = [
   // ── INTRO: los mejores planos, música tranquila ─────────────
   {
-    nombre: "Plano general del lugar (el más bonito)",
-    archivo: null,
-    desde: 0,
+    nombre: "Pasacalle OMΦ entre los árboles",
+    archivo: V16,
+    desde: 0.5,
     beats: 8,
     velocidad: 0.6,
     movimiento: "zoom-in",
@@ -111,92 +135,109 @@ export const CLIPS: Clip[] = [
     efecto: "whoosh",
   },
   {
-    nombre: "Mejor toma de estudiantes (cámara lenta)",
-    archivo: null,
-    desde: 0,
+    nombre: "Niño pensando, mano en la barbilla, carnet OMI",
+    archivo: V2,
+    desde: 31,
     beats: 8,
     velocidad: 0.5,
     movimiento: "zoom-out",
-    texto: "Así se vivió la OMI",
+    // \u00a0 (espacio que no se parte) mantiene "la OMI" junta.
+    texto: "Así se vivió la\u00a0OMI",
     transicion: "fundido",
   },
 
   // ── LLEGADA ─────────────────────────────────────────────────
   {
-    nombre: "Llegada: estudiantes entrando",
-    archivo: null,
-    desde: 0,
+    nombre: "Letrero Olimpiadas Matemáticas en la entrada",
+    archivo: V16,
+    desde: 9,
     beats: 4,
-    movimiento: "derecha",
-    sonidoReal: 0.3,
+    movimiento: "zoom-out",
+    transicion: "corte",
+  },
+  {
+    nombre: "BIENVENIDOS con globos",
+    archivo: V16,
+    desde: 23,
+    beats: 4,
+    movimiento: "ninguno",
     transicion: "deslizar",
     efecto: "whoosh",
   },
   {
-    nombre: "Llegada: saludos / registro",
-    archivo: null,
-    desde: 0,
+    nombre: "Estudiantes moviéndose entre estaciones",
+    archivo: V2,
+    desde: 5,
     beats: 4,
-    movimiento: "zoom-in",
+    movimiento: "derecha",
     sonidoReal: 0.3,
-    transicion: "corte",
-  },
-
-  // ── PREPARACIÓN ─────────────────────────────────────────────
-  {
-    nombre: "Preparación: salón / mesas listas",
-    archivo: null,
-    desde: 0,
-    beats: 4,
-    movimiento: "izquierda",
-    texto: "Un día de retos",
     transicion: "barrido",
     efecto: "whoosh",
   },
+
+  // ── LOS RETOS ───────────────────────────────────────────────
   {
-    nombre: "Preparación: detalle (hojas, lápices, calculadora)",
-    archivo: null,
-    desde: 0,
+    nombre: "Mesa 'Pensamiento Variacional' con tarjetas",
+    archivo: V1,
+    desde: 33,
     beats: 4,
+    movimiento: "zoom-in",
+    texto: "Un día de retos",
+    transicion: "corte",
+    efecto: "click",
+  },
+  {
+    nombre: "Detalle: la ruleta de colores",
+    archivo: V1,
+    desde: 17,
+    beats: 2,
     velocidad: 0.5,
+    movimiento: "zoom-in",
+    transicion: "corte",
+  },
+  {
+    nombre: "Manos armando el reto de los palitos",
+    archivo: V1,
+    desde: 44,
+    beats: 2,
     movimiento: "zoom-in",
     transicion: "corte",
     efecto: "click",
   },
-
-  // ── ESTUDIANTES ─────────────────────────────────────────────
   {
-    nombre: "Estudiantes: grupo conversando",
-    archivo: null,
-    desde: 0,
-    beats: 4,
-    movimiento: "derecha",
-    sonidoReal: 0.4,
-    transicion: "corte",
-  },
-  {
-    nombre: "Estudiantes: primer plano, sonrisa",
-    archivo: null,
-    desde: 0,
+    nombre: "Poniendo los números en el tablero",
+    archivo: V14,
+    desde: 3.5,
     beats: 2,
     movimiento: "zoom-in",
     transicion: "corte",
   },
   {
-    nombre: "Estudiantes: otro ángulo",
-    archivo: null,
-    desde: 0,
+    nombre: "Estudiantes en la mesa de diagramas",
+    archivo: V12,
+    desde: 3,
     beats: 2,
-    movimiento: "zoom-out",
+    movimiento: "izquierda",
+    sonidoReal: 0.3,
+    transicion: "corte",
+    efecto: "click",
+  },
+  {
+    nombre: "Frente a la ruleta, rascándose la cabeza",
+    archivo: V5,
+    desde: 16.5,
+    beats: 4,
+    movimiento: "izquierda",
+    sonidoReal: 0.3,
     transicion: "matematica",
     efecto: "riser",
   },
 
-  // ── COMPETENCIA: cortes al golpe, una palabra por plano ─────
+  // ── COMPETENCIA: una palabra por plano, al golpe ────────────
   {
-    nombre: "Competencia: concentración (primer plano)",
-    archivo: null,
-    desde: 0,
+    nombre: "Chica concentrada leyendo la tarjeta",
+    archivo: V2,
+    desde: 22,
     beats: 2,
     movimiento: "zoom-in",
     texto: "Pensar.",
@@ -204,9 +245,9 @@ export const CLIPS: Clip[] = [
     efecto: "impact",
   },
   {
-    nombre: "Competencia: mano escribiendo",
-    archivo: null,
-    desde: 0,
+    nombre: "Manos resolviendo el tangram",
+    archivo: V5,
+    desde: 56,
     beats: 2,
     movimiento: "zoom-in",
     texto: "Resolver.",
@@ -214,37 +255,46 @@ export const CLIPS: Clip[] = [
     efecto: "impact",
   },
   {
-    nombre: "Competencia: plano general del salón",
-    archivo: null,
-    desde: 0,
+    nombre: "Carrera con la cuchara en la boca, hacia la cámara",
+    archivo: V1,
+    desde: 12.5,
     beats: 2,
-    movimiento: "zoom-out",
+    movimiento: "zoom-in",
     texto: "Competir.",
     transicion: "destello",
     efecto: "impact",
   },
   {
-    nombre: "Competencia: speed ramp (alguien pensando)",
-    archivo: null,
-    desde: 0,
+    nombre: "Speed ramp: primer plano concentrado con las tarjetas",
+    archivo: V3,
+    desde: 30,
     beats: 4,
     rampa: true,
     movimiento: "zoom-in",
     transicion: "corte",
   },
   {
-    nombre: "Competencia: detalle (reloj, hoja, borrador)",
-    archivo: null,
-    desde: 0,
+    nombre: "Manos en el juego 'La caza de los datos' (120 fps)",
+    archivo: V15,
+    desde: 22,
     beats: 2,
-    movimiento: "izquierda",
+    velocidad: 0.5,
+    movimiento: "zoom-in",
     transicion: "corte",
     efecto: "click",
   },
   {
-    nombre: "Competencia: otro rostro concentrado",
-    archivo: null,
-    desde: 0,
+    nombre: "Niño leyendo su tarjeta",
+    archivo: V4,
+    desde: 10,
+    beats: 2,
+    movimiento: "zoom-out",
+    transicion: "corte",
+  },
+  {
+    nombre: "Primer plano mirando su tarjeta",
+    archivo: V1,
+    desde: 38,
     beats: 2,
     velocidad: 0.6,
     movimiento: "zoom-in",
@@ -252,51 +302,85 @@ export const CLIPS: Clip[] = [
     efecto: "whoosh",
   },
 
-  // ── MOMENTOS ESPONTÁNEOS ────────────────────────────────────
+  // ── MÁS QUE MATEMÁTICAS: exposiciones ───────────────────────
   {
-    nombre: "Espontáneo: risas (con sonido real)",
-    archivo: null,
+    nombre: "Museo de las Matemáticas",
+    archivo: V6,
     desde: 0,
+    beats: 2,
+    movimiento: "zoom-in",
+    transicion: "corte",
+  },
+  {
+    nombre: "Exposición con teclado (explicando)",
+    archivo: V8,
+    desde: 0.5,
     beats: 4,
     movimiento: "zoom-in",
-    sonidoReal: 0.9,
+    sonidoReal: 0.5,
     texto: "Más que matemáticas…",
     transicion: "corte",
   },
   {
-    nombre: "Espontáneo: bromas / gestos",
-    archivo: null,
-    desde: 0,
+    nombre: "Exposición de los carritos robot",
+    archivo: V10,
+    desde: 2,
     beats: 2,
-    movimiento: "derecha",
-    sonidoReal: 0.7,
+    movimiento: "zoom-in",
+    sonidoReal: 0.4,
     transicion: "corte",
   },
   {
-    nombre: "Espontáneo: saludo a cámara",
-    archivo: null,
-    desde: 0,
+    nombre: "Exposición 'Origen de los números'",
+    archivo: V11,
+    desde: 3,
+    beats: 2,
+    movimiento: "derecha",
+    sonidoReal: 0.4,
+    transicion: "corte",
+  },
+  {
+    nombre: "Dos expositoras explicando",
+    archivo: V7,
+    desde: 2,
     beats: 2,
     movimiento: "zoom-out",
-    sonidoReal: 0.6,
+    sonidoReal: 0.5,
     transicion: "deslizar",
     efecto: "whoosh",
   },
-
-  // ── INTERACCIÓN ─────────────────────────────────────────────
   {
-    nombre: "Interacción: compañeros ayudándose / hablando",
-    archivo: null,
-    desde: 0,
-    beats: 4,
+    nombre: "Exposición 'Geometría en nuestra cultura'",
+    archivo: V9,
+    desde: 3,
+    beats: 2,
     movimiento: "izquierda",
     sonidoReal: 0.4,
     transicion: "corte",
   },
   {
-    nombre: "Interacción: profesores con estudiantes",
-    archivo: null,
-    desde: 0,
+    nombre: "Profesora en la estación de frecuencias",
+    archivo: V13,
+    desde: 5,
+    beats: 2,
+    movimiento: "zoom-in",
+    transicion: "fundido",
+  },
+
+  // ── COMPAÑERISMO ────────────────────────────────────────────
+  {
+    nombre: "Profesora sonriendo con un estudiante (120 fps)",
+    archivo: V15,
+    desde: 15,
+    beats: 4,
+    velocidad: 0.5,
+    movimiento: "zoom-in",
+    transicion: "corte",
+  },
+  {
+    nombre: "Compañeros mirando cómo resuelve el tangram",
+    archivo: V5,
+    desde: 45,
     beats: 4,
     movimiento: "zoom-in",
     transicion: "fundido",
@@ -305,29 +389,49 @@ export const CLIPS: Clip[] = [
 
   // ── MOMENTOS DESTACADOS ─────────────────────────────────────
   {
-    nombre: "Destacado: el momento más emocionante (cámara lenta)",
-    archivo: null,
-    desde: 0,
+    nombre: "Mano en la cabeza pensando la respuesta (lento)",
+    archivo: V3,
+    desde: 18.5,
     beats: 4,
-    velocidad: 0.4,
+    velocidad: 0.5,
     movimiento: "zoom-in",
+    transicion: "corte",
+  },
+  {
+    nombre: "Niño con carnet OMI levanta la mirada (lento)",
+    archivo: V2,
+    desde: 36,
+    beats: 4,
+    velocidad: 0.5,
+    movimiento: "zoom-out",
     transicion: "destello",
     efecto: "impact",
   },
   {
-    nombre: "Destacado: aplausos (con sonido real)",
-    archivo: null,
-    desde: 0,
+    nombre: "Escultura de π y letras OMΦ (120 fps)",
+    archivo: V17,
+    desde: 0.5,
     beats: 4,
-    movimiento: "zoom-out",
-    sonidoReal: 1,
+    velocidad: 0.4,
+    movimiento: "zoom-in",
     transicion: "corte",
+    efecto: "click",
   },
   {
-    nombre: "Destacado: celebración / foto grupal",
-    archivo: null,
-    desde: 0,
-    beats: 4,
+    nombre: "Medallas listas (120 fps)",
+    archivo: V17,
+    desde: 11,
+    beats: 2,
+    velocidad: 0.5,
+    movimiento: "derecha",
+    transicion: "corte",
+    efecto: "click",
+  },
+  {
+    nombre: "Diploma de mención de honor (120 fps)",
+    archivo: V17,
+    desde: 15.5,
+    beats: 2,
     velocidad: 0.5,
     movimiento: "zoom-in",
     transicion: "fundido",
@@ -335,9 +439,9 @@ export const CLIPS: Clip[] = [
 
   // ── CIERRE ──────────────────────────────────────────────────
   {
-    nombre: "Cierre: último plano (grupo, salida, atardecer…)",
-    archivo: null,
-    desde: 0,
+    nombre: "Auditorio: Olimpiadas Matemáticas INETFRADPAS",
+    archivo: V16,
+    desde: 49,
     beats: 8,
     velocidad: 0.6,
     movimiento: "zoom-out",

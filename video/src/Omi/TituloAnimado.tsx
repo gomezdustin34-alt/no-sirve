@@ -19,15 +19,17 @@ export const TituloAnimado: React.FC<{
 }> = ({ texto, subtexto, tamano }) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames, width } = useVideoConfig();
-  // En vertical el texto es un poco más chico y se parte en líneas.
-  tamano = tamano ?? (width < 1200 ? 104 : 110);
   const palabras = texto.split(" ");
   const letras = Array.from(texto);
+  // Una sola palabra ("Pensar.") entra de golpe; frases, letra por letra.
+  const golpe = palabras.length === 1;
+  const vertical = width < 1200;
+  tamano = tamano ?? (golpe ? (vertical ? 170 : 150) : vertical ? 128 : 110);
   // Más rápido si el texto es largo o el plano es corto.
-  const escalon = Math.max(
-    0.6,
-    Math.min(1.6, (durationInFrames * 0.3) / letras.length),
-  );
+  const escalon = golpe
+    ? 0
+    : Math.max(0.6, Math.min(1.6, (durationInFrames * 0.3) / letras.length));
+  const pop = spring({ frame, fps, config: { damping: 12, stiffness: 220 } });
 
   const salida = interpolate(
     frame,
@@ -63,6 +65,8 @@ export const TituloAnimado: React.FC<{
           textAlign: "center",
           fontFamily: FUENTE,
           maxWidth: width * 0.84,
+          transform: golpe ? `scale(${1.35 - pop * 0.35})` : undefined,
+          filter: golpe ? `blur(${(1 - pop) * 10}px)` : undefined,
         }}
       >
         <span
