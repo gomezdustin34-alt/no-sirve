@@ -106,10 +106,11 @@ const Cierre: React.FC = () => {
   );
 };
 
-/** Volumen de la música: sube poco a poco, baja con el sonido real y se desvanece al final. */
+/** Volumen de la música: entra suave, baja con el sonido real y se desvanece al final. */
 const volumenMusica = (frame: number) => {
   const { clips, total } = TIMELINE;
-  const subida = interpolate(frame, [0, 45, total * 0.35], [0, 0.7, 1], {
+  // La canción ya crece sola: solo evitamos que arranque de golpe.
+  const subida = interpolate(frame, [0, 8], [0, 1], {
     extrapolateRight: "clamp",
   });
   const final = interpolate(frame, [total - 45, total], [1, 0], {

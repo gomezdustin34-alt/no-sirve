@@ -62,11 +62,11 @@ export const MUSICA = {
   /**
    * Ejemplo: "omi/musica/pista.mp3". null = sin música.
    * "musica/omi-provisional.wav" es una pista provisional generada por
-   * scripts/generar-musica.mjs; cámbiala por una canción real.
+   * scripts/generar-musica.mjs (120 BPM), por si no tienes canción.
    */
-  archivo: "musica/omi-provisional.wav" as string | null,
+  archivo: "omi/musica/cancion.wav" as string | null,
   /** Tempo de la pista. Búscalo con cualquier "BPM tapper" en internet. */
-  bpm: 120,
+  bpm: 118,
   /** Segundo de la canción donde empieza el video (para saltar intros largas). */
   empiezaEn: 0,
   /** Volumen general de la música (0 a 1). */
@@ -95,7 +95,8 @@ export const CIERRE = {
   texto: "Una experiencia para recordar.",
   // Datos tomados de los letreros del evento (videos 16 y 17).
   firma: "OLIMPIADAS MATEMÁTICAS · INETFRADPAS 2026" as string | null,
-  segundos: 4,
+  // 8 beats a 118 BPM: termina justo cuando se apaga la canción.
+  segundos: 4.07,
 };
 
 /** Tus 17 videos (en public/omi/clips/). */
@@ -119,11 +120,17 @@ const V17 = "omi/clips/v17-mesa-premios-120fps.mp4";
 
 /**
  * LISTA DE PLANOS, en orden.
- * Montaje con las mejores tomas de tus 17 videos (todos aparecen).
- * Cambia, borra o agrega clips libremente.
+ * Montaje con las mejores tomas de tus 17 videos (todos aparecen),
+ * armado sobre la estructura de la canción (118 BPM):
+ *   beats   0–28  intro tranquila      → llegada
+ *   beats  28–64  entra el bajo        → retos y exposiciones
+ *   beats  64–80  sube la tensión      → compañerismo y concentración
+ *   beat   80     ¡DROP!              → Pensar. Resolver. Competir.
+ *   beats  80–108 parte más fuerte     → momentos destacados
+ *   beats 108–116 la canción se apaga  → pantalla final
  */
 export const CLIPS: Clip[] = [
-  // ── INTRO: los mejores planos, música tranquila ─────────────
+  // ── INTRO (beats 0–16): los mejores planos ──────────────────
   {
     nombre: "Pasacalle OMΦ entre los árboles",
     archivo: V16,
@@ -141,12 +148,12 @@ export const CLIPS: Clip[] = [
     beats: 8,
     velocidad: 0.5,
     movimiento: "zoom-out",
-    // \u00a0 (espacio que no se parte) mantiene "la OMI" junta.
-    texto: "Así se vivió la\u00a0OMI",
+    //   (espacio que no se parte) mantiene "la OMI" junta.
+    texto: "Así se vivió la OMI",
     transicion: "fundido",
   },
 
-  // ── LLEGADA ─────────────────────────────────────────────────
+  // ── LLEGADA (beats 16–28) ───────────────────────────────────
   {
     nombre: "Letrero Olimpiadas Matemáticas en la entrada",
     archivo: V16,
@@ -175,7 +182,7 @@ export const CLIPS: Clip[] = [
     efecto: "whoosh",
   },
 
-  // ── LOS RETOS ───────────────────────────────────────────────
+  // ── LOS RETOS (beats 28–44): entra el bajo ──────────────────
   {
     nombre: "Mesa 'Pensamiento Variacional' con tarjetas",
     archivo: V1,
@@ -230,79 +237,10 @@ export const CLIPS: Clip[] = [
     movimiento: "izquierda",
     sonidoReal: 0.3,
     transicion: "matematica",
-    efecto: "riser",
-  },
-
-  // ── COMPETENCIA: una palabra por plano, al golpe ────────────
-  {
-    nombre: "Chica concentrada leyendo la tarjeta",
-    archivo: V2,
-    desde: 22,
-    beats: 2,
-    movimiento: "zoom-in",
-    texto: "Pensar.",
-    transicion: "corte",
-    efecto: "impact",
-  },
-  {
-    nombre: "Manos resolviendo el tangram",
-    archivo: V5,
-    desde: 56,
-    beats: 2,
-    movimiento: "zoom-in",
-    texto: "Resolver.",
-    transicion: "corte",
-    efecto: "impact",
-  },
-  {
-    nombre: "Carrera con la cuchara en la boca, hacia la cámara",
-    archivo: V1,
-    desde: 12.5,
-    beats: 2,
-    movimiento: "zoom-in",
-    texto: "Competir.",
-    transicion: "destello",
-    efecto: "impact",
-  },
-  {
-    nombre: "Speed ramp: primer plano concentrado con las tarjetas",
-    archivo: V3,
-    desde: 30,
-    beats: 4,
-    rampa: true,
-    movimiento: "zoom-in",
-    transicion: "corte",
-  },
-  {
-    nombre: "Manos en el juego 'La caza de los datos' (120 fps)",
-    archivo: V15,
-    desde: 22,
-    beats: 2,
-    velocidad: 0.5,
-    movimiento: "zoom-in",
-    transicion: "corte",
-    efecto: "click",
-  },
-  {
-    nombre: "Niño leyendo su tarjeta",
-    archivo: V4,
-    desde: 10,
-    beats: 2,
-    movimiento: "zoom-out",
-    transicion: "corte",
-  },
-  {
-    nombre: "Primer plano mirando su tarjeta",
-    archivo: V1,
-    desde: 38,
-    beats: 2,
-    velocidad: 0.6,
-    movimiento: "zoom-in",
-    transicion: "matematica",
     efecto: "whoosh",
   },
 
-  // ── MÁS QUE MATEMÁTICAS: exposiciones ───────────────────────
+  // ── MÁS QUE MATEMÁTICAS (beats 44–60): exposiciones ─────────
   {
     nombre: "Museo de las Matemáticas",
     archivo: V6,
@@ -367,7 +305,7 @@ export const CLIPS: Clip[] = [
     transicion: "fundido",
   },
 
-  // ── COMPAÑERISMO ────────────────────────────────────────────
+  // ── COMPAÑERISMO (beats 60–68) ──────────────────────────────
   {
     nombre: "Profesora sonriendo con un estudiante (120 fps)",
     archivo: V15,
@@ -383,11 +321,91 @@ export const CLIPS: Clip[] = [
     desde: 45,
     beats: 4,
     movimiento: "zoom-in",
-    transicion: "fundido",
+    transicion: "corte",
+  },
+
+  // ── LA TENSIÓN SUBE (beats 68–80): concentración ────────────
+  {
+    nombre: "Speed ramp: primer plano concentrado con las tarjetas",
+    archivo: V3,
+    desde: 30,
+    beats: 4,
+    rampa: true,
+    movimiento: "zoom-in",
+    transicion: "corte",
+  },
+  {
+    nombre: "Manos en el juego 'La caza de los datos' (120 fps)",
+    archivo: V15,
+    desde: 22,
+    beats: 2,
+    velocidad: 0.5,
+    movimiento: "zoom-in",
+    transicion: "corte",
+    efecto: "click",
+  },
+  {
+    nombre: "Niño leyendo su tarjeta",
+    archivo: V4,
+    desde: 10,
+    beats: 2,
+    movimiento: "zoom-out",
+    transicion: "corte",
+    efecto: "click",
+  },
+  {
+    nombre: "Primer plano mirando su tarjeta",
+    archivo: V1,
+    desde: 38,
+    beats: 2,
+    velocidad: 0.6,
+    movimiento: "zoom-in",
+    transicion: "corte",
+  },
+  {
+    nombre: "Tangram casi listo (lento) → sube al drop",
+    archivo: V5,
+    desde: 64,
+    beats: 2,
+    velocidad: 0.5,
+    movimiento: "zoom-in",
+    transicion: "destello",
     efecto: "riser",
   },
 
-  // ── MOMENTOS DESTACADOS ─────────────────────────────────────
+  // ── ¡DROP! (beat 80): una palabra por golpe ─────────────────
+  {
+    nombre: "Chica concentrada leyendo la tarjeta",
+    archivo: V2,
+    desde: 22,
+    beats: 2,
+    movimiento: "zoom-in",
+    texto: "Pensar.",
+    transicion: "corte",
+    efecto: "impact",
+  },
+  {
+    nombre: "Manos resolviendo el tangram",
+    archivo: V5,
+    desde: 56,
+    beats: 2,
+    movimiento: "zoom-in",
+    texto: "Resolver.",
+    transicion: "corte",
+    efecto: "impact",
+  },
+  {
+    nombre: "Carrera con la cuchara en la boca, hacia la cámara",
+    archivo: V1,
+    desde: 12.5,
+    beats: 2,
+    movimiento: "zoom-in",
+    texto: "Competir.",
+    transicion: "destello",
+    efecto: "impact",
+  },
+
+  // ── MOMENTOS DESTACADOS (beats 86–102) ──────────────────────
   {
     nombre: "Mano en la cabeza pensando la respuesta (lento)",
     archivo: V3,
@@ -404,8 +422,8 @@ export const CLIPS: Clip[] = [
     beats: 4,
     velocidad: 0.5,
     movimiento: "zoom-out",
-    transicion: "destello",
-    efecto: "impact",
+    transicion: "matematica",
+    efecto: "whoosh",
   },
   {
     nombre: "Escultura de π y letras OMΦ (120 fps)",
@@ -437,12 +455,12 @@ export const CLIPS: Clip[] = [
     transicion: "fundido",
   },
 
-  // ── CIERRE ──────────────────────────────────────────────────
+  // ── CIERRE (beats 102–108) ──────────────────────────────────
   {
     nombre: "Auditorio: Olimpiadas Matemáticas INETFRADPAS",
     archivo: V16,
     desde: 49,
-    beats: 8,
+    beats: 6,
     velocidad: 0.6,
     movimiento: "zoom-out",
     transicion: "fundido",
