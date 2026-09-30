@@ -16,9 +16,12 @@ export const TituloAnimado: React.FC<{
   texto: string;
   subtexto?: string;
   tamano?: number;
-}> = ({ texto, subtexto, tamano = 110 }) => {
+}> = ({ texto, subtexto, tamano }) => {
   const frame = useCurrentFrame();
-  const { fps, durationInFrames } = useVideoConfig();
+  const { fps, durationInFrames, width } = useVideoConfig();
+  // En vertical el texto es un poco más chico y se parte en líneas.
+  tamano = tamano ?? (width < 1200 ? 104 : 110);
+  const palabras = texto.split(" ");
   const letras = Array.from(texto);
   // Más rápido si el texto es largo o el plano es corto.
   const escalon = Math.max(
@@ -59,13 +62,14 @@ export const TituloAnimado: React.FC<{
           position: "relative",
           textAlign: "center",
           fontFamily: FUENTE,
+          maxWidth: width * 0.84,
         }}
       >
         <span
           style={{
             position: "absolute",
-            left: -70,
-            top: -60,
+            left: -10,
+            top: -80,
             fontSize: 70,
             color: COLORES.acento,
             opacity: acento * 0.9,
@@ -81,27 +85,38 @@ export const TituloAnimado: React.FC<{
             color: COLORES.texto,
             letterSpacing: -1,
             textShadow: "0 6px 30px rgba(0,0,0,0.5)",
-            whiteSpace: "pre",
+            lineHeight: 1.08,
           }}
         >
-          {letras.map((letra, i) => {
-            const p = spring({
-              frame: frame - i * escalon,
-              fps,
-              config: { damping: 18, stiffness: 160 },
-            });
+          {palabras.map((palabra, w) => {
+            // Índice de la primera letra de esta palabra, para el escalonado.
+            const base = palabras.slice(0, w).join(" ").length + (w ? 1 : 0);
             return (
-              <span
-                key={i}
-                style={{
-                  display: "inline-block",
-                  opacity: p,
-                  filter: `blur(${(1 - p) * 12}px)`,
-                  transform: `translateY(${(1 - p) * 40}px)`,
-                }}
-              >
-                {letra}
-              </span>
+              <React.Fragment key={w}>
+                {w > 0 && " "}
+                <span style={{ display: "inline-block", whiteSpace: "nowrap" }}>
+                  {Array.from(palabra).map((letra, i) => {
+                    const p = spring({
+                      frame: frame - (base + i) * escalon,
+                      fps,
+                      config: { damping: 18, stiffness: 160 },
+                    });
+                    return (
+                      <span
+                        key={i}
+                        style={{
+                          display: "inline-block",
+                          opacity: p,
+                          filter: `blur(${(1 - p) * 12}px)`,
+                          transform: `translateY(${(1 - p) * 40}px)`,
+                        }}
+                      >
+                        {letra}
+                      </span>
+                    );
+                  })}
+                </span>
+              </React.Fragment>
             );
           })}
         </div>

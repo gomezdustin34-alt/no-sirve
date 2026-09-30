@@ -74,6 +74,7 @@ const Cierre: React.FC = () => {
           fontFamily: FUENTE,
           color: COLORES.texto,
           textAlign: "center",
+          padding: "0 80px",
         }}
       >
         <div

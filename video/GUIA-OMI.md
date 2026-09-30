@@ -4,6 +4,8 @@ Este proyecto usa **Remotion**: el video se arma con código, pero tú solo nece
 editar **un archivo**: `src/Omi/config.ts`. Ahí dices qué clip va en cada lugar,
 cuánto dura, si va en cámara lenta, qué texto lleva y cómo pasa al siguiente.
 
+El video es **vertical (1080×1920)**, listo para Reels, TikTok, Shorts o Estados.
+
 Lo demás ya está hecho:
 
 - cortes sincronizados con los golpes de la música
@@ -11,7 +13,7 @@ Lo demás ya está hecho:
 - cámara lenta y speed ramps
 - transiciones limpias
 - ráfagas de π √ ∑ y figuras geométricas
-- textos animados, efectos de sonido, barras de cine y pantalla final
+- textos animados, efectos de sonido, barras de cine opcionales y pantalla final
 
 ---
 
@@ -45,6 +47,9 @@ Consejos sobre los archivos:
   vista previa; conviértelos a MP4 H.264 con [HandBrake](https://handbrake.fr)
   (preset "Fast 1080p30") o con ffmpeg:
   `ffmpeg -i IMG_1234.MOV -c:v libx264 -crf 18 -c:a aac IMG_1234.mp4`
+- **Vertical:** graba y usa tomas verticales. Si tienes alguna horizontal, se
+  recorta al centro automáticamente: revisa en la vista previa que no se corte
+  la persona importante.
 - **Cámara lenta:** si alguien grabó a 60 fps, usa esas tomas para los momentos lentos.
   Se verán mucho más suaves.
 - **Fotos:** si tienes fotos buenas también sirven, pero esta plantilla está pensada
@@ -168,7 +173,7 @@ segundos: 4,
 npx remotion render OMI out/omi-aftermovie.mp4
 ```
 
-El archivo queda en `video/out/omi-aftermovie.mp4` (1920×1080, 30 fps).
+El archivo queda en `video/out/omi-aftermovie.mp4` (vertical 1080×1920, 30 fps).
 
 - Máxima calidad: agrega `--crf=16`
 - Borrador rápido para revisar: agrega `--scale=0.5`
@@ -176,7 +181,8 @@ El archivo queda en `video/out/omi-aftermovie.mp4` (1920×1080, 30 fps).
 
 ## 9. Ajustes opcionales
 
-- **Sin barras de cine:** en `config.ts`, `BARRAS_CINE = false`.
+- **Versión horizontal** (para YouTube o proyector): en `config.ts`, `VERTICAL = false`.
+- **Barras de cine:** `BARRAS_CINE = true` (vienen apagadas porque en vertical quitan espacio).
 - **Efectos más fuertes o más suaves:** cambia `VOLUMEN_EFECTOS` (0.35 por defecto).
 - **Tus propios efectos:** reemplaza los `.wav` en `public/sfx/` manteniendo el
   nombre. Si quieres regenerar los originales: `node scripts/generar-sfx.mjs`.

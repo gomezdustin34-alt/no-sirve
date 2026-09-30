@@ -74,8 +74,17 @@ export const MUSICA = {
 /** Volumen de los efectos (whoosh, impact…). Bajo para que no opaquen. */
 export const VOLUMEN_EFECTOS = 0.35;
 
-/** Barras negras de cine arriba y abajo. */
-export const BARRAS_CINE = true;
+/**
+ * Formato del video. Vertical = 1080×1920 (Reels, TikTok, Shorts, Estados).
+ * Pon `false` para horizontal 1920×1080 (YouTube, proyector).
+ */
+export const VERTICAL = true;
+
+/**
+ * Barras negras de cine arriba y abajo. En vertical quedan raras y tapan
+ * espacio de la pantalla, por eso vienen apagadas.
+ */
+export const BARRAS_CINE = false;
 
 /** Pantalla final. `firma` es opcional: colegio, ciudad o fecha REAL del evento. */
 export const CIERRE = {

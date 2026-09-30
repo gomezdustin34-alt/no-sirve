@@ -1,6 +1,6 @@
 # Aftermovie OMI (Remotion)
 
-Video resumen de la experiencia vivida en las Olimpiadas Matemáticas (OMI).
+Video resumen vertical (1080×1920) de la experiencia vivida en las Olimpiadas Matemáticas (OMI).
 
 👉 **Cómo montar tus videos: [GUIA-OMI.md](./GUIA-OMI.md)**
 

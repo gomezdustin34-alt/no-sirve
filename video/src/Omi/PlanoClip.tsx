@@ -122,7 +122,7 @@ const Ejemplo: React.FC<{ clip: ClipEnTimeline }> = ({ clip }) => {
           backgroundSize: "80px 80px",
         }}
       />
-      <div style={{ textAlign: "center", maxWidth: 1300 }}>
+      <div style={{ textAlign: "center", maxWidth: "85%" }}>
         <div style={{ fontSize: 34, letterSpacing: 8, color: COLORES.acento }}>
           PLANO {clip.indice + 1} · {clip.beats} BEATS
         </div>
