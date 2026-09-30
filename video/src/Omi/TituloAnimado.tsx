@@ -30,6 +30,7 @@ export const TituloAnimado: React.FC<{
     ? 0
     : Math.max(0.6, Math.min(1.6, (durationInFrames * 0.3) / letras.length));
   const pop = spring({ frame, fps, config: { damping: 12, stiffness: 220 } });
+  const glitch = Math.max(0, 14 - frame * 1.8) * (frame % 2 === 0 ? 1 : -0.6);
 
   const salida = interpolate(
     frame,
@@ -88,7 +89,10 @@ export const TituloAnimado: React.FC<{
             fontWeight: 800,
             color: COLORES.texto,
             letterSpacing: -1,
-            textShadow: "0 6px 30px rgba(0,0,0,0.5)",
+            // Las palabras de golpe entran con separación de colores (glitch).
+            textShadow: golpe
+              ? `${glitch}px 0 rgba(255,0,80,0.85), ${-glitch}px 0 rgba(0,220,255,0.85), 0 6px 30px rgba(0,0,0,0.5)`
+              : "0 6px 30px rgba(0,0,0,0.5)",
             lineHeight: 1.08,
           }}
         >

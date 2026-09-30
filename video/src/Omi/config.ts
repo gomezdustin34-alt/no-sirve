@@ -27,9 +27,19 @@ export type Transicion =
   | "deslizar" // el siguiente plano entra deslizándose
   | "barrido" // barrido limpio de lado a lado
   | "matematica" // fundido + ráfaga de símbolos π √ ∑ y líneas geométricas
-  | "destello"; // corte con un destello blanco breve (momentos fuertes)
+  | "destello" // corte con un destello blanco breve (momentos fuertes)
+  | "zoom" // zoom a través del plano, con desenfoque
+  | "latigazo" // paneo rápido tipo latigazo, con desenfoque de movimiento
+  | "glitch"; // corte con separación de colores y temblor digital
 
-export type Efecto = "whoosh" | "impact" | "riser" | "click";
+export type Efecto =
+  | "whoosh"
+  | "impact"
+  | "riser"
+  | "click"
+  | "glitch"
+  | "tick"
+  | "subdrop";
 
 export type Clip = {
   /** Descripción para ti. Solo se ve en las tarjetas de ejemplo. */
@@ -55,7 +65,32 @@ export type Clip = {
   transicion?: Transicion;
   /** Efecto de sonido sutil en el corte hacia el siguiente clip. */
   efecto?: Efecto;
+  /**
+   * Etiqueta pequeña abajo, tipo rótulo de TV. Úsala para nombres REALES
+   * que aparecen en el material (estaciones, carteles…).
+   */
+  etiqueta?: string;
+  /**
+   * Marca el plano que cae en el drop de la canción: antes sale una
+   * cuenta regresiva 3·2·1 y en el corte suena un golpe grave.
+   */
+  drop?: boolean;
+  /** Plano de la ráfaga rápida: destello y glitch pequeños en cada corte. */
+  rafaga?: boolean;
 };
+
+/**
+ * Energía visual por tramo de la canción (en beats): controla el pulso de
+ * cámara al ritmo y las chispas matemáticas. 0 = quieto, 1 = a tope.
+ */
+export const ENERGIA: [desdeBeat: number, nivel: number][] = [
+  [0, 0],
+  [28, 0.3],
+  [64, 0.55],
+  [80, 1],
+  [100, 0.35],
+  [108, 0],
+];
 
 /** Música de fondo. Pon tu pista en public/omi/musica/ */
 export const MUSICA = {
@@ -124,13 +159,22 @@ const V17 = "omi/clips/v17-mesa-premios-120fps.mp4";
  * armado sobre la estructura de la canción (118 BPM):
  *   beats   0–28  intro tranquila      → llegada
  *   beats  28–64  entra el bajo        → retos y exposiciones
- *   beats  64–80  sube la tensión      → compañerismo y concentración
+ *   beats  64–80  sube la tensión      → compañerismo, concentración, 3·2·1
  *   beat   80     ¡DROP!              → Pensar. Resolver. Competir.
- *   beats  80–108 parte más fuerte     → momentos destacados
- *   beats 108–116 la canción se apaga  → pantalla final
+ *   beats  86–94  parte más fuerte     → RÁFAGA con los 17 videos
+ *   beats  94–108                      → reconocimientos y cierre
+ * Las etiquetas usan nombres REALES que aparecen en los carteles.
  */
+const r = (
+  archivo: string,
+  desde: number,
+  beats: number,
+  movimiento: Movimiento,
+  nombre: string,
+): Clip => ({ nombre, archivo, desde, beats, movimiento, rafaga: true });
+
 export const CLIPS: Clip[] = [
-  // ── INTRO (beats 0–16): los mejores planos ──────────────────
+  // ── INTRO (beats 0–16) ──────────────────────────────────────
   {
     nombre: "Pasacalle OMΦ entre los árboles",
     archivo: V16,
@@ -138,6 +182,7 @@ export const CLIPS: Clip[] = [
     beats: 8,
     velocidad: 0.6,
     movimiento: "zoom-in",
+    etiqueta: "Olimpiadas Matemáticas · 2026",
     transicion: "matematica",
     efecto: "whoosh",
   },
@@ -148,9 +193,10 @@ export const CLIPS: Clip[] = [
     beats: 8,
     velocidad: 0.5,
     movimiento: "zoom-out",
-    //   (espacio que no se parte) mantiene "la OMI" junta.
-    texto: "Así se vivió la OMI",
-    transicion: "fundido",
+    // \u00a0 (espacio que no se parte) mantiene "la OMI" junta.
+    texto: "Así se vivió la\u00a0OMI",
+    transicion: "zoom",
+    efecto: "whoosh",
   },
 
   // ── LLEGADA (beats 16–28) ───────────────────────────────────
@@ -160,7 +206,9 @@ export const CLIPS: Clip[] = [
     desde: 9,
     beats: 4,
     movimiento: "zoom-out",
-    transicion: "corte",
+    texto: "Llegó el día",
+    transicion: "latigazo",
+    efecto: "whoosh",
   },
   {
     nombre: "BIENVENIDOS con globos",
@@ -168,7 +216,7 @@ export const CLIPS: Clip[] = [
     desde: 23,
     beats: 4,
     movimiento: "ninguno",
-    transicion: "deslizar",
+    transicion: "latigazo",
     efecto: "whoosh",
   },
   {
@@ -178,8 +226,8 @@ export const CLIPS: Clip[] = [
     beats: 4,
     movimiento: "derecha",
     sonidoReal: 0.3,
-    transicion: "barrido",
-    efecto: "whoosh",
+    etiqueta: "Estaciones de retos",
+    transicion: "glitch",
   },
 
   // ── LOS RETOS (beats 28–44): entra el bajo ──────────────────
@@ -190,6 +238,7 @@ export const CLIPS: Clip[] = [
     beats: 4,
     movimiento: "zoom-in",
     texto: "Un día de retos",
+    etiqueta: "Pensamiento Variacional",
     transicion: "corte",
     efecto: "click",
   },
@@ -208,6 +257,7 @@ export const CLIPS: Clip[] = [
     desde: 44,
     beats: 2,
     movimiento: "zoom-in",
+    etiqueta: "Reto de los palitos",
     transicion: "corte",
     efecto: "click",
   },
@@ -217,7 +267,8 @@ export const CLIPS: Clip[] = [
     desde: 3.5,
     beats: 2,
     movimiento: "zoom-in",
-    transicion: "corte",
+    transicion: "latigazo",
+    efecto: "whoosh",
   },
   {
     nombre: "Estudiantes en la mesa de diagramas",
@@ -236,6 +287,7 @@ export const CLIPS: Clip[] = [
     beats: 4,
     movimiento: "izquierda",
     sonidoReal: 0.3,
+    texto: "¿Y ahora?",
     transicion: "matematica",
     efecto: "whoosh",
   },
@@ -247,6 +299,7 @@ export const CLIPS: Clip[] = [
     desde: 0,
     beats: 2,
     movimiento: "zoom-in",
+    etiqueta: "Museo de las Matemáticas",
     transicion: "corte",
   },
   {
@@ -257,6 +310,7 @@ export const CLIPS: Clip[] = [
     movimiento: "zoom-in",
     sonidoReal: 0.5,
     texto: "Más que matemáticas…",
+    etiqueta: "¿Por qué la naturaleza usa las matemáticas?",
     transicion: "corte",
   },
   {
@@ -266,6 +320,7 @@ export const CLIPS: Clip[] = [
     beats: 2,
     movimiento: "zoom-in",
     sonidoReal: 0.4,
+    etiqueta: "Galería de Genios",
     transicion: "corte",
   },
   {
@@ -275,7 +330,9 @@ export const CLIPS: Clip[] = [
     beats: 2,
     movimiento: "derecha",
     sonidoReal: 0.4,
-    transicion: "corte",
+    etiqueta: "Origen de los números",
+    transicion: "latigazo",
+    efecto: "whoosh",
   },
   {
     nombre: "Dos expositoras explicando",
@@ -284,8 +341,8 @@ export const CLIPS: Clip[] = [
     beats: 2,
     movimiento: "zoom-out",
     sonidoReal: 0.5,
-    transicion: "deslizar",
-    efecto: "whoosh",
+    texto: "Creatividad",
+    transicion: "corte",
   },
   {
     nombre: "Exposición 'Geometría en nuestra cultura'",
@@ -294,6 +351,7 @@ export const CLIPS: Clip[] = [
     beats: 2,
     movimiento: "izquierda",
     sonidoReal: 0.4,
+    etiqueta: "Geometría en nuestra cultura",
     transicion: "corte",
   },
   {
@@ -302,10 +360,11 @@ export const CLIPS: Clip[] = [
     desde: 5,
     beats: 2,
     movimiento: "zoom-in",
-    transicion: "fundido",
+    transicion: "zoom",
+    efecto: "whoosh",
   },
 
-  // ── COMPAÑERISMO (beats 60–68) ──────────────────────────────
+  // ── COMPAÑERISMO Y TENSIÓN (beats 60–80) ────────────────────
   {
     nombre: "Profesora sonriendo con un estudiante (120 fps)",
     archivo: V15,
@@ -313,6 +372,8 @@ export const CLIPS: Clip[] = [
     beats: 4,
     velocidad: 0.5,
     movimiento: "zoom-in",
+    texto: "Trabajo en equipo",
+    etiqueta: "La caza de los datos",
     transicion: "corte",
   },
   {
@@ -321,10 +382,8 @@ export const CLIPS: Clip[] = [
     desde: 45,
     beats: 4,
     movimiento: "zoom-in",
-    transicion: "corte",
+    transicion: "glitch",
   },
-
-  // ── LA TENSIÓN SUBE (beats 68–80): concentración ────────────
   {
     nombre: "Speed ramp: primer plano concentrado con las tarjetas",
     archivo: V3,
@@ -332,6 +391,7 @@ export const CLIPS: Clip[] = [
     beats: 4,
     rampa: true,
     movimiento: "zoom-in",
+    texto: "Concentración total",
     transicion: "corte",
   },
   {
@@ -354,7 +414,7 @@ export const CLIPS: Clip[] = [
     efecto: "click",
   },
   {
-    nombre: "Primer plano mirando su tarjeta",
+    nombre: "Primer plano mirando su tarjeta (empieza el 3·2·1)",
     archivo: V1,
     desde: 38,
     beats: 2,
@@ -381,6 +441,7 @@ export const CLIPS: Clip[] = [
     beats: 2,
     movimiento: "zoom-in",
     texto: "Pensar.",
+    drop: true,
     transicion: "corte",
     efecto: "impact",
   },
@@ -405,33 +466,39 @@ export const CLIPS: Clip[] = [
     efecto: "impact",
   },
 
-  // ── MOMENTOS DESTACADOS (beats 86–102) ──────────────────────
+  // ── RÁFAGA (beats 86–94): un pedacito de cada uno de los 17 videos,
+  //    cada vez más rápido (medio beat y al final un cuarto de beat) ──
+  r(V16, 25, 0.5, "zoom-in", "Ráfaga: BIENVENIDOS"),
+  r(V1, 11, 0.5, "zoom-out", "Ráfaga: cuchara"),
+  r(V5, 5, 0.5, "zoom-in", "Ráfaga: carrera entre conos"),
+  r(V2, 3.8, 0.5, "zoom-out", "Ráfaga: tiro al blanco"),
+  r(V13, 5.5, 0.5, "zoom-in", "Ráfaga: estación de frecuencias"),
+  r(V14, 5, 0.5, "zoom-out", "Ráfaga: tablero de números"),
+  r(V12, 4, 0.5, "zoom-in", "Ráfaga: diagramas"),
+  r(V3, 13.5, 0.5, "zoom-out", "Ráfaga: profesor mira a cámara"),
+  r(V4, 12, 0.5, "zoom-in", "Ráfaga: leyendo tarjeta"),
+  r(V15, 16.5, 0.5, "zoom-out", "Ráfaga: profesora sonriendo"),
+  r(V6, 2, 0.5, "zoom-in", "Ráfaga: museo"),
+  r(V7, 3, 0.5, "zoom-out", "Ráfaga: expositoras"),
+  r(V8, 12, 0.5, "zoom-in", "Ráfaga: explicando en el teclado"),
+  r(V9, 5, 0.5, "zoom-out", "Ráfaga: geometría"),
+  r(V10, 3, 0.5, "zoom-in", "Ráfaga: robots"),
+  r(V11, 8.5, 0.25, "zoom-out", "Ráfaga: origen de los números"),
   {
-    nombre: "Mano en la cabeza pensando la respuesta (lento)",
-    archivo: V3,
-    desde: 18.5,
-    beats: 4,
-    velocidad: 0.5,
-    movimiento: "zoom-in",
-    transicion: "corte",
-  },
-  {
-    nombre: "Niño con carnet OMI levanta la mirada (lento)",
-    archivo: V2,
-    desde: 36,
-    beats: 4,
-    velocidad: 0.5,
-    movimiento: "zoom-out",
-    transicion: "matematica",
+    ...r(V17, 22, 0.25, "zoom-in", "Ráfaga: letras OMΦ"),
+    transicion: "destello",
     efecto: "whoosh",
   },
+
+  // ── RECONOCIMIENTOS (beats 94–100) ──────────────────────────
   {
     nombre: "Escultura de π y letras OMΦ (120 fps)",
     archivo: V17,
     desde: 0.5,
-    beats: 4,
+    beats: 2,
     velocidad: 0.4,
     movimiento: "zoom-in",
+    etiqueta: "Reconocimientos",
     transicion: "corte",
     efecto: "click",
   },
@@ -452,17 +519,30 @@ export const CLIPS: Clip[] = [
     beats: 2,
     velocidad: 0.5,
     movimiento: "zoom-in",
+    etiqueta: "Mención de honor",
     transicion: "fundido",
   },
 
-  // ── CIERRE (beats 102–108) ──────────────────────────────────
+  // ── CIERRE (beats 100–108) ──────────────────────────────────
+  {
+    nombre: "Niño con carnet OMI levanta la mirada (lento)",
+    archivo: V2,
+    desde: 36,
+    beats: 4,
+    velocidad: 0.5,
+    movimiento: "zoom-out",
+    texto: "Así fue ese día…",
+    transicion: "matematica",
+    efecto: "whoosh",
+  },
   {
     nombre: "Auditorio: Olimpiadas Matemáticas INETFRADPAS",
     archivo: V16,
     desde: 49,
-    beats: 6,
+    beats: 4,
     velocidad: 0.6,
     movimiento: "zoom-out",
+    texto: "…y estuvo brutal.",
     transicion: "fundido",
   },
 ];

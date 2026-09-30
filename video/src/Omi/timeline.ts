@@ -1,4 +1,4 @@
-import { CIERRE, CLIPS, Clip, MUSICA, Transicion } from "./config";
+import { CIERRE, CLIPS, Clip, ENERGIA, MUSICA, Transicion } from "./config";
 
 export const FPS = 30;
 
@@ -10,10 +10,15 @@ export const DURACION_TRANSICION: Record<Transicion, number> = {
   deslizar: 12,
   barrido: 12,
   matematica: 16,
+  zoom: 10,
+  latigazo: 8,
+  glitch: 0,
 };
 
 export type ClipEnTimeline = Clip & {
   indice: number;
+  /** Beat de la canción donde empieza el plano. */
+  beatEntrada: number;
   /** Frame (en el video final) donde se ve el corte de entrada, alineado al golpe. */
   corteEntrada: number;
   /** Frame donde se ve el corte de salida. */
@@ -24,7 +29,14 @@ export type ClipEnTimeline = Clip & {
   transicionSalida: number;
 };
 
-const framesPorBeat = (FPS * 60) / MUSICA.bpm;
+export const framesPorBeat = (FPS * 60) / MUSICA.bpm;
+
+/** Nivel de energía (0 a 1) en un beat dado, según ENERGIA en config.ts. */
+export const energiaEn = (beat: number) => {
+  let nivel = 0;
+  for (const [desde, n] of ENERGIA) if (beat >= desde) nivel = n;
+  return nivel;
+};
 
 export const construirTimeline = () => {
   const clips: ClipEnTimeline[] = [];
@@ -33,12 +45,14 @@ export const construirTimeline = () => {
 
   CLIPS.forEach((clip, indice) => {
     const corteEntrada = Math.round(beats * framesPorBeat);
+    const beatEntrada = beats;
     beats += clip.beats;
     const corteSalida = Math.round(beats * framesPorBeat);
     const transicionSalida = DURACION_TRANSICION[clip.transicion ?? "corte"];
     clips.push({
       ...clip,
       indice,
+      beatEntrada,
       corteEntrada,
       corteSalida,
       transicionEntrada,

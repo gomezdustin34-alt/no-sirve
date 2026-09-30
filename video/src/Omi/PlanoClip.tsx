@@ -10,6 +10,7 @@ import {
 } from "remotion";
 import { Movimiento } from "./config";
 import { COLORES, FUENTE } from "./estilo";
+import { Etiqueta } from "./Etiqueta";
 import { TituloAnimado } from "./TituloAnimado";
 import { ClipEnTimeline, FPS } from "./timeline";
 
@@ -165,6 +166,11 @@ export const PlanoClip: React.FC<{ clip: ClipEnTimeline }> = ({ clip }) => {
       >
         {clip.archivo ? <Video clip={clip} /> : <Ejemplo clip={clip} />}
       </AbsoluteFill>
+      {clip.etiqueta && (
+        <Sequence from={inicioTexto} durationInFrames={finTexto - inicioTexto}>
+          <Etiqueta texto={clip.etiqueta} semilla={clip.indice} />
+        </Sequence>
+      )}
       {clip.texto && (
         <Sequence from={inicioTexto} durationInFrames={finTexto - inicioTexto}>
           <TituloAnimado texto={clip.texto} subtexto={clip.subtexto} />

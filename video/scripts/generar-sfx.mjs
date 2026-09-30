@@ -89,3 +89,40 @@ guardar(
   "click",
   generar(0.06, (t) => Math.sin(2 * Math.PI * 2200 * t) * Math.exp(-t * 120)),
 );
+
+// Subdrop: caída grave y larga para el drop de la canción (1,8 s).
+{
+  let fase = 0;
+  guardar(
+    "subdrop",
+    generar(1.8, (t) => {
+      fase += (2 * Math.PI * (70 * Math.exp(-t * 1.2) + 28)) / SR;
+      const env = Math.min(1, t / 0.005) * Math.exp(-t * 1.6);
+      return Math.tanh(2.2 * Math.sin(fase)) * env;
+    }),
+  );
+}
+
+// Glitch: ráfagas digitales entrecortadas (0,35 s).
+{
+  let retenido = 0;
+  guardar(
+    "glitch",
+    generar(0.35, (t, i) => {
+      // "bitcrush": mantiene la muestra varias veces y corta a pedazos
+      if (i % 24 === 0) retenido = ruido();
+      const puerta = Math.sin(t * 2 * Math.PI * 38) > -0.2 ? 1 : 0;
+      const tono = Math.sign(Math.sin(2 * Math.PI * (900 + 1400 * t) * t));
+      return (retenido * 0.7 + tono * 0.25) * puerta * Math.exp(-t * 6);
+    }),
+  );
+}
+
+// Tick: golpecito seco para cada corte de la ráfaga (0,04 s).
+guardar(
+  "tick",
+  generar(0.04, (t) => {
+    const n = ruido();
+    return (Math.sin(2 * Math.PI * 3200 * t) * 0.6 + n * 0.4) * Math.exp(-t * 160);
+  }),
+);
