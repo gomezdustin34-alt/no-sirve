@@ -63,70 +63,73 @@ def S(src, t, cx, cy, z0, z1=None, units=4, speed=1.0, dx=0.0, dy=0.0,
 # para que los planos "empujen" uno hacia el siguiente.
 # ---------------------------------------------------------------------------
 TIMELINE = [
-    # --- Fase 1 (c1-c2): arranque, planos de 0.4-0.8 s ---------------------
-    S("R", 0.30, .50, .38, 1.20, 1.45, units=8),                     # entrada: "Día de la Filosofía"
-    S("F", 1.00, .50, .45, 1.05, 1.18, units=8, whip_out=+1),        # exposición al aire libre
-    S("B", 0.40, .50, .48, 1.35, 1.10, units=6, whip_in=+1),          # laberinto (pull-out)
-    S("E", 0.90, .50, .48, 1.60, 1.80, units=6,                      # mano lanzando el dado:
-      ramp=(0.6, 2.0, 0.5), blur=True),                               # speed ramp lento->rápido
-    S("D", 1.30, .50, .10, 1.90, 2.10, units=4, dx=.05),             # "ARISTÓTELES" (sigue el paneo)
+    # Regla: cada plano es un momento distinto (nada se repite) y se priorizan
+    # reacciones de la gente y los lugares más bonitos del evento.
 
-    # --- Fase 2 (c3-c5): sube, con una cámara lenta de contraste ------------
-    S("G", 2.60, .50, .30, 1.30, 1.50, units=4, flash=0.25),          # compañero señala a cámara
-    S("B", 0.30, .60, .45, 2.80, 3.30, units=4),                     # el ojo de la pintura (mirada)
-    S("E", 2.50, 1.0, .22, 1.70, 1.85, units=4),                     # compañero mira a cámara y sonríe
-    S("H", 2.40, .45, .25, 1.30, 1.42, units=8, ramp=(3.0, 0.3, 0.3)),  # CÁMARA LENTA: saluda y ríe
-    S("D", 1.70, .50, .33, 2.60, 2.90, units=4),                     # el rostro de Aristóteles
-    S("F", 4.40, .65, .33, 1.45, 1.60, units=4),                     # compañero riéndose
-    S("B", 2.00, .50, .13, 2.30, 2.50, units=4, whip_out=+1),        # título "LABERINTO"
-    S("I", 0.90, .50, .55, 1.20, 1.35, units=4, whip_in=+1),         # dado gigante y fichas
+    # --- Fase 1 (c1-c2): llegada, planos de 0.4-0.8 s -----------------------
+    S("R", 0.30, .50, .38, 1.20, 1.45, units=8),                     # entrada "Día de la Filosofía"
+    S("A", 1.50, .50, .40, 1.10, 1.25, units=8, dx=.04, whip_out=+1),  # banner principal (4K)
+    S("Q", 3.50, .50, .35, 1.10, 1.25, units=6, whip_in=+1),          # pasillo de banderines
+    S("R", 4.40, .50, .40, 1.15, 1.30, units=6,                      # compañero llega con pulgar arriba
+      ramp=(0.6, 2.0, 0.5), blur=True),                               # speed ramp lento->rápido
+    S("G", 2.60, .50, .30, 1.30, 1.50, units=4, flash=0.25),          # ...y otro señala a cámara
+
+    # --- Fase 2 (c3-c5): reacciones, con una cámara lenta de contraste ------
     S("J", 0.20, .42, .45, 1.25, 1.40, units=4),                     # compañeras muertas de la risa
-    S("R", 4.80, .50, .40, 1.20, 1.35, units=4),                     # compañero con pulgar arriba
-    S("E", 3.90, .38, .22, 2.20, 2.40, units=4),                     # concentración sobre el tablero
+    S("N", 3.50, .30, .30, 1.30, 1.45, units=4),                     # rosas rojas de la galería
+    S("F", 4.40, .65, .33, 1.45, 1.60, units=4),                     # compañero disfrazado riéndose
+    S("H", 2.40, .45, .25, 1.30, 1.42, units=8, ramp=(3.0, 0.3, 0.3)),  # CÁMARA LENTA: saluda y ríe
+    S("L", 1.50, .45, .25, 1.30, 1.50, units=4, whip_out=+1),        # escudo del castillo
+    S("L", 4.20, .50, .40, 1.20, 1.35, units=4, whip_in=+1),         # compañeros disfrazados en el castillo
+    S("O", 0.10, .65, .30, 1.30, 1.45, units=4),                     # risas en el auditorio
+    S("C", 1.60, .37, .40, 2.80, 3.10, units=4, dx=-.02),            # profesora en tarima
+    S("K", 1.60, .60, .45, 1.20, 1.35, units=4),                     # baile en el patio
+    S("M", 2.00, .50, .30, 1.15, 1.30, units=4),                     # leyendo juntos, disfrazados
+    S("N", 0.50, .50, .40, 1.15, 1.30, units=4),                     # globos y "Cuadros Vivos"
 
     # --- Fase 3 (c6): 0.3-0.4 s ---------------------------------------------
-    S("A", 2.10, .52, .41, 2.30, 2.70, units=4, dx=.04, flash=0.2),  # "FILOSOFÍA"
-    S("I", 2.00, .55, .35, 1.30, 1.45, units=3, speed=1.5, blur=True),  # compañera jugando
-    S("C", 1.60, .37, .40, 3.00, 3.20, units=3, dx=-.02),            # profesora en tarima
-    S("D", 2.70, .70, .50, 2.40, 2.60, units=3, whip_out=-1),         # Lógica / Metafísica / Ciencia
-    S("B", 3.00, .46, .87, 2.40, 2.60, units=3, whip_in=-1),          # casillas de colores
+    S("E", 2.50, 1.0, .22, 1.70, 1.85, units=4),                     # mira a cámara y sonríe
+    S("P", 0.80, .50, .35, 1.25, 1.10, units=3, whip_out=-1),         # pintando el mural
+    S("A", 3.10, .80, .30, 1.90, 2.10, units=3, whip_in=-1),          # racimo de globos
+    S("I", 3.20, .55, .30, 1.35, 1.50, units=3),                     # compañera saluda desde el juego
+    S("D", 1.70, .50, .33, 2.60, 2.90, units=3),                     # el rostro de Aristóteles
 
-    # --- Fase 3b (c7): 0.3-0.4 s, sigue subiendo -----------------------------
-    S("K", 2.00, .60, .45, 1.20, 1.35, units=3),                     # baile en el patio
-    S("L", 1.50, .45, .25, 1.30, 1.50, units=3, whip_out=+1),        # escudo del castillo
-    S("K", 3.00, .55, .55, 1.20, 1.35, units=3, whip_in=+1, shake=6),  # el grupo bailando
-    S("L", 5.50, .50, .45, 1.20, 1.35, units=3),                     # compañeros disfrazados
-    S("Q", 2.00, .65, .55, 1.15, 1.30, units=4, dx=.05),             # pasillo con banderines
+    # --- Fase 3b (c7) --------------------------------------------------------
+    S("K", 3.00, .55, .55, 1.20, 1.35, units=3, shake=6),            # el grupo bailando
+    S("F", 0.30, .45, .30, 1.30, 1.45, units=3),                     # posando con corbata
+    S("R", 7.00, .50, .40, 1.20, 1.35, units=3, whip_out=+1),        # BIENVENIDOS
+    S("N", 15.00, .60, .60, 1.15, 1.30, units=3, whip_in=+1),        # las mesas de la galería
+    S("O", 2.30, .60, .25, 1.40, 1.55, units=4),                     # tapándose la risa
 
-    # --- Fase 3c (c8): 0.3-0.4 s ---------------------------------------------
-    S("M", 2.00, .50, .30, 1.15, 1.30, units=4),                     # leyendo juntos, disfrazados
-    S("N", 7.00, .50, .40, 1.20, 1.35, units=3, whip_out=-1),         # póster de Kant
-    S("P", 0.80, .50, .35, 1.25, 1.10, units=3, whip_in=-1),          # pintando el mural
-    S("O", 0.30, .65, .30, 1.30, 1.45, units=3),                     # risas en el auditorio
-    S("N", 11.50, .60, .40, 1.25, 1.40, units=3),                    # póster de Savater
+    # --- Fase 3c (c8) --------------------------------------------------------
+    S("C", 2.50, .36, .62, 2.60, 2.90, units=4),                     # globo burbuja con luces
+    S("G", 3.60, .50, .40, 1.30, 1.45, units=3, speed=1.5, blur=True),  # el aro rosado arriba
+    S("H", 0.80, .50, .60, 1.30, 1.50, units=3),                     # tablero "aventura del pensamiento"
+    S("M", 3.50, .30, .20, 1.60, 1.80, units=3),                     # sonrisa del disfrazado
+    S("E", 1.20, .45, .50, 2.40, 2.70, units=3, speed=1.5, blur=True),  # lanzando el dado
 
     # --- Fase 4 (c9, build): 0.2-0.3 s --------------------------------------
-    S("G", 3.60, .50, .40, 1.30, 1.45, units=3, speed=1.5, blur=True),  # el aro rosado
-    S("F", 7.00, .60, .40, 1.40, 1.60, units=3, shake=8),            # exponiendo, dedo arriba
-    S("O", 2.50, .60, .25, 1.30, 1.45, units=2),                     # tapándose la risa
-    S("H", 1.00, .50, .60, 1.30, 1.50, units=2, flash=0.2),          # tablero "aventura del pensamiento"
-    S("N", 3.50, .25, .30, 1.40, 1.60, units=2),                     # rosas de la galería
-    S("I", 0.40, .75, .12, 1.40, 1.60, units=2, shake=8),            # el "amor y paz" con la mano
-    S("R", 7.50, .50, .32, 1.20, 1.40, units=2, flash=0.3),          # BIENVENIDOS
+    S("F", 6.40, .65, .33, 1.50, 1.65, units=3, shake=8),            # sonrisa del expositor
+    S("L", 6.80, .50, .40, 1.25, 1.40, units=3),                     # todos tras el castillo
+    S("I", 0.70, .60, .50, 1.25, 1.40, units=2),                     # dado gigante
+    S("Q", 2.00, .65, .55, 1.20, 1.35, units=2, dx=.05),             # compañeras por el pasillo
+    S("N", 9.00, .40, .35, 1.30, 1.45, units=2, flash=0.2),          # ramo de flores
+    S("F", 7.00, .60, .40, 1.40, 1.60, units=2, shake=8),            # dedo arriba, explicando
+    S("B", 0.40, .50, .48, 1.30, 1.15, units=2, flash=0.3),          # laberinto filosófico
 
-    # --- RÁFAGA FINAL (c10, drop): 12 flashes de 0.1-0.2 s --------------------
-    S("H", 3.00, .45, .22, 1.40, 1.60, units=2, flash=0.45, shake=10),
-    S("F", 6.50, .65, .33, 1.50, 1.70, units=2, flash=0.45, shake=10),
-    S("R", 5.00, .50, .40, 1.40, 1.60, units=2, flash=0.45),
-    S("G", 2.90, .50, .30, 1.40, 1.60, units=1, flash=0.5),
-    S("O", 4.50, .45, .38, 1.40, 1.60, units=1, flash=0.5),
-    S("I", 3.40, .55, .30, 1.40, 1.60, units=1, flash=0.5),
-    S("D", 1.50, .52, .32, 2.00, 2.30, units=1, flash=0.5),
-    S("J", 0.60, .40, .42, 1.50, 1.70, units=1, flash=0.5),
-    S("M", 2.50, .50, .20, 1.30, 1.50, units=1, flash=0.5),
-    S("K", 2.50, .55, .50, 1.40, 1.60, units=1, flash=0.5),
-    S("L", 6.50, .50, .40, 1.40, 1.60, units=1, flash=0.5),
-    S("A", 3.40, .85, .28, 1.60, 1.90, units=2, flash=0.45, shake=12),
+    # --- RÁFAGA FINAL (c10, drop): 12 momentos nuevos, 0.1-0.2 s -------------
+    S("H", 3.95, .60, .30, 1.40, 1.60, units=2, flash=0.45, shake=10),  # carcajada
+    S("R", 13.00, .40, .75, 1.30, 1.50, units=2, flash=0.45),         # compañeras con sus libros
+    S("O", 4.30, .45, .38, 1.50, 1.70, units=2, flash=0.45),          # sonrisa con gafas
+    S("K", 0.50, .40, .45, 1.30, 1.50, units=1, flash=0.5),           # arranca el baile
+    S("F", 2.00, .50, .45, 1.20, 1.40, units=1, flash=0.5),           # todos alrededor del juego
+    S("N", 11.50, .60, .40, 1.25, 1.45, units=1, flash=0.5),          # Savater
+    S("P", 3.20, .30, .60, 1.20, 1.40, units=1, flash=0.5),           # corriendo frente al mural
+    S("A", 0.00, .20, .58, 2.40, 2.70, units=1, flash=0.5),           # columna de globos
+    S("I", 2.00, .55, .35, 1.30, 1.50, units=1, flash=0.5),           # concentrada en el juego
+    S("E", 3.90, .38, .22, 2.20, 2.40, units=1, flash=0.5),           # concentrado en el tablero
+    S("C", 0.50, .26, .62, 2.00, 2.20, units=1, flash=0.5),           # caminando en el salón
+    S("G", 1.20, .50, .30, 1.40, 1.60, units=2, flash=0.45, shake=12),  # el sombrero
 ]
 
 # Toma final: corte en seco a silencio + cámara lenta del salón con el texto.
@@ -135,6 +138,9 @@ FINAL_TEXT = ["Y esto… fue solo una parte", "de lo que vivimos."]
 FONT = "/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf"
 FINAL_TITLE = "AURA FEST"
 FONT_TITLE = "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"
+CREDITS_BY = "PRESENTADO POR"
+CREDITS = ["Dustin Gomez", "Jairo Maldonado", "Edgar Rivero"]
+CREDITS_SECONDS = 3.5
 
 
 def run(cmd):
@@ -272,7 +278,35 @@ def final_text_filters():
         f"drawtext=fontfile={FONT_TITLE}:text='{FINAL_TITLE}':fontsize='{size}':"
         f"fontcolor=0xF6E7C1:shadowcolor=black@0.75:shadowx=0:shadowy=4:"
         f"x=(w-text_w)/2:y=h*0.58-text_h/2:alpha='{alpha}'")
+    filters.append("fade=t=out:st=4.4:d=0.6")  # a negro, para dar paso a los créditos
     return filters
+
+
+def render_credits():
+    """Placa final en negro: "Presentado por" + nombres."""
+    frames = round(CREDITS_SECONDS * FPS)
+    end = CREDITS_SECONDS - 0.5
+
+    def alpha(t_in):
+        return f"if(lt(t\\,{t_in})\\,0\\,min(1\\,(t-{t_in})/0.6))*min(1\\,max(0\\,({end}-t)/0.5))"
+
+    by = BUILD / "creditos_por.txt"
+    by.write_text(CREDITS_BY, encoding="utf-8")
+    vf = [f"drawtext=fontfile={FONT_TITLE}:textfile={by}:fontsize=46:fontcolor=0xF6E7C1:"
+          f"x=(w-text_w)/2:y=h*0.40:alpha='{alpha(0.3)}'",
+          f"drawbox=x=iw/2-90:y=ih*0.40+80:w=180:h=3:color=0xF6E7C1@0.8:t=fill:"
+          f"enable='gte(t\\,0.5)'"]
+    for k, name in enumerate(CREDITS):
+        tf = BUILD / f"creditos_{k}.txt"
+        tf.write_text(name, encoding="utf-8")
+        vf.append(f"drawtext=fontfile={FONT}:textfile={tf}:fontsize=84:fontcolor=white:"
+                  f"x=(w-text_w)/2:y=h*0.40+140+{k}*120:alpha='{alpha(0.7 + 0.35 * k)}'")
+    out = BUILD / "creditos.mp4"
+    run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i",
+         f"color=c=black:s={W}x{H}:r={FPS}:d={CREDITS_SECONDS}",
+         "-vf", ",".join(vf) + ",format=yuv420p", "-frames:v", str(frames),
+         "-c:v", "libx264", "-preset", "veryfast", "-crf", "14", "-r", str(FPS), str(out)])
+    return out
 
 
 def main():
@@ -301,7 +335,8 @@ def main():
                blur=False, ramp=None, grade=grade_final)
     fin.pop("units")
     files.append(render_shot(len(TIMELINE), fin, text=final_text_filters()))
-    total = end_music + FINAL["seconds"]
+    files.append(render_credits())
+    total = end_music + FINAL["seconds"] + CREDITS_SECONDS
     print(f"   montaje: {end_music:.1f}s  ({len(TIMELINE)} planos, ráfaga desde {drop:.1f}s)"
           f" + toma final {FINAL['seconds']:.1f}s = {total:.1f}s")
 
