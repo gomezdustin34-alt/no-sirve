@@ -38,6 +38,10 @@ SOURCES = {
     "J": "WA_123418.mp4",  # compañeras muertas de la risa (1 s)
     "K": "WA_123453.mp4",  # baile en el patio
     "L": "WA_123857.mp4",  # el castillo: escudo y compañeros disfrazados
+    "M": "WA_124102.mp4",  # dos compañeros disfrazados leyendo un libro
+    "N": "WA_124138.mp4",  # la galería: globos, Kant, Savater, flores, portafolios
+    "O": "WA_123828.mp4",  # risas en el auditorio
+    "P": "WA_123836.mp4",  # pintando el mural en el patio
 }
 
 
@@ -92,25 +96,32 @@ TIMELINE = [
     S("L", 5.50, .50, .45, 1.20, 1.35, units=3),                     # compañeros disfrazados
     S("C", 1.00, .62, .46, 2.40, 2.70, units=4),                     # globos rosados + sombrero
 
-    # --- Fase 4 (c8, build): 0.2-0.3 s --------------------------------------
+    # --- Fase 3c (c8): 0.3-0.4 s ---------------------------------------------
+    S("M", 2.00, .50, .30, 1.15, 1.30, units=4),                     # leyendo juntos, disfrazados
+    S("N", 7.00, .50, .40, 1.20, 1.35, units=3, whip_out=-1),         # póster de Kant
+    S("P", 0.80, .50, .35, 1.25, 1.10, units=3, whip_in=-1),          # pintando el mural
+    S("O", 0.30, .65, .30, 1.30, 1.45, units=3),                     # risas en el auditorio
+    S("N", 11.50, .60, .40, 1.25, 1.40, units=3),                    # póster de Savater
+
+    # --- Fase 4 (c9, build): 0.2-0.3 s --------------------------------------
     S("G", 3.60, .50, .40, 1.30, 1.45, units=3, speed=1.5, blur=True),  # el aro rosado
     S("F", 7.00, .60, .40, 1.40, 1.60, units=3, shake=8),            # exponiendo, dedo arriba
-    S("E", 2.50, .75, .78, 2.60, 2.90, units=2),                     # papeles de colores del juego
+    S("O", 2.50, .60, .25, 1.30, 1.45, units=2),                     # tapándose la risa
     S("H", 1.00, .50, .60, 1.30, 1.50, units=2, flash=0.2),          # tablero "aventura del pensamiento"
-    S("C", 1.10, .28, .60, 2.60, 2.90, units=2),                     # compañera caminando
+    S("N", 3.50, .25, .30, 1.40, 1.60, units=2),                     # rosas de la galería
     S("I", 0.40, .75, .12, 1.40, 1.60, units=2, shake=8),            # el "amor y paz" con la mano
     S("A", 0.00, .20, .58, 2.40, 2.80, units=2, flash=0.3),          # globos de colores
 
-    # --- RÁFAGA FINAL (c9, drop): 12 flashes de 0.1-0.2 s --------------------
+    # --- RÁFAGA FINAL (c10, drop): 12 flashes de 0.1-0.2 s --------------------
     S("H", 3.00, .45, .22, 1.40, 1.60, units=2, flash=0.45, shake=10),
     S("F", 6.50, .65, .33, 1.50, 1.70, units=2, flash=0.45, shake=10),
     S("A", 1.80, .50, .40, 1.20, 1.45, units=2, flash=0.45),
     S("G", 2.90, .50, .30, 1.40, 1.60, units=1, flash=0.5),
-    S("E", 2.40, 1.0, .24, 1.60, 1.80, units=1, flash=0.5),
+    S("O", 4.50, .45, .38, 1.40, 1.60, units=1, flash=0.5),
     S("I", 3.40, .55, .30, 1.40, 1.60, units=1, flash=0.5),
     S("D", 1.50, .52, .32, 2.00, 2.30, units=1, flash=0.5),
     S("J", 0.60, .40, .42, 1.50, 1.70, units=1, flash=0.5),
-    S("B", 0.80, .60, .45, 3.20, 3.80, units=1, flash=0.5),
+    S("M", 2.50, .50, .20, 1.30, 1.50, units=1, flash=0.5),
     S("K", 2.50, .55, .50, 1.40, 1.60, units=1, flash=0.5),
     S("L", 6.50, .50, .40, 1.40, 1.60, units=1, flash=0.5),
     S("A", 3.40, .85, .28, 1.60, 1.90, units=2, flash=0.45, shake=12),
