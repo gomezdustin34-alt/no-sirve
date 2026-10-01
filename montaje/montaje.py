@@ -360,7 +360,8 @@ def main():
     print("3/4 canción")
     wav = BUILD / "cancion_cortada.wav"
     run(["ffmpeg", "-v", "error", "-y", "-i", str(CLIPS / SONG), "-vn",
-         "-af", f"atrim=0:{SONG_END},afade=t=out:st={SONG_END - 0.6}:d=0.6,apad",
+         "-af", f"atrim=0:{SONG_END},loudnorm=I=-14:TP=-1.5:LRA=11,"
+         f"afade=t=out:st={SONG_END - 0.6}:d=0.6,apad",
          "-t", f"{total:.3f}", "-ar", "48000", "-ac", "2", str(wav)])
 
     print("4/4 unión final con look de época")
@@ -384,7 +385,7 @@ def main():
         "colorchannelmixer=.848:.192:.047:0:.087:.9215:.042:0:.068:.1335:.783",
         "eq=saturation=0.9:contrast=1.04",
         "vignette=PI/4.2",
-        "noise=alls=5:allf=t",
+        "noise=alls=3:allf=t",
         f"fade=t=out:st={total - 0.8:.2f}:d=0.8",
         "format=yuv420p",
     ])
@@ -392,8 +393,8 @@ def main():
     na = len(files) + 1
     run(["ffmpeg", "-v", "error", "-y", *inputs, "-i", str(wav),
          "-filter_complex", ";".join(graph), "-map", "[v]", "-map", f"{na}:a",
-         "-c:v", "libx264", "-preset", "slow", "-crf", "21", "-maxrate", "12M",
-         "-bufsize", "24M", "-r", str(FPS),
+         "-c:v", "libx264", "-preset", "slow", "-crf", "22", "-maxrate", "3500k",
+         "-bufsize", "7000k", "-r", str(FPS),
          "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", str(OUT)])
     print(f"listo: {OUT}")
 
