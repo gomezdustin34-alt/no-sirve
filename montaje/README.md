@@ -1,39 +1,37 @@
-# Montaje rápido — "Todo lo que se vivió"
+# AURA FEST — Montaje "Todo lo que se vivió"
 
-Video vertical 1080x1920, 30 fps, 16.2 s: `salida/montaje_rapido.mp4`.
+Video vertical 1080x1920, 30 fps, ~59.8 s: `salida/montaje_rapido.mp4`.
 
 ## Cómo está armado
 
-La música (sintetizada en `musica.py`) va a **150 BPM**, así que una semicorchea
-dura exactamente 0.1 s (3 fotogramas). Toda la línea de tiempo de `montaje.py`
-está en semicorcheas, por eso **cada corte cae sobre un golpe** (además cada corte
-lleva su propio acento de bombo/hat, y los whips llevan un "whoosh").
+La música es la canción `clips/cancion.mp4` (versión en español de
+*Can't Help Falling in Love*, ~70 BPM), cortada en 55.0 s para quitar el jingle de
+TikTok. Sus golpes (`BEATS` en `montaje.py`, detectados con librosa) definen
+**todos los cortes**, y la edición se acelera por tramos:
 
-| Tramo | Tiempo | Planos | Duración por plano | Música |
-|---|---|---|---|---|
-| Arranque | 0.0–3.2 s | 5 | 0.8 → 0.4 s | bombo, bajo, pad |
-| Sube | 3.2–6.4 s | 7 | 0.4 s + 1 cámara lenta de 0.8 s | + palmas, arpegio |
-| Acelera | 6.4–8.0 s | 5 | 0.4–0.3 s | + hats abiertos, riser |
-| Build | 8.0–9.6 s | 7 | 0.3–0.2 s | redoble de caja |
-| **Ráfaga** | 9.6–11.2 s | **12 flashes** | 0.2–0.1 s | drop: crash + sub |
-| Corte a silencio | 11.2 s | — | — | silencio total |
-| Toma final | 11.2–16.2 s | 1 (cámara lenta 0.35x) | 5 s | piano suave |
+| Tramo | Tiempo | Planos | Duración por plano |
+|---|---|---|---|
+| Intro ("Los sabios dicen…") | 0–2.7 s | 1 | 2.7 s, cámara lenta |
+| Estrofa | 2.7–28.4 s | 15 | 2 golpes (~1.7 s), cámara lenta + destellos suaves |
+| Sube | 28.4–43.9 s | 18 | 1 golpe (~0.86 s), whips |
+| Build | 43.9–48.2 s | 10 | 1/2 golpe (~0.43 s) |
+| **Ráfaga** | 48.2–50.8 s | **12 flashes** | 1/4 de golpe (~0.21 s) |
+| Toma final | 50.8–56.3 s | 1 (cámara lenta 0.35x) | "Y esto… fue solo una parte de lo que vivimos." + **AURA FEST** |
+| Créditos | 56.3–59.8 s | placa en negro | Presentado por: Dustin Gomez, Jairo Maldonado y Edgar Rivero |
 
-Efectos: speed ramps (planos 3, 7), zooms animados con easing en todos los planos,
-whip transitions con desenfoque direccional (siguiendo la dirección del paneo),
-motion blur (`tmix`) en los planos acelerados, temblor de cámara y flashes de
-exposición en la ráfaga, cámara lenta con interpolación de movimiento
-(`minterpolate`), grado de color, viñeta y texto final:
-*"Y esto… fue solo una parte de lo que vivimos."*
+Regla de edición: **ningún momento se repite**; se priorizan momentos felices,
+reacciones y los lugares más bonitos.
+
+Look de "época filosófica": brillo suave tipo ensueño, tonos cálidos con un 25 %
+de sepia, viñeta, grano de película y tipografía con serifa.
 
 ## Volver a generarlo
 
 ```bash
-pip install numpy          # ffmpeg con zscale también es necesario
-# poner los clips en montaje/clips/ (IMG_3854-3862.mov y los WA_*.mp4 de WhatsApp; ver SOURCES)
+# ffmpeg con zscale; clips en montaje/clips/ (ver SOURCES en montaje.py) + cancion.mp4
 python3 montaje/montaje.py
 ```
 
-Para cambiar el orden, encuadres o duraciones, edita `TIMELINE` en `montaje.py`
-(cada `S(...)` es un plano: clip, segundo de inicio, centro del encuadre, zoom,
-duración en semicorcheas y efectos). Para agregar más clips, súmalos a `SOURCES`.
+Para cambiar planos edita `TIMELINE` (cada `S(...)`: clip, segundo de inicio,
+centro del encuadre, zoom inicial/final, velocidad y efectos). Los cortes salen
+de `cut_points()`; los planos sin cambios se reutilizan desde `build/`.
