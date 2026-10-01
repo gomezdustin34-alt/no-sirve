@@ -28,6 +28,8 @@ SOURCES = {
     "A": "IMG_3854.mov",  # banner "Día de la Filosofía", paneo a la derecha
     "B": "IMG_3855.mov",  # "Laberinto Filosófico"
     "C": "IMG_3856.mov",  # salón: compañeros, profesora en tarima
+    "D": "IMG_3861.mov",  # póster de Aristóteles, paneo a la derecha
+    "E": "IMG_3862.mov",  # compañeros jugando en el patio (dado, tablero)
 }
 
 
@@ -51,47 +53,47 @@ TIMELINE = [
     S("A", 0.00, .45, .45, 1.15, 1.35, units=8),                     # banner + globos, push-in
     S("C", 0.20, .50, .50, 1.00, 1.12, units=8, whip_out=+1),        # el salón completo
     S("B", 0.40, .50, .48, 1.35, 1.10, units=6, whip_in=+1),          # laberinto (pull-out)
-    S("C", 0.40, .26, .62, 2.00, 2.20, units=6, dx=.06,              # compañera caminando ->
+    S("E", 0.90, .50, .48, 1.60, 1.80, units=6,                      # mano lanzando el dado:
       ramp=(0.6, 2.0, 0.5), blur=True),                               # speed ramp lento->rápido
-    S("A", 1.45, .50, .33, 1.70, 1.90, units=4, dx=.05),             # "DÍA DE LA" (sigue el paneo)
+    S("D", 1.30, .50, .10, 1.90, 2.10, units=4, dx=.05),             # "ARISTÓTELES" (sigue el paneo)
 
     # --- Fase 2 (c3-c4): sube, con una cámara lenta de contraste ------------
     S("B", 0.30, .60, .45, 2.80, 3.30, units=4, flash=0.25),          # el ojo de la pintura (mirada)
-    S("C", 1.60, .37, .40, 3.00, 3.20, units=4, dx=-.02),            # profesora en tarima
+    S("E", 2.35, .82, .20, 2.30, 2.50, units=4),                     # compañero mira a cámara y sonríe
     S("C", 0.50, .38, .58, 1.60, 1.75, units=8, ramp=(3.0, 0.3, 0.3)),  # CÁMARA LENTA: rampa
-    S("A", 0.20, .60, .38, 2.60, 2.90, units=4),                     # retrato enmarcado
+    S("D", 1.70, .50, .33, 2.60, 2.90, units=4),                     # el rostro de Aristóteles
     S("B", 2.00, .50, .13, 2.30, 2.50, units=4, whip_out=+1),        # título "LABERINTO"
     S("C", 1.00, .62, .46, 2.40, 2.70, units=4, whip_in=+1),         # globos rosados + sombrero
-    S("A", 3.10, .80, .30, 1.90, 2.10, units=4, shake=6),            # racimo de globos
+    S("E", 3.90, .38, .22, 2.20, 2.40, units=4),                     # concentración sobre el tablero
 
     # --- Fase 3 (c5): 0.3-0.4 s ---------------------------------------------
-    S("B", 1.50, .38, .60, 2.80, 3.10, units=4, speed=1.5, blur=True),  # clavijas del laberinto
-    S("C", 2.50, .36, .62, 2.60, 2.90, units=3),                     # globo burbuja con luces
-    S("A", 2.10, .52, .41, 2.30, 2.70, units=3, dx=.04, flash=0.2),  # "FILOSOFÍA"
-    S("C", 1.00, .76, .22, 2.00, 2.30, units=3, dy=-.03, whip_out=-1),  # cortinas azules
+    S("A", 2.10, .52, .41, 2.30, 2.70, units=4, dx=.04, flash=0.2),  # "FILOSOFÍA"
+    S("E", 1.40, .45, .52, 2.60, 2.90, units=3, speed=1.5, blur=True),  # el dado sobre el tablero
+    S("C", 1.60, .37, .40, 3.00, 3.20, units=3, dx=-.02),            # profesora en tarima
+    S("D", 2.70, .70, .50, 2.40, 2.60, units=3, whip_out=-1),         # Lógica / Metafísica / Ciencia
     S("B", 3.00, .46, .87, 2.40, 2.60, units=3, whip_in=-1),          # casillas de colores
 
     # --- Fase 4 (c6, build): 0.2-0.3 s --------------------------------------
-    S("C", 1.10, .28, .60, 2.60, 2.90, units=3, speed=1.5, blur=True),  # compañera, más cerca
+    S("C", 1.10, .28, .60, 2.60, 2.90, units=3, speed=1.5, blur=True),  # compañera caminando
     S("A", 0.00, .20, .58, 2.40, 2.80, units=3, shake=8),            # globos de colores
-    S("B", 3.50, .52, .60, 2.20, 2.50, units=2),                     # figuras de la pintura
-    S("C", 2.00, .72, .66, 3.00, 3.40, units=2, flash=0.2),          # centro de mesa dorado
-    S("A", 1.50, .50, .57, 2.40, 2.70, units=2, dx=.05),             # hiedra y flores
-    S("C", 3.00, .30, .40, 3.00, 3.30, units=2, shake=8),            # profesora (otro momento)
-    S("B", 2.50, .48, .13, 1.80, 2.20, units=2, flash=0.3),          # título, más abierto
+    S("E", 2.50, .75, .78, 2.60, 2.90, units=2, flash=0.2),          # papeles de colores del juego
+    S("D", 1.80, .45, .68, 2.40, 2.70, units=2),                     # "La excelencia no es un acto..."
+    S("C", 2.50, .36, .62, 2.60, 2.90, units=2),                     # globo burbuja con luces
+    S("B", 1.50, .38, .60, 2.80, 3.10, units=2, shake=8),            # clavijas del laberinto
+    S("E", 0.60, .45, .10, 2.40, 2.70, units=2, flash=0.3),          # el patio, gente pasando
 
     # --- RÁFAGA FINAL (c7, drop): 12 flashes de 0.1-0.2 s --------------------
+    S("E", 2.45, .80, .22, 1.80, 2.10, units=2, flash=0.45, shake=10),
     S("A", 1.80, .50, .40, 1.20, 1.45, units=2, flash=0.45, shake=10),
-    S("C", 2.80, .50, .50, 1.10, 1.30, units=2, flash=0.45, shake=10),
-    S("B", 0.80, .60, .45, 3.20, 3.80, units=2, flash=0.45),
+    S("D", 1.50, .52, .32, 2.00, 2.30, units=2, flash=0.45),
     S("C", 0.70, .40, .55, 1.90, 2.10, units=1, flash=0.5),
+    S("B", 0.80, .60, .45, 3.20, 3.80, units=1, flash=0.5),
+    S("E", 1.20, .48, .48, 2.20, 2.50, units=1, flash=0.5),
     S("A", 0.60, .60, .38, 2.20, 2.50, units=1, flash=0.5),
-    S("C", 1.80, .60, .46, 2.80, 3.10, units=1, flash=0.5),
-    S("B", 1.20, .50, .50, 1.20, 1.40, units=1, flash=0.5),
-    S("A", 1.60, .45, .30, 2.60, 2.90, units=1, flash=0.5),
+    S("D", 1.20, .50, .10, 2.40, 2.70, units=1, flash=0.5),
     S("C", 3.30, .36, .62, 3.00, 3.30, units=1, flash=0.5),
+    S("E", 4.10, .32, .25, 2.00, 2.30, units=1, flash=0.5),
     S("B", 3.80, .46, .87, 2.80, 3.10, units=1, flash=0.5),
-    S("C", 0.90, .26, .62, 2.40, 2.70, units=1, flash=0.5),
     S("A", 3.40, .85, .28, 1.60, 1.90, units=2, flash=0.45, shake=12),
 ]
 
