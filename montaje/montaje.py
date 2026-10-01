@@ -133,6 +133,8 @@ TIMELINE = [
 FINAL = dict(src="C", t=0.90, cx=.48, cy=.50, z0=1.04, z1=1.16, seconds=5.0, speed=0.35)
 FINAL_TEXT = ["Y esto… fue solo una parte", "de lo que vivimos."]
 FONT = "/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf"
+FINAL_TITLE = "AURA FEST"
+FONT_TITLE = "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"
 
 
 def run(cmd):
@@ -256,12 +258,20 @@ def final_text_filters():
     for k, line in enumerate(FINAL_TEXT):
         tf = BUILD / f"texto_{k}.txt"
         tf.write_text(line, encoding="utf-8")
-        t_in = 0.7 + k * 1.0
+        t_in = 0.5 + k * 0.8
         alpha = f"if(lt(t\\,{t_in})\\,0\\,min(1\\,(t-{t_in})/0.8))*min(1\\,max(0\\,(4.7-t)/0.6))"
         filters.append(
             f"drawtext=fontfile={FONT}:textfile={tf}:fontsize=74:fontcolor=white:"
             f"shadowcolor=black@0.7:shadowx=0:shadowy=3:"
             f"x=(w-text_w)/2:y=h*0.70+{k}*100:alpha='{alpha}'")
+    # nombre del evento: aparece después de la frase, con un leve "zoom out"
+    t_in = 2.1
+    alpha = f"if(lt(t\\,{t_in})\\,0\\,min(1\\,(t-{t_in})/0.5))*min(1\\,max(0\\,(4.7-t)/0.6))"
+    size = f"150-30*min(1\\,max(0\\,(t-{t_in})/0.6))"
+    filters.append(
+        f"drawtext=fontfile={FONT_TITLE}:text='{FINAL_TITLE}':fontsize='{size}':"
+        f"fontcolor=0xF6E7C1:shadowcolor=black@0.75:shadowx=0:shadowy=4:"
+        f"x=(w-text_w)/2:y=h*0.58-text_h/2:alpha='{alpha}'")
     return filters
 
 
