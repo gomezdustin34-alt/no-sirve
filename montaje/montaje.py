@@ -59,7 +59,7 @@ TIMELINE = [
 
     # --- Fase 2 (c3-c4): sube, con una cámara lenta de contraste ------------
     S("B", 0.30, .60, .45, 2.80, 3.30, units=4, flash=0.25),          # el ojo de la pintura (mirada)
-    S("E", 2.35, .82, .20, 2.30, 2.50, units=4),                     # compañero mira a cámara y sonríe
+    S("E", 2.50, 1.0, .22, 1.70, 1.85, units=4),                     # compañero mira a cámara y sonríe
     S("C", 0.50, .38, .58, 1.60, 1.75, units=8, ramp=(3.0, 0.3, 0.3)),  # CÁMARA LENTA: rampa
     S("D", 1.70, .50, .33, 2.60, 2.90, units=4),                     # el rostro de Aristóteles
     S("B", 2.00, .50, .13, 2.30, 2.50, units=4, whip_out=+1),        # título "LABERINTO"
@@ -83,7 +83,7 @@ TIMELINE = [
     S("E", 0.60, .45, .10, 2.40, 2.70, units=2, flash=0.3),          # el patio, gente pasando
 
     # --- RÁFAGA FINAL (c7, drop): 12 flashes de 0.1-0.2 s --------------------
-    S("E", 2.45, .80, .22, 1.80, 2.10, units=2, flash=0.45, shake=10),
+    S("E", 2.40, 1.0, .24, 1.60, 1.80, units=2, flash=0.45, shake=10),
     S("A", 1.80, .50, .40, 1.20, 1.45, units=2, flash=0.45, shake=10),
     S("D", 1.50, .52, .32, 2.00, 2.30, units=2, flash=0.45),
     S("C", 0.70, .40, .55, 1.90, 2.10, units=1, flash=0.5),
@@ -199,6 +199,10 @@ def render_shot(i, sh, text=None):
     chain.append("format=yuv420p")
 
     out = BUILD / f"shot_{i:02d}.mp4"
+    stamp = BUILD / f"shot_{i:02d}.txt"
+    key = repr((sorted((k, str(v)) for k, v in sh.items()), text, chain))
+    if out.exists() and stamp.exists() and stamp.read_text() == key:
+        return out  # plano sin cambios: se reutiliza
     run(["ffmpeg", "-v", "error", "-y", "-filter_threads", "2", "-ss", f"{start:.3f}", "-t", f"{src_len + 0.3:.3f}",
          "-i", str(src), "-vf", ",".join(chain), "-frames:v", str(out_frames),
          "-c:v", "libx264", "-preset", "veryfast", "-crf", "14", "-threads", "2", "-r", str(FPS), str(out)])
@@ -206,6 +210,7 @@ def render_shot(i, sh, text=None):
                    "-show_entries", "stream=nb_read_frames", "-of", "csv=p=0", str(out)]))
     if got != out_frames:
         sys.exit(f"plano {i}: {got} fotogramas, se esperaban {out_frames}")
+    stamp.write_text(key)
     return out
 
 
