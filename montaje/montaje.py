@@ -30,6 +30,11 @@ SOURCES = {
     "C": "IMG_3856.mov",  # salón: compañeros, profesora en tarima
     "D": "IMG_3861.mov",  # póster de Aristóteles, paneo a la derecha
     "E": "IMG_3862.mov",  # compañeros jugando en el patio (dado, tablero)
+    # WhatsApp (464x832, SDR): se escalan con enfoque y se usan con poco zoom
+    "F": "WA_122814.mp4",  # exposición al aire libre: compañeros disfrazados, risas
+    "G": "WA_122827.mp4",  # compañero con sombrero señalando a cámara
+    "H": "WA_122835.mp4",  # "La aventura del pensamiento": compañera saluda y ríe
+    "I": "WA_122840.mp4",  # dado gigante y fichas; compañera jugando y saludando
 }
 
 
@@ -51,49 +56,53 @@ def S(src, t, cx, cy, z0, z1=None, units=4, speed=1.0, dx=0.0, dy=0.0,
 TIMELINE = [
     # --- Fase 1 (c1-c2): arranque, planos de 0.4-0.8 s ---------------------
     S("A", 0.00, .45, .45, 1.15, 1.35, units=8),                     # banner + globos, push-in
-    S("C", 0.20, .50, .50, 1.00, 1.12, units=8, whip_out=+1),        # el salón completo
+    S("F", 1.00, .50, .45, 1.05, 1.18, units=8, whip_out=+1),        # exposición al aire libre
     S("B", 0.40, .50, .48, 1.35, 1.10, units=6, whip_in=+1),          # laberinto (pull-out)
     S("E", 0.90, .50, .48, 1.60, 1.80, units=6,                      # mano lanzando el dado:
       ramp=(0.6, 2.0, 0.5), blur=True),                               # speed ramp lento->rápido
     S("D", 1.30, .50, .10, 1.90, 2.10, units=4, dx=.05),             # "ARISTÓTELES" (sigue el paneo)
 
-    # --- Fase 2 (c3-c4): sube, con una cámara lenta de contraste ------------
-    S("B", 0.30, .60, .45, 2.80, 3.30, units=4, flash=0.25),          # el ojo de la pintura (mirada)
+    # --- Fase 2 (c3-c5): sube, con una cámara lenta de contraste ------------
+    S("G", 2.60, .50, .30, 1.30, 1.50, units=4, flash=0.25),          # compañero señala a cámara
+    S("B", 0.30, .60, .45, 2.80, 3.30, units=4),                     # el ojo de la pintura (mirada)
     S("E", 2.50, 1.0, .22, 1.70, 1.85, units=4),                     # compañero mira a cámara y sonríe
-    S("C", 0.50, .38, .58, 1.60, 1.75, units=8, ramp=(3.0, 0.3, 0.3)),  # CÁMARA LENTA: rampa
+    S("H", 2.40, .45, .25, 1.30, 1.42, units=8, ramp=(3.0, 0.3, 0.3)),  # CÁMARA LENTA: saluda y ríe
     S("D", 1.70, .50, .33, 2.60, 2.90, units=4),                     # el rostro de Aristóteles
+    S("F", 4.40, .65, .33, 1.45, 1.60, units=4),                     # compañero riéndose
     S("B", 2.00, .50, .13, 2.30, 2.50, units=4, whip_out=+1),        # título "LABERINTO"
-    S("C", 1.00, .62, .46, 2.40, 2.70, units=4, whip_in=+1),         # globos rosados + sombrero
+    S("I", 0.90, .50, .55, 1.20, 1.35, units=4, whip_in=+1),         # dado gigante y fichas
+    S("C", 1.00, .62, .46, 2.40, 2.70, units=4),                     # globos rosados + sombrero
+    S("F", 2.00, .50, .45, 1.20, 1.32, units=4, dx=.03),             # todos alrededor del juego
     S("E", 3.90, .38, .22, 2.20, 2.40, units=4),                     # concentración sobre el tablero
 
-    # --- Fase 3 (c5): 0.3-0.4 s ---------------------------------------------
+    # --- Fase 3 (c6): 0.3-0.4 s ---------------------------------------------
     S("A", 2.10, .52, .41, 2.30, 2.70, units=4, dx=.04, flash=0.2),  # "FILOSOFÍA"
-    S("E", 1.40, .45, .52, 2.60, 2.90, units=3, speed=1.5, blur=True),  # el dado sobre el tablero
+    S("I", 2.00, .55, .35, 1.30, 1.45, units=3, speed=1.5, blur=True),  # compañera jugando
     S("C", 1.60, .37, .40, 3.00, 3.20, units=3, dx=-.02),            # profesora en tarima
     S("D", 2.70, .70, .50, 2.40, 2.60, units=3, whip_out=-1),         # Lógica / Metafísica / Ciencia
     S("B", 3.00, .46, .87, 2.40, 2.60, units=3, whip_in=-1),          # casillas de colores
 
-    # --- Fase 4 (c6, build): 0.2-0.3 s --------------------------------------
-    S("C", 1.10, .28, .60, 2.60, 2.90, units=3, speed=1.5, blur=True),  # compañera caminando
-    S("A", 0.00, .20, .58, 2.40, 2.80, units=3, shake=8),            # globos de colores
-    S("E", 2.50, .75, .78, 2.60, 2.90, units=2, flash=0.2),          # papeles de colores del juego
-    S("D", 1.80, .45, .68, 2.40, 2.70, units=2),                     # "La excelencia no es un acto..."
-    S("C", 2.50, .36, .62, 2.60, 2.90, units=2),                     # globo burbuja con luces
-    S("B", 1.50, .38, .60, 2.80, 3.10, units=2, shake=8),            # clavijas del laberinto
-    S("E", 0.60, .45, .10, 2.40, 2.70, units=2, flash=0.3),          # el patio, gente pasando
+    # --- Fase 4 (c7, build): 0.2-0.3 s --------------------------------------
+    S("G", 3.60, .50, .40, 1.30, 1.45, units=3, speed=1.5, blur=True),  # el aro rosado
+    S("F", 7.00, .60, .40, 1.40, 1.60, units=3, shake=8),            # exponiendo, dedo arriba
+    S("E", 2.50, .75, .78, 2.60, 2.90, units=2),                     # papeles de colores del juego
+    S("H", 1.00, .50, .60, 1.30, 1.50, units=2, flash=0.2),          # tablero "aventura del pensamiento"
+    S("C", 1.10, .28, .60, 2.60, 2.90, units=2),                     # compañera caminando
+    S("I", 0.40, .75, .12, 1.40, 1.60, units=2, shake=8),            # el "amor y paz" con la mano
+    S("A", 0.00, .20, .58, 2.40, 2.80, units=2, flash=0.3),          # globos de colores
 
-    # --- RÁFAGA FINAL (c7, drop): 12 flashes de 0.1-0.2 s --------------------
-    S("E", 2.40, 1.0, .24, 1.60, 1.80, units=2, flash=0.45, shake=10),
-    S("A", 1.80, .50, .40, 1.20, 1.45, units=2, flash=0.45, shake=10),
-    S("D", 1.50, .52, .32, 2.00, 2.30, units=2, flash=0.45),
-    S("C", 0.70, .40, .55, 1.90, 2.10, units=1, flash=0.5),
-    S("B", 0.80, .60, .45, 3.20, 3.80, units=1, flash=0.5),
-    S("E", 1.20, .48, .48, 2.20, 2.50, units=1, flash=0.5),
-    S("A", 0.60, .60, .38, 2.20, 2.50, units=1, flash=0.5),
-    S("D", 1.20, .50, .10, 2.40, 2.70, units=1, flash=0.5),
+    # --- RÁFAGA FINAL (c8, drop): 12 flashes de 0.1-0.2 s --------------------
+    S("H", 3.00, .45, .22, 1.40, 1.60, units=2, flash=0.45, shake=10),
+    S("F", 6.50, .65, .33, 1.50, 1.70, units=2, flash=0.45, shake=10),
+    S("A", 1.80, .50, .40, 1.20, 1.45, units=2, flash=0.45),
+    S("G", 2.90, .50, .30, 1.40, 1.60, units=1, flash=0.5),
+    S("E", 2.40, 1.0, .24, 1.60, 1.80, units=1, flash=0.5),
+    S("I", 3.40, .55, .30, 1.40, 1.60, units=1, flash=0.5),
+    S("D", 1.50, .52, .32, 2.00, 2.30, units=1, flash=0.5),
     S("C", 3.30, .36, .62, 3.00, 3.30, units=1, flash=0.5),
-    S("E", 4.10, .32, .25, 2.00, 2.30, units=1, flash=0.5),
-    S("B", 3.80, .46, .87, 2.80, 3.10, units=1, flash=0.5),
+    S("B", 0.80, .60, .45, 3.20, 3.80, units=1, flash=0.5),
+    S("F", 0.50, .45, .30, 1.30, 1.50, units=1, flash=0.5),
+    S("H", 4.00, .60, .30, 1.40, 1.60, units=1, flash=0.5),
     S("A", 3.40, .85, .28, 1.60, 1.90, units=2, flash=0.45, shake=12),
 ]
 
@@ -117,16 +126,21 @@ def duration(path):
 
 
 def make_proxies():
-    """HDR HLG 10 bits (iPhone) -> SDR bt709, vertical 2160x3840, 30 fps."""
+    """HDR HLG 10 bits (iPhone) -> SDR bt709, vertical 2160x3840, 30 fps.
+    Clips SDR de baja resolución (WhatsApp) -> escalados a 1080 con enfoque."""
     BUILD.mkdir(exist_ok=True)
     tonemap = ("zscale=t=linear:npl=100,format=gbrpf32le,zscale=p=bt709,"
                "tonemap=hable:desat=0,zscale=t=bt709:m=bt709:r=tv,format=yuv420p,fps=30")
+    upscale = "scale=1080:1920:flags=lanczos,unsharp=5:5:0.7:5:5:0,format=yuv420p,fps=30"
     for key, name in SOURCES.items():
         out = BUILD / f"proxy_{key}.mp4"
         if out.exists():
             continue
         print(f"  proxy {key} <- {name}")
-        run(["ffmpeg", "-v", "error", "-y", "-i", str(CLIPS / name), "-an", "-vf", tonemap,
+        transfer = run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries",
+                        "stream=color_transfer", "-of", "csv=p=0", str(CLIPS / name)]).strip()
+        vf = tonemap if transfer in ("arib-std-b67", "smpte2084") else upscale
+        run(["ffmpeg", "-v", "error", "-y", "-i", str(CLIPS / name), "-an", "-vf", vf,
              "-c:v", "libx264", "-preset", "fast", "-crf", "12", "-g", "6", str(out)])
 
 
