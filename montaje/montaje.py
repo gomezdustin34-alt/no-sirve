@@ -35,6 +35,9 @@ SOURCES = {
     "G": "WA_122827.mp4",  # compañero con sombrero señalando a cámara
     "H": "WA_122835.mp4",  # "La aventura del pensamiento": compañera saluda y ríe
     "I": "WA_122840.mp4",  # dado gigante y fichas; compañera jugando y saludando
+    "J": "WA_123418.mp4",  # compañeras muertas de la risa (1 s)
+    "K": "WA_123453.mp4",  # baile en el patio
+    "L": "WA_123857.mp4",  # el castillo: escudo y compañeros disfrazados
 }
 
 
@@ -71,7 +74,7 @@ TIMELINE = [
     S("F", 4.40, .65, .33, 1.45, 1.60, units=4),                     # compañero riéndose
     S("B", 2.00, .50, .13, 2.30, 2.50, units=4, whip_out=+1),        # título "LABERINTO"
     S("I", 0.90, .50, .55, 1.20, 1.35, units=4, whip_in=+1),         # dado gigante y fichas
-    S("C", 1.00, .62, .46, 2.40, 2.70, units=4),                     # globos rosados + sombrero
+    S("J", 0.20, .42, .45, 1.25, 1.40, units=4),                     # compañeras muertas de la risa
     S("F", 2.00, .50, .45, 1.20, 1.32, units=4, dx=.03),             # todos alrededor del juego
     S("E", 3.90, .38, .22, 2.20, 2.40, units=4),                     # concentración sobre el tablero
 
@@ -82,7 +85,14 @@ TIMELINE = [
     S("D", 2.70, .70, .50, 2.40, 2.60, units=3, whip_out=-1),         # Lógica / Metafísica / Ciencia
     S("B", 3.00, .46, .87, 2.40, 2.60, units=3, whip_in=-1),          # casillas de colores
 
-    # --- Fase 4 (c7, build): 0.2-0.3 s --------------------------------------
+    # --- Fase 3b (c7): 0.3-0.4 s, sigue subiendo -----------------------------
+    S("K", 2.00, .60, .45, 1.20, 1.35, units=3),                     # baile en el patio
+    S("L", 1.50, .45, .25, 1.30, 1.50, units=3, whip_out=+1),        # escudo del castillo
+    S("K", 3.00, .55, .55, 1.20, 1.35, units=3, whip_in=+1, shake=6),  # el grupo bailando
+    S("L", 5.50, .50, .45, 1.20, 1.35, units=3),                     # compañeros disfrazados
+    S("C", 1.00, .62, .46, 2.40, 2.70, units=4),                     # globos rosados + sombrero
+
+    # --- Fase 4 (c8, build): 0.2-0.3 s --------------------------------------
     S("G", 3.60, .50, .40, 1.30, 1.45, units=3, speed=1.5, blur=True),  # el aro rosado
     S("F", 7.00, .60, .40, 1.40, 1.60, units=3, shake=8),            # exponiendo, dedo arriba
     S("E", 2.50, .75, .78, 2.60, 2.90, units=2),                     # papeles de colores del juego
@@ -91,7 +101,7 @@ TIMELINE = [
     S("I", 0.40, .75, .12, 1.40, 1.60, units=2, shake=8),            # el "amor y paz" con la mano
     S("A", 0.00, .20, .58, 2.40, 2.80, units=2, flash=0.3),          # globos de colores
 
-    # --- RÁFAGA FINAL (c8, drop): 12 flashes de 0.1-0.2 s --------------------
+    # --- RÁFAGA FINAL (c9, drop): 12 flashes de 0.1-0.2 s --------------------
     S("H", 3.00, .45, .22, 1.40, 1.60, units=2, flash=0.45, shake=10),
     S("F", 6.50, .65, .33, 1.50, 1.70, units=2, flash=0.45, shake=10),
     S("A", 1.80, .50, .40, 1.20, 1.45, units=2, flash=0.45),
@@ -99,10 +109,10 @@ TIMELINE = [
     S("E", 2.40, 1.0, .24, 1.60, 1.80, units=1, flash=0.5),
     S("I", 3.40, .55, .30, 1.40, 1.60, units=1, flash=0.5),
     S("D", 1.50, .52, .32, 2.00, 2.30, units=1, flash=0.5),
-    S("C", 3.30, .36, .62, 3.00, 3.30, units=1, flash=0.5),
+    S("J", 0.60, .40, .42, 1.50, 1.70, units=1, flash=0.5),
     S("B", 0.80, .60, .45, 3.20, 3.80, units=1, flash=0.5),
-    S("F", 0.50, .45, .30, 1.30, 1.50, units=1, flash=0.5),
-    S("H", 4.00, .60, .30, 1.40, 1.60, units=1, flash=0.5),
+    S("K", 2.50, .55, .50, 1.40, 1.60, units=1, flash=0.5),
+    S("L", 6.50, .50, .40, 1.40, 1.60, units=1, flash=0.5),
     S("A", 3.40, .85, .28, 1.60, 1.90, units=2, flash=0.45, shake=12),
 ]
 

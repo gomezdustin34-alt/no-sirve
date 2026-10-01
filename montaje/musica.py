@@ -7,10 +7,10 @@ Estructura (1 compás = 1.6 s):
   c1-c2  bombo + hats suaves + bajo + pad        (arranque)
   c3-c5  + palmas, hats en semicorcheas, arpegio  (sube la energía)
   c5-c6  + hats abiertos, riser
-  c7     redoble de caja 8vos -> 16vos, riser     (build)
-  c8     DROP: crash, sub, todo a tope            (ráfaga final)
-  12.8s  corte en seco a silencio
-  13.2s  piano suave con mucha reverb bajo el texto final
+  c8     redoble de caja 8vos -> 16vos, riser     (build)
+  c9     DROP: crash, sub, todo a tope            (ráfaga final)
+  14.4s  corte en seco a silencio
+  14.8s  piano suave con mucha reverb bajo el texto final
 """
 import wave
 
@@ -170,7 +170,7 @@ CHORDS = {  # (raíz del bajo, notas del pad)
     "C": (48, [55, 60, 64, 67]),
     "G": (43, [55, 59, 62, 67]),
 }
-PROGRESSION = ["Am", "F", "C", "G", "Am", "F", "C", "Am"]  # el build cambia a G a mitad
+PROGRESSION = ["Am", "F", "C", "G", "Am", "F", "C", "F", "Am"]  # el build cambia a G a mitad
 
 
 def render(cuts, whip_cuts, drop_time, end_music, total, slowmo_spans=()):
