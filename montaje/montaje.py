@@ -44,6 +44,10 @@ SOURCES = {
     "P": "WA_123836.mp4",  # pintando el mural en el patio
     "Q": "WA_124238.mp4",  # pasillo con banderines, compañeras caminando
     "R": "WA_124245.mp4",  # entrada "Día de la Filosofía", pulgar arriba, BIENVENIDOS
+    "S": "WA_estoicismo.mp4",   # grupo "Estoicismo" entrando con globos naranja
+    "T": "WA_grupo_rosado.mp4",  # grupo con globos rosados; entrada al auditorio
+    "U": "WA_grupo_verde.mp4",   # grupo con globos verdes; auditorio
+    "V": "WA_profesora.mov",     # profesora en tarima, letrero de la institución, auditorio lleno
 }
 
 
@@ -79,80 +83,63 @@ def beat(i, frac=0.0):
 
 
 def cut_points():
-    """Cortes: intro, 2 golpes/plano, 1 golpe y un clímax suave a 1/2 golpe."""
+    """Cortes: intro, 2 golpes por plano y un clímax a 1 golpe."""
     cuts = [0.0]
-    cuts += [beat(i) for i in range(2, 32, 2)]          # estrofa: 15 planos
-    cuts += [beat(i) for i in range(32, 53)]            # sube: 21 planos
-    cuts += [beat(i, f) for i in range(53, 58) for f in (0, .5)]  # clímax: 10
-    cuts.append(beat(58))                               # -> toma final
+    cuts += [beat(i) for i in range(2, 50, 2)]  # 24 planos de ~1.7 s
+    cuts += [beat(i) for i in range(50, 58)]    # clímax: 8 planos de ~0.86 s
+    cuts.append(beat(58))                       # -> toma final
     return cuts
 
 
 XFADE = 0.2  # fundido cruzado suave entre planos (empieza justo en el golpe)
 
 
-# Regla: cada plano es un momento distinto (nada se repite); se priorizan los
-# momentos felices, las reacciones y los lugares más bonitos.
+# Reglas: el escenario manda (lugares, decoración, auditorio, grupos) y las
+# expresiones van intercaladas; cada clip se usa como máximo 2 veces (la galería,
+# 3 rincones distintos) y nunca en planos cercanos.
 TIMELINE = [
     # --- Intro: "Los sabios dicen..." ---------------------------------------
-    S("R", 0.00, .50, .38, 1.15, 1.21, speed=0.6),                   # entrada "Día de la Filosofía"
+    S("R", 0.00, .50, .38, 1.10, 1.16, speed=0.6),                   # entrada "Día de la Filosofía"
 
-    # --- Estrofa: 2 golpes por plano, cámara lenta y fundidos suaves --------
-    S("A", 1.00, .50, .40, 1.10, 1.16, speed=0.8, dx=.04),  # banner principal (4K)
-    S("H", 2.40, .45, .25, 1.30, 1.37, speed=0.5),       # saluda y ríe
-    S("Q", 3.30, .50, .35, 1.10, 1.16, speed=0.7),       # pasillo de banderines
-    S("F", 4.30, .62, .33, 1.40, 1.47, speed=0.7),       # disfrazado riéndose
-    S("N", 3.40, .30, .30, 1.30, 1.37, speed=0.7),       # rosas rojas
-    S("J", 0.00, .42, .45, 1.25, 1.31, speed=0.6),       # muertas de la risa
-    S("L", 1.30, .45, .25, 1.30, 1.37, speed=0.7),       # escudo del castillo
-    S("M", 2.00, .50, .30, 1.15, 1.21, speed=0.7),       # leyendo juntos, disfrazados
-    S("I", 2.90, .55, .30, 1.35, 1.42, speed=0.6),       # saluda desde el juego
-    S("P", 0.50, .50, .35, 1.25, 1.19, speed=0.7),       # pintando el mural
-    S("R", 4.40, .50, .40, 1.15, 1.21, speed=0.7),       # llega con el pulgar arriba
-    S("C", 2.20, .36, .62, 2.60, 2.73, speed=0.7),       # globo burbuja con luces
-    S("K", 1.50, .60, .45, 1.20, 1.26, speed=0.8),       # baile en el patio
-    S("D", 1.40, .50, .33, 2.40, 2.52, speed=0.7),       # el rostro de Aristóteles
-    S("E", 2.40, 1.0, .22, 1.70, 1.78, speed=0.6),       # mira a cámara y sonríe
+    # --- 2 golpes por plano (~1.7 s), cámara lenta y fundidos suaves -------
+    S("A", 1.00, .50, .42, 1.00, 1.05, speed=0.8, dx=.03),           # banner principal (4K)
+    S("Q", 3.30, .50, .40, 1.00, 1.05, speed=0.7),                   # pasillo de banderines
+    S("V", 8.00, .50, .50, 1.00, 1.05, speed=0.7),                   # auditorio lleno
+    S("L", 9.20, .50, .50, 1.00, 1.05, speed=0.7),                   # el castillo
+    S("H", 2.40, .45, .25, 1.30, 1.36, speed=0.5),                   # saluda y ríe
+    S("N", 14.60, .55, .55, 1.00, 1.05, speed=0.7),                  # las mesas de la galería
+    S("T", 2.00, .50, .45, 1.00, 1.05, speed=0.7),                   # grupo con globos rosados
+    S("P", 0.50, .50, .40, 1.05, 1.00, speed=0.7),                   # el mural
+    S("F", 4.30, .62, .33, 1.40, 1.47, speed=0.7),                   # disfrazado riéndose
+    S("B", 0.40, .50, .48, 1.10, 1.05, speed=0.7),                   # laberinto filosófico
+    S("U", 2.00, .50, .50, 1.00, 1.05, speed=0.7),                   # grupo con globos verdes
+    S("D", 0.80, .50, .45, 1.10, 1.16, speed=0.7, dx=.03),           # póster de Aristóteles
+    S("S", 0.90, .50, .40, 1.00, 1.05, speed=0.7),                   # "Estoicismo"
+    S("N", 0.50, .50, .42, 1.05, 1.10, speed=0.7),                   # globos y "Cuadros Vivos"
+    S("J", 0.00, .45, .45, 1.10, 1.16, speed=0.6),                   # muertas de la risa
+    S("R", 7.00, .50, .42, 1.05, 1.10, speed=0.7),                   # BIENVENIDOS
+    S("V", 4.30, .70, .28, 1.30, 1.36, speed=0.7),                   # letrero de la institución
+    S("M", 2.00, .50, .35, 1.05, 1.10, speed=0.7),                   # leyendo juntos, disfrazados
+    S("T", 14.80, .50, .55, 1.00, 1.05, speed=0.7),                  # los grupos llegan al auditorio
+    S("K", 3.00, .55, .50, 1.05, 1.10, speed=0.7),                   # el baile en el patio
+    S("L", 4.20, .50, .40, 1.10, 1.16, speed=0.7),                   # disfrazados en el castillo
+    S("U", 11.80, .50, .50, 1.00, 1.05, speed=0.7),                  # auditorio con el grupo verde
+    S("N", 9.00, .45, .38, 1.20, 1.26, speed=0.7),                   # ramo de flores
+    S("A", 3.00, .70, .35, 1.30, 1.36, speed=0.7),                   # racimo de globos
 
-    # --- Sube: 1 golpe por plano, fundidos suaves --------------------------------------------
-    S("G", 2.60, .50, .30, 1.30, 1.37),                   # señala a cámara
-    S("O", 0.10, .65, .30, 1.30, 1.37),                              # risas en el auditorio
-    S("N", 0.50, .50, .40, 1.15, 1.21),                 # globos y "Cuadros Vivos"
-    S("R", 7.00, .50, .40, 1.20, 1.26),                  # BIENVENIDOS
-    S("F", 0.30, .45, .30, 1.30, 1.37),                              # posando con corbata
-    S("L", 4.20, .50, .40, 1.20, 1.26),                              # disfrazados en el castillo
-    S("C", 1.20, .40, .40, 2.80, 2.94, dx=-.02),                     # profesora en tarima
-    S("A", 3.00, .80, .30, 1.90, 1.99),                              # racimo de globos
-    S("K", 3.00, .55, .55, 1.20, 1.26),                     # el grupo bailando
-    S("M", 3.40, .30, .20, 1.60, 1.68),                              # sonrisa del disfrazado
-    S("N", 11.50, .60, .40, 1.25, 1.31),                # Savater
-    S("B", 0.40, .50, .48, 1.30, 1.24),                  # laberinto filosófico
-    S("O", 2.20, .60, .25, 1.40, 1.47),                              # tapándose la risa
-    S("H", 0.80, .50, .60, 1.30, 1.37),                              # "la aventura del pensamiento"
-    S("F", 6.00, .60, .33, 1.50, 1.58),                              # sonrisa del expositor
-    S("Q", 2.00, .65, .55, 1.20, 1.26, dx=.05),                      # compañeras por el pasillo
-    S("N", 5.00, .50, .60, 1.20, 1.26, dx=.04),                      # portafolios de filosofía
-    S("N", 15.00, .60, .60, 1.15, 1.21),                             # las mesas de la galería
-
-    S("G", 3.60, .50, .40, 1.30, 1.37),                              # el aro rosado arriba
-    S("L", 6.80, .50, .40, 1.25, 1.31),                              # todos tras el castillo
-    S("N", 9.00, .40, .35, 1.30, 1.37),                              # ramo de flores
-
-    # --- Clímax: 1/2 golpe, suave --------------------------------------------
-    S("H", 3.95, .60, .30, 1.40, 1.47),                              # carcajada
-    S("O", 4.30, .45, .38, 1.50, 1.58),                              # sonrisa con gafas
-    S("K", 0.50, .40, .45, 1.30, 1.37),                              # arranca el baile
-    S("F", 2.00, .50, .45, 1.20, 1.26),                              # todos alrededor del juego
-    S("I", 2.00, .55, .35, 1.30, 1.37),                              # concentrada en el juego
-    S("M", 0.60, .50, .30, 1.25, 1.31),                              # pasando las páginas
-    S("L", 9.60, .50, .50, 1.10, 1.16),                              # el castillo completo
-    S("Q", 0.20, .30, .25, 1.40, 1.47),                              # globos en la esquina
-    S("R", 13.00, .40, .75, 1.30, 1.37),                             # compañeras con sus libros
-    S("G", 1.20, .50, .30, 1.40, 1.47),                              # el sombrero
+    # --- Clímax: 1 golpe por plano ------------------------------------------
+    S("S", 4.00, .50, .50, 1.00, 1.05),                              # entran con globos naranja
+    S("O", 0.10, .62, .32, 1.20, 1.26),                              # risas en el auditorio
+    S("G", 2.60, .50, .35, 1.10, 1.16),                              # señala a cámara
+    S("I", 3.00, .55, .32, 1.20, 1.26),                              # saluda desde el juego
+    S("E", 2.40, 1.0, .22, 1.60, 1.68),                              # mira a cámara y sonríe
+    S("Q", 2.00, .60, .55, 1.05, 1.10),                              # compañeras por el pasillo
+    S("K", 1.50, .60, .45, 1.10, 1.16),                              # baile
+    S("F", 0.30, .45, .35, 1.10, 1.16),                              # posando con corbata
 ]
 
 # Toma final: corte en seco a silencio + cámara lenta del salón con el texto.
-FINAL = dict(src="R", t=1.70, cx=.50, cy=.50, z0=1.04, z1=1.16, seconds=5.5, speed=0.35)
+FINAL = dict(src="C", t=0.90, cx=.48, cy=.50, z0=1.04, z1=1.12, seconds=5.5, speed=0.35)
 FINAL_TEXT = ["Y esto… fue solo una parte", "de lo que vivimos."]
 FONT = "/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf"
 FINAL_TITLE = "AURA FEST"
