@@ -30,7 +30,7 @@ exposición en la ráfaga, cámara lenta con interpolación de movimiento
 
 ```bash
 pip install numpy          # ffmpeg con zscale también es necesario
-# poner los clips en montaje/clips/ (IMG_3854-3862.mov y los WA_*.mp4 de WhatsApp)
+# poner los clips en montaje/clips/ (IMG_3854-3862.mov y los WA_*.mp4 de WhatsApp; ver SOURCES)
 python3 montaje/montaje.py
 ```
 

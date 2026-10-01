@@ -42,6 +42,8 @@ SOURCES = {
     "N": "WA_124138.mp4",  # la galería: globos, Kant, Savater, flores, portafolios
     "O": "WA_123828.mp4",  # risas en el auditorio
     "P": "WA_123836.mp4",  # pintando el mural en el patio
+    "Q": "WA_124238.mp4",  # pasillo con banderines, compañeras caminando
+    "R": "WA_124245.mp4",  # entrada "Día de la Filosofía", pulgar arriba, BIENVENIDOS
 }
 
 
@@ -62,7 +64,7 @@ def S(src, t, cx, cy, z0, z1=None, units=4, speed=1.0, dx=0.0, dy=0.0,
 # ---------------------------------------------------------------------------
 TIMELINE = [
     # --- Fase 1 (c1-c2): arranque, planos de 0.4-0.8 s ---------------------
-    S("A", 0.00, .45, .45, 1.15, 1.35, units=8),                     # banner + globos, push-in
+    S("R", 0.30, .50, .38, 1.20, 1.45, units=8),                     # entrada: "Día de la Filosofía"
     S("F", 1.00, .50, .45, 1.05, 1.18, units=8, whip_out=+1),        # exposición al aire libre
     S("B", 0.40, .50, .48, 1.35, 1.10, units=6, whip_in=+1),          # laberinto (pull-out)
     S("E", 0.90, .50, .48, 1.60, 1.80, units=6,                      # mano lanzando el dado:
@@ -79,7 +81,7 @@ TIMELINE = [
     S("B", 2.00, .50, .13, 2.30, 2.50, units=4, whip_out=+1),        # título "LABERINTO"
     S("I", 0.90, .50, .55, 1.20, 1.35, units=4, whip_in=+1),         # dado gigante y fichas
     S("J", 0.20, .42, .45, 1.25, 1.40, units=4),                     # compañeras muertas de la risa
-    S("F", 2.00, .50, .45, 1.20, 1.32, units=4, dx=.03),             # todos alrededor del juego
+    S("R", 4.80, .50, .40, 1.20, 1.35, units=4),                     # compañero con pulgar arriba
     S("E", 3.90, .38, .22, 2.20, 2.40, units=4),                     # concentración sobre el tablero
 
     # --- Fase 3 (c6): 0.3-0.4 s ---------------------------------------------
@@ -94,7 +96,7 @@ TIMELINE = [
     S("L", 1.50, .45, .25, 1.30, 1.50, units=3, whip_out=+1),        # escudo del castillo
     S("K", 3.00, .55, .55, 1.20, 1.35, units=3, whip_in=+1, shake=6),  # el grupo bailando
     S("L", 5.50, .50, .45, 1.20, 1.35, units=3),                     # compañeros disfrazados
-    S("C", 1.00, .62, .46, 2.40, 2.70, units=4),                     # globos rosados + sombrero
+    S("Q", 2.00, .65, .55, 1.15, 1.30, units=4, dx=.05),             # pasillo con banderines
 
     # --- Fase 3c (c8): 0.3-0.4 s ---------------------------------------------
     S("M", 2.00, .50, .30, 1.15, 1.30, units=4),                     # leyendo juntos, disfrazados
@@ -110,12 +112,12 @@ TIMELINE = [
     S("H", 1.00, .50, .60, 1.30, 1.50, units=2, flash=0.2),          # tablero "aventura del pensamiento"
     S("N", 3.50, .25, .30, 1.40, 1.60, units=2),                     # rosas de la galería
     S("I", 0.40, .75, .12, 1.40, 1.60, units=2, shake=8),            # el "amor y paz" con la mano
-    S("A", 0.00, .20, .58, 2.40, 2.80, units=2, flash=0.3),          # globos de colores
+    S("R", 7.50, .50, .32, 1.20, 1.40, units=2, flash=0.3),          # BIENVENIDOS
 
     # --- RÁFAGA FINAL (c10, drop): 12 flashes de 0.1-0.2 s --------------------
     S("H", 3.00, .45, .22, 1.40, 1.60, units=2, flash=0.45, shake=10),
     S("F", 6.50, .65, .33, 1.50, 1.70, units=2, flash=0.45, shake=10),
-    S("A", 1.80, .50, .40, 1.20, 1.45, units=2, flash=0.45),
+    S("R", 5.00, .50, .40, 1.40, 1.60, units=2, flash=0.45),
     S("G", 2.90, .50, .30, 1.40, 1.60, units=1, flash=0.5),
     S("O", 4.50, .45, .38, 1.40, 1.60, units=1, flash=0.5),
     S("I", 3.40, .55, .30, 1.40, 1.60, units=1, flash=0.5),
