@@ -127,7 +127,7 @@ TIMELINE = [
     # 2 "Cada grupo llegó con su propia filosofía."
     S("T", 2.00, .50, .45, 1.00, 1.05, speed=0.7),                   # grupo con globos rosados
     S("U", 2.00, .50, .50, 1.00, 1.05, speed=0.7),                   # grupo con globos verdes
-    S("S", 0.90, .50, .40, 1.00, 1.05, speed=0.7),                   # "Estoicismo"
+    S("S", 1.20, .64, .40, 1.25, 1.31, speed=0.7),                   # "Estoicismo"
     # 3 "Cada rincón guardaba una idea."
     S("N", 14.60, .55, .55, 1.00, 1.05, speed=0.7),                  # las mesas de la galería
     S("L", 9.20, .50, .50, 1.00, 1.05, speed=0.7),                   # el castillo
@@ -156,7 +156,7 @@ TIMELINE = [
     # --- Clímax: 1 golpe por plano, sin texto --------------------------------
     S("S", 4.00, .50, .50, 1.00, 1.05),                              # entran con globos naranja
     S("O", 0.10, .62, .32, 1.20, 1.26),                              # risas en el auditorio
-    S("W2", 12.90, .55, .50, 1.00, 1.05),                            # la decoración de la tarima
+    S("B", 0.40, .50, .48, 1.10, 1.05),                              # laberinto filosófico
     S("G", 2.60, .50, .35, 1.10, 1.16),                              # señala a cámara
     S("W3", 3.50, .50, .55, 1.00, 1.05),                             # el público
     S("I", 3.00, .55, .32, 1.20, 1.26),                              # saluda desde el juego
@@ -323,8 +323,8 @@ def caption_filters():
 
     out = []
     title, sub = TITLE_INTRO
-    for k, (txt, font, size, y) in enumerate([(title, FONT_TITLE, 130, "h*0.40"),
-                                              (sub, FONT, 66, "h*0.40+150")]):
+    for k, (txt, font, size, y) in enumerate([(title, FONT_TITLE, 130, "h*0.62"),
+                                              (sub, FONT, 66, "h*0.62+150")]):
         tf = BUILD / f"intro_{k}.txt"
         tf.write_text(txt, encoding="utf-8")
         out.append(f"drawtext=fontfile={font}:textfile={tf}:fontsize={size}:"
