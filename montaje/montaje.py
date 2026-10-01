@@ -79,84 +79,76 @@ def beat(i, frac=0.0):
 
 
 def cut_points():
-    """Cortes: intro, 2 golpes/plano, 1 golpe, 1/2 golpe y ráfaga de 1/4 de golpe."""
+    """Cortes: intro, 2 golpes/plano, 1 golpe y un clímax suave a 1/2 golpe."""
     cuts = [0.0]
     cuts += [beat(i) for i in range(2, 32, 2)]          # estrofa: 15 planos
-    cuts += [beat(i) for i in range(32, 50)]            # sube: 18 planos
-    cuts += [beat(i, f) for i in range(50, 55) for f in (0, .5)]  # build: 10
-    cuts += [beat(i, f) for i in range(55, 58) for f in (0, .25, .5, .75)]  # ráfaga: 12
-    cuts.append(beat(58))                               # clímax -> toma final
+    cuts += [beat(i) for i in range(32, 53)]            # sube: 21 planos
+    cuts += [beat(i, f) for i in range(53, 58) for f in (0, .5)]  # clímax: 10
+    cuts.append(beat(58))                               # -> toma final
     return cuts
+
+
+XFADE = 0.2  # fundido cruzado suave entre planos (empieza justo en el golpe)
 
 
 # Regla: cada plano es un momento distinto (nada se repite); se priorizan los
 # momentos felices, las reacciones y los lugares más bonitos.
 TIMELINE = [
     # --- Intro: "Los sabios dicen..." ---------------------------------------
-    S("R", 0.00, .50, .38, 1.15, 1.40, speed=0.6),                   # entrada "Día de la Filosofía"
+    S("R", 0.00, .50, .38, 1.15, 1.21, speed=0.6),                   # entrada "Día de la Filosofía"
 
-    # --- Estrofa: 2 golpes por plano, cámara lenta y destellos suaves --------
-    S("A", 1.00, .50, .40, 1.10, 1.25, speed=0.8, dx=.04, flash=0.15),  # banner principal (4K)
-    S("H", 2.40, .45, .25, 1.30, 1.42, speed=0.5, flash=0.15),       # saluda y ríe
-    S("Q", 3.30, .50, .35, 1.10, 1.25, speed=0.7, flash=0.15),       # pasillo de banderines
-    S("F", 4.30, .62, .33, 1.40, 1.52, speed=0.7, flash=0.15),       # disfrazado riéndose
-    S("N", 3.40, .30, .30, 1.30, 1.45, speed=0.7, flash=0.15),       # rosas rojas
-    S("J", 0.00, .42, .45, 1.25, 1.40, speed=0.6, flash=0.15),       # muertas de la risa
-    S("L", 1.30, .45, .25, 1.30, 1.50, speed=0.7, flash=0.15),       # escudo del castillo
-    S("M", 2.00, .50, .30, 1.15, 1.30, speed=0.7, flash=0.15),       # leyendo juntos, disfrazados
-    S("I", 2.90, .55, .30, 1.35, 1.50, speed=0.6, flash=0.15),       # saluda desde el juego
-    S("P", 0.50, .50, .35, 1.25, 1.10, speed=0.7, flash=0.15),       # pintando el mural
-    S("R", 4.40, .50, .40, 1.15, 1.30, speed=0.7, flash=0.15),       # llega con el pulgar arriba
-    S("C", 2.20, .36, .62, 2.60, 2.90, speed=0.7, flash=0.15),       # globo burbuja con luces
-    S("K", 1.50, .60, .45, 1.20, 1.35, speed=0.8, flash=0.15),       # baile en el patio
-    S("D", 1.40, .50, .33, 2.40, 2.80, speed=0.7, flash=0.15),       # el rostro de Aristóteles
-    S("E", 2.40, 1.0, .22, 1.70, 1.85, speed=0.6, flash=0.15),       # mira a cámara y sonríe
+    # --- Estrofa: 2 golpes por plano, cámara lenta y fundidos suaves --------
+    S("A", 1.00, .50, .40, 1.10, 1.16, speed=0.8, dx=.04),  # banner principal (4K)
+    S("H", 2.40, .45, .25, 1.30, 1.37, speed=0.5),       # saluda y ríe
+    S("Q", 3.30, .50, .35, 1.10, 1.16, speed=0.7),       # pasillo de banderines
+    S("F", 4.30, .62, .33, 1.40, 1.47, speed=0.7),       # disfrazado riéndose
+    S("N", 3.40, .30, .30, 1.30, 1.37, speed=0.7),       # rosas rojas
+    S("J", 0.00, .42, .45, 1.25, 1.31, speed=0.6),       # muertas de la risa
+    S("L", 1.30, .45, .25, 1.30, 1.37, speed=0.7),       # escudo del castillo
+    S("M", 2.00, .50, .30, 1.15, 1.21, speed=0.7),       # leyendo juntos, disfrazados
+    S("I", 2.90, .55, .30, 1.35, 1.42, speed=0.6),       # saluda desde el juego
+    S("P", 0.50, .50, .35, 1.25, 1.19, speed=0.7),       # pintando el mural
+    S("R", 4.40, .50, .40, 1.15, 1.21, speed=0.7),       # llega con el pulgar arriba
+    S("C", 2.20, .36, .62, 2.60, 2.73, speed=0.7),       # globo burbuja con luces
+    S("K", 1.50, .60, .45, 1.20, 1.26, speed=0.8),       # baile en el patio
+    S("D", 1.40, .50, .33, 2.40, 2.52, speed=0.7),       # el rostro de Aristóteles
+    S("E", 2.40, 1.0, .22, 1.70, 1.78, speed=0.6),       # mira a cámara y sonríe
 
-    # --- Sube: 1 golpe por plano --------------------------------------------
-    S("G", 2.60, .50, .30, 1.30, 1.50, flash=0.2),                   # señala a cámara
-    S("O", 0.10, .65, .30, 1.30, 1.45),                              # risas en el auditorio
-    S("N", 0.50, .50, .40, 1.15, 1.30, whip_out=+1),                 # globos y "Cuadros Vivos"
-    S("R", 7.00, .50, .40, 1.20, 1.35, whip_in=+1),                  # BIENVENIDOS
-    S("F", 0.30, .45, .30, 1.30, 1.45),                              # posando con corbata
-    S("L", 4.20, .50, .40, 1.20, 1.35),                              # disfrazados en el castillo
-    S("C", 1.20, .40, .40, 2.80, 3.10, dx=-.02),                     # profesora en tarima
-    S("A", 3.00, .80, .30, 1.90, 2.10),                              # racimo de globos
-    S("K", 3.00, .55, .55, 1.20, 1.35, shake=4),                     # el grupo bailando
-    S("M", 3.40, .30, .20, 1.60, 1.80),                              # sonrisa del disfrazado
-    S("N", 11.50, .60, .40, 1.25, 1.40, whip_out=-1),                # Savater
-    S("B", 0.40, .50, .48, 1.30, 1.15, whip_in=-1),                  # laberinto filosófico
-    S("O", 2.20, .60, .25, 1.40, 1.55),                              # tapándose la risa
-    S("H", 0.80, .50, .60, 1.30, 1.50),                              # "la aventura del pensamiento"
-    S("F", 6.00, .60, .33, 1.50, 1.65),                              # sonrisa del expositor
-    S("Q", 2.00, .65, .55, 1.20, 1.35, dx=.05),                      # compañeras por el pasillo
-    S("N", 5.00, .50, .60, 1.20, 1.35, dx=.04),                      # portafolios de filosofía
-    S("N", 15.00, .60, .60, 1.15, 1.30),                             # las mesas de la galería
+    # --- Sube: 1 golpe por plano, fundidos suaves --------------------------------------------
+    S("G", 2.60, .50, .30, 1.30, 1.37),                   # señala a cámara
+    S("O", 0.10, .65, .30, 1.30, 1.37),                              # risas en el auditorio
+    S("N", 0.50, .50, .40, 1.15, 1.21),                 # globos y "Cuadros Vivos"
+    S("R", 7.00, .50, .40, 1.20, 1.26),                  # BIENVENIDOS
+    S("F", 0.30, .45, .30, 1.30, 1.37),                              # posando con corbata
+    S("L", 4.20, .50, .40, 1.20, 1.26),                              # disfrazados en el castillo
+    S("C", 1.20, .40, .40, 2.80, 2.94, dx=-.02),                     # profesora en tarima
+    S("A", 3.00, .80, .30, 1.90, 1.99),                              # racimo de globos
+    S("K", 3.00, .55, .55, 1.20, 1.26),                     # el grupo bailando
+    S("M", 3.40, .30, .20, 1.60, 1.68),                              # sonrisa del disfrazado
+    S("N", 11.50, .60, .40, 1.25, 1.31),                # Savater
+    S("B", 0.40, .50, .48, 1.30, 1.24),                  # laberinto filosófico
+    S("O", 2.20, .60, .25, 1.40, 1.47),                              # tapándose la risa
+    S("H", 0.80, .50, .60, 1.30, 1.37),                              # "la aventura del pensamiento"
+    S("F", 6.00, .60, .33, 1.50, 1.58),                              # sonrisa del expositor
+    S("Q", 2.00, .65, .55, 1.20, 1.26, dx=.05),                      # compañeras por el pasillo
+    S("N", 5.00, .50, .60, 1.20, 1.26, dx=.04),                      # portafolios de filosofía
+    S("N", 15.00, .60, .60, 1.15, 1.21),                             # las mesas de la galería
 
-    # --- Build: 1/2 golpe ----------------------------------------------------
-    S("G", 3.60, .50, .40, 1.30, 1.45, speed=1.3, blur=True),        # el aro rosado arriba
-    S("L", 6.80, .50, .40, 1.25, 1.40),                              # todos tras el castillo
-    S("I", 0.70, .60, .50, 1.25, 1.40),                              # dado gigante
-    S("N", 9.00, .40, .35, 1.30, 1.45, flash=0.2),                   # ramo de flores
-    S("F", 7.00, .60, .40, 1.40, 1.60, shake=6),                     # dedo arriba, explicando
-    S("E", 1.20, .45, .50, 2.40, 2.70, speed=1.3, blur=True),        # lanzando el dado
-    S("C", 0.50, .26, .62, 2.00, 2.20),                              # caminando en el salón
-    S("P", 3.20, .30, .60, 1.20, 1.40),                              # corriendo frente al mural
-    S("R", 13.00, .40, .75, 1.30, 1.50),                             # compañeras con sus libros
-    S("A", 0.00, .20, .58, 2.40, 2.70, flash=0.3),                   # columna de globos
+    S("G", 3.60, .50, .40, 1.30, 1.37),                              # el aro rosado arriba
+    S("L", 6.80, .50, .40, 1.25, 1.31),                              # todos tras el castillo
+    S("N", 9.00, .40, .35, 1.30, 1.37),                              # ramo de flores
 
-    # --- RÁFAGA (clímax): 12 flashes de 1/4 de golpe ------------------------
-    S("H", 3.95, .60, .30, 1.40, 1.60, flash=0.45, shake=10),        # carcajada
-    S("O", 4.30, .45, .38, 1.50, 1.70, flash=0.45),                  # sonrisa con gafas
-    S("K", 0.50, .40, .45, 1.30, 1.50, flash=0.45),                  # arranca el baile
-    S("F", 2.00, .50, .45, 1.20, 1.40, flash=0.45),                  # todos alrededor del juego
-    S("I", 2.00, .55, .35, 1.30, 1.50, flash=0.45),                  # concentrada en el juego
-    S("E", 3.90, .38, .22, 2.20, 2.40, flash=0.45),                  # concentrado en el tablero
-    S("M", 0.60, .50, .30, 1.25, 1.45, flash=0.45),                  # pasando las páginas
-    S("L", 9.60, .50, .50, 1.10, 1.30, flash=0.45),                  # el castillo completo
-    S("N", 7.00, .50, .40, 1.20, 1.40, flash=0.45),                  # Kant
-    S("Q", 0.20, .30, .25, 1.40, 1.60, flash=0.45),                  # globos en la esquina
-    S("D", 1.20, .50, .10, 2.20, 2.40, flash=0.45),                  # "ARISTÓTELES"
-    S("G", 1.20, .50, .30, 1.40, 1.60, flash=0.45, shake=12),        # el sombrero
+    # --- Clímax: 1/2 golpe, suave --------------------------------------------
+    S("H", 3.95, .60, .30, 1.40, 1.47),                              # carcajada
+    S("O", 4.30, .45, .38, 1.50, 1.58),                              # sonrisa con gafas
+    S("K", 0.50, .40, .45, 1.30, 1.37),                              # arranca el baile
+    S("F", 2.00, .50, .45, 1.20, 1.26),                              # todos alrededor del juego
+    S("I", 2.00, .55, .35, 1.30, 1.37),                              # concentrada en el juego
+    S("M", 0.60, .50, .30, 1.25, 1.31),                              # pasando las páginas
+    S("L", 9.60, .50, .50, 1.10, 1.16),                              # el castillo completo
+    S("Q", 0.20, .30, .25, 1.40, 1.47),                              # globos en la esquina
+    S("R", 13.00, .40, .75, 1.30, 1.37),                             # compañeras con sus libros
+    S("G", 1.20, .50, .30, 1.40, 1.47),                              # el sombrero
 ]
 
 # Toma final: corte en seco a silencio + cámara lenta del salón con el texto.
@@ -347,18 +339,20 @@ def main():
     cuts = cut_points()
     assert len(cuts) == len(TIMELINE) + 1, (len(cuts), len(TIMELINE))
     frames_at = [round(c * FPS) for c in cuts]  # cortes en fotogramas exactos
+    xf = round(XFADE * FPS)  # cada plano dura un poco más para el fundido
     files = []
     for i, sh in enumerate(TIMELINE):
-        sh = dict(sh, units=(frames_at[i + 1] - frames_at[i]) / (U * FPS))
+        sh = dict(sh, units=(frames_at[i + 1] - frames_at[i] + xf) / (U * FPS))
         files.append(render_shot(i, sh))
-        print(f"   {i:02d} {sh['src']} {sh['units'] * U:.2f}s  -> corte en {cuts[i]:.2f}s")
+        print(f"   {i:02d} {sh['src']} {(frames_at[i + 1] - frames_at[i]) / FPS:.2f}s"
+              f"  -> corte en {cuts[i]:.2f}s")
     end_montage = frames_at[-1] / FPS
     grade_final = ("eq=contrast=1.02:saturation=0.80:brightness=-0.04:gamma=1.02,"
                    "colorbalance=rs=.06:gs=.02:bs=-.06:rm=.04:bm=-.04,vignette=PI/3.2")
     fin = dict(FINAL, dx=0, dy=0, whip_in=0, whip_out=0, shake=0, flash=0,
                blur=False, ramp=None, grade=grade_final)
     files.append(render_shot(len(TIMELINE), fin, text=final_text_filters()))
-    files.append(render_credits())
+    credits = render_credits()
     total = end_montage + FINAL["seconds"] + CREDITS_SECONDS
     print(f"   montaje: {end_montage:.2f}s ({len(TIMELINE)} planos) + toma final "
           f"{FINAL['seconds']:.1f}s + créditos {CREDITS_SECONDS:.1f}s = {total:.2f}s")
@@ -370,9 +364,18 @@ def main():
          "-t", f"{total:.3f}", "-ar", "48000", "-ac", "2", str(wav)])
 
     print("4/4 unión final con look de época")
-    lst = BUILD / "lista.txt"
-    lst.write_text("".join(f"file '{f.name}'\n" for f in files))
     OUT.parent.mkdir(exist_ok=True)
+    # fundidos cruzados: cada transición empieza exactamente en el golpe
+    inputs, graph = [], []
+    for k, f in enumerate(files + [credits]):
+        inputs += ["-i", str(f)]
+        graph.append(f"[{k}:v]settb=AVTB,fps={FPS},format=yuv420p[s{k}]")
+    prev = "s0"
+    for k in range(1, len(files)):
+        graph.append(f"[{prev}][s{k}]xfade=transition=fade:duration={XFADE}:"
+                     f"offset={frames_at[k] / FPS:.4f}[x{k}]")
+        prev = f"x{k}"
+    graph.append(f"[{prev}][s{len(files)}]concat=n=2:v=1:a=0[m]")
     look = ",".join([
         # brillo suave tipo ensueño
         "split[a][b];[b]gblur=sigma=22[g];[a][g]blend=all_mode=screen:all_opacity=0.22",
@@ -385,8 +388,10 @@ def main():
         f"fade=t=out:st={total - 0.8:.2f}:d=0.8",
         "format=yuv420p",
     ])
-    run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst),
-         "-i", str(wav), "-filter_complex", f"[0:v]{look}[v]", "-map", "[v]", "-map", "1:a",
+    graph.append(f"[m]{look}[v]")
+    na = len(files) + 1
+    run(["ffmpeg", "-v", "error", "-y", *inputs, "-i", str(wav),
+         "-filter_complex", ";".join(graph), "-map", "[v]", "-map", f"{na}:a",
          "-c:v", "libx264", "-preset", "slow", "-crf", "21", "-maxrate", "12M",
          "-bufsize", "24M", "-r", str(FPS),
          "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", str(OUT)])
