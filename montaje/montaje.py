@@ -48,6 +48,11 @@ SOURCES = {
     "T": "WA_grupo_rosado.mp4",  # grupo con globos rosados; entrada al auditorio
     "U": "WA_grupo_verde.mp4",   # grupo con globos verdes; auditorio
     "V": "WA_profesora.mov",     # profesora en tarima, letrero de la institución, auditorio lleno
+    "W1": "WA_expositora_griega_1.mov",  # expositora con túnica griega en la tarima
+    "W2": "WA_expositora_griega_2.mov",  # la expositora de cerca; al final, la decoración
+    "W3": "WA_auditorio_letrero.mov",    # letrero de la institución y público
+    "W4": "WA_auditorio_reacciones.mov",  # reacciones entre el público
+    "W5": "WA_tarima_decorada.mov",      # tarima con columnas de globos; auditorio lleno
 }
 
 
@@ -91,51 +96,72 @@ def cut_points():
     return cuts
 
 
+# Textos que narran la experiencia: uno por bloque de 3 planos (6 golpes).
+TITLE_INTRO = ("AURA FEST", "Día de la Filosofía")
+CAPTIONS = [
+    ["La escuela despertó", "vestida de fiesta."],
+    ["Cada grupo llegó", "con su propia filosofía."],
+    ["Cada rincón", "guardaba una idea."],
+    ["Reímos sin pensar…", "y pensamos sin dejar de reír."],
+    ["Por un día", "fuimos filósofos."],
+    ["El auditorio se llenó", "de voces, aplausos y preguntas."],
+    ["Bailamos, jugamos,", "creamos juntos…"],
+    ["…y sin darnos cuenta,", "hicimos historia."],
+]
+
 XFADE = 0.2  # fundido cruzado suave entre planos (empieza justo en el golpe)
 
 
 # Reglas: el escenario manda (lugares, decoración, auditorio, grupos) y las
-# expresiones van intercaladas; cada clip se usa como máximo 2 veces (la galería,
-# 3 rincones distintos) y nunca en planos cercanos.
+# expresiones van intercaladas; cada clip se usa como máximo 2 veces y nunca en
+# planos cercanos. Cada bloque de 3 planos va con un texto (CAPTIONS) que narra
+# cómo se vivió el AURA FEST.
 TIMELINE = [
-    # --- Intro: "Los sabios dicen..." ---------------------------------------
-    S("R", 0.00, .50, .38, 1.10, 1.16, speed=0.6),                   # entrada "Día de la Filosofía"
+    # --- Intro: AURA FEST · Día de la Filosofía -------------------------------
+    S("R", 0.00, .50, .38, 1.10, 1.16, speed=0.6),                   # entrada bajo los árboles
 
-    # --- 2 golpes por plano (~1.7 s), cámara lenta y fundidos suaves -------
+    # 1 "La escuela despertó vestida de fiesta."
     S("A", 1.00, .50, .42, 1.00, 1.05, speed=0.8, dx=.03),           # banner principal (4K)
     S("Q", 3.30, .50, .40, 1.00, 1.05, speed=0.7),                   # pasillo de banderines
-    S("V", 8.00, .50, .50, 1.00, 1.05, speed=0.7),                   # auditorio lleno
-    S("L", 9.20, .50, .50, 1.00, 1.05, speed=0.7),                   # el castillo
-    S("H", 2.40, .45, .25, 1.30, 1.36, speed=0.5),                   # saluda y ríe
-    S("N", 14.60, .55, .55, 1.00, 1.05, speed=0.7),                  # las mesas de la galería
+    S("W5", 0.50, .55, .50, 1.00, 1.05, speed=0.7),                  # tarima con columnas de globos
+    # 2 "Cada grupo llegó con su propia filosofía."
     S("T", 2.00, .50, .45, 1.00, 1.05, speed=0.7),                   # grupo con globos rosados
-    S("P", 0.50, .50, .40, 1.05, 1.00, speed=0.7),                   # el mural
-    S("F", 4.30, .62, .33, 1.40, 1.47, speed=0.7),                   # disfrazado riéndose
-    S("B", 0.40, .50, .48, 1.10, 1.05, speed=0.7),                   # laberinto filosófico
     S("U", 2.00, .50, .50, 1.00, 1.05, speed=0.7),                   # grupo con globos verdes
-    S("D", 0.80, .50, .45, 1.10, 1.16, speed=0.7, dx=.03),           # póster de Aristóteles
     S("S", 0.90, .50, .40, 1.00, 1.05, speed=0.7),                   # "Estoicismo"
-    S("N", 0.50, .50, .42, 1.05, 1.10, speed=0.7),                   # globos y "Cuadros Vivos"
+    # 3 "Cada rincón guardaba una idea."
+    S("N", 14.60, .55, .55, 1.00, 1.05, speed=0.7),                  # las mesas de la galería
+    S("L", 9.20, .50, .50, 1.00, 1.05, speed=0.7),                   # el castillo
+    S("D", 0.80, .50, .45, 1.10, 1.16, speed=0.7, dx=.03),           # póster de Aristóteles
+    # 4 "Reímos sin pensar... y pensamos sin dejar de reír."
+    S("H", 2.40, .45, .25, 1.30, 1.36, speed=0.5),                   # saluda y ríe
     S("J", 0.00, .45, .45, 1.10, 1.16, speed=0.6),                   # muertas de la risa
-    S("R", 7.00, .50, .42, 1.05, 1.10, speed=0.7),                   # BIENVENIDOS
-    S("V", 4.30, .70, .28, 1.30, 1.36, speed=0.7),                   # letrero de la institución
+    S("F", 4.30, .62, .33, 1.40, 1.47, speed=0.7),                   # disfrazado riéndose
+    # 5 "Por un día fuimos filósofos."
+    S("W2", 2.00, .60, .45, 1.15, 1.21, speed=0.7),                  # expositora con túnica griega
     S("M", 2.00, .50, .35, 1.05, 1.10, speed=0.7),                   # leyendo juntos, disfrazados
-    S("T", 14.80, .50, .55, 1.00, 1.05, speed=0.7),                  # los grupos llegan al auditorio
-    S("K", 3.00, .55, .50, 1.05, 1.10, speed=0.7),                   # el baile en el patio
     S("L", 4.20, .50, .40, 1.10, 1.16, speed=0.7),                   # disfrazados en el castillo
-    S("U", 11.80, .50, .50, 1.00, 1.05, speed=0.7),                  # auditorio con el grupo verde
+    # 6 "El auditorio se llenó de voces, aplausos y preguntas."
+    S("W5", 8.50, .50, .60, 1.00, 1.05, speed=0.7),                  # auditorio lleno
+    S("W1", 1.00, .45, .45, 1.05, 1.10, speed=0.7),                  # la expositora en la tarima
+    S("V", 4.30, .70, .28, 1.30, 1.36, speed=0.7),                   # letrero de la institución
+    # 7 "Bailamos, jugamos, creamos juntos..."
+    S("P", 0.50, .50, .40, 1.05, 1.00, speed=0.7),                   # el mural
+    S("K", 3.00, .55, .50, 1.05, 1.10, speed=0.7),                   # el baile en el patio
+    S("W4", 4.00, .50, .55, 1.10, 1.16, speed=0.7),                  # reacciones en el público
+    # 8 "...y sin darnos cuenta, hicimos historia."
     S("N", 9.00, .45, .38, 1.20, 1.26, speed=0.7),                   # ramo de flores
+    S("T", 14.80, .50, .55, 1.00, 1.05, speed=0.7),                  # los grupos llegan al auditorio
     S("A", 3.00, .70, .35, 1.30, 1.36, speed=0.7),                   # racimo de globos
 
-    # --- Clímax: 1 golpe por plano ------------------------------------------
+    # --- Clímax: 1 golpe por plano, sin texto --------------------------------
     S("S", 4.00, .50, .50, 1.00, 1.05),                              # entran con globos naranja
     S("O", 0.10, .62, .32, 1.20, 1.26),                              # risas en el auditorio
+    S("W2", 12.90, .55, .50, 1.00, 1.05),                            # la decoración de la tarima
     S("G", 2.60, .50, .35, 1.10, 1.16),                              # señala a cámara
+    S("W3", 3.50, .50, .55, 1.00, 1.05),                             # el público
     S("I", 3.00, .55, .32, 1.20, 1.26),                              # saluda desde el juego
+    S("R", 7.00, .50, .42, 1.05, 1.10),                              # BIENVENIDOS
     S("E", 2.40, 1.0, .22, 1.60, 1.68),                              # mira a cámara y sonríe
-    S("Q", 2.00, .60, .55, 1.05, 1.10),                              # compañeras por el pasillo
-    S("K", 1.50, .60, .45, 1.10, 1.16),                              # baile
-    S("F", 0.30, .45, .35, 1.10, 1.16),                              # posando con corbata
 ]
 
 # Toma final: corte en seco a silencio + cámara lenta del salón con el texto.
@@ -289,6 +315,33 @@ def final_text_filters():
     return filters
 
 
+def caption_filters():
+    """Título de entrada y textos narrativos sobre el montaje (tercio inferior)."""
+    def alpha(t0, t1, fade=0.5):
+        return (f"min(1\\,max(0\\,(t-{t0:.2f})/{fade}))*"
+                f"min(1\\,max(0\\,({t1:.2f}-t)/{fade}))")
+
+    out = []
+    title, sub = TITLE_INTRO
+    for k, (txt, font, size, y) in enumerate([(title, FONT_TITLE, 130, "h*0.40"),
+                                              (sub, FONT, 66, "h*0.40+150")]):
+        tf = BUILD / f"intro_{k}.txt"
+        tf.write_text(txt, encoding="utf-8")
+        out.append(f"drawtext=fontfile={font}:textfile={tf}:fontsize={size}:"
+                   f"fontcolor=0xF6E7C1:shadowcolor=black@0.75:shadowx=0:shadowy=4:"
+                   f"x=(w-text_w)/2:y={y}:alpha='{alpha(0.3 + 0.4 * k, beat(2) - 0.1, 0.4)}'")
+    for b, lines in enumerate(CAPTIONS):
+        t0 = beat(2 + 6 * b) + 0.5
+        t1 = beat(2 + 6 * (b + 1)) - 0.05
+        for k, line in enumerate(lines):
+            tf = BUILD / f"texto_bloque_{b}_{k}.txt"
+            tf.write_text(line, encoding="utf-8")
+            out.append(f"drawtext=fontfile={FONT}:textfile={tf}:fontsize=64:fontcolor=white:"
+                       f"shadowcolor=black@0.85:shadowx=0:shadowy=3:borderw=2:bordercolor=black@0.35:"
+                       f"x=(w-text_w)/2:y=h*0.74+{k}*88:alpha='{alpha(t0 + 0.25 * k, t1)}'")
+    return out
+
+
 def render_credits():
     """Placa final en negro: "Presentado por" + nombres."""
     frames = round(CREDITS_SECONDS * FPS)
@@ -373,6 +426,7 @@ def main():
         "eq=saturation=0.9:contrast=1.04",
         "vignette=PI/4.2",
         "noise=alls=3:allf=t",
+        *caption_filters(),
         f"fade=t=out:st={total - 0.8:.2f}:d=0.8",
         "format=yuv420p",
     ])
