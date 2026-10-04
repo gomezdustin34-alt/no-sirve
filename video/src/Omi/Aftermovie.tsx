@@ -38,7 +38,13 @@ import {
   NumeroCuenta,
 } from "./Efectos";
 import { PlanoClip } from "./PlanoClip";
-import { energiaEn, FPS, framesPorBeat, TIMELINE } from "./timeline";
+import {
+  energiaEn,
+  entradasFoto,
+  FPS,
+  framesPorBeat,
+  TIMELINE,
+} from "./timeline";
 import { latigazo, zoomTraves } from "./Transiciones";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -66,7 +72,11 @@ const EFECTOS: Record<Efecto, { antes: number; duracion: number }> = {
   glitch: { antes: 0, duracion: 12 },
   tick: { antes: 0, duracion: 4 },
   subdrop: { antes: 0, duracion: 60 },
+  obturador: { antes: 0, duracion: 10 },
 };
+
+/** Frames donde cae cada foto (todas las polaroids del video). */
+const CAIDAS_FOTO: number[] = TIMELINE.clips.flatMap((c) => entradasFoto(c));
 
 type Golpe = { frame: number; fuerza: number; duracion: number };
 
@@ -81,6 +91,8 @@ const GOLPES: Golpe[] = (() => {
       g.push({ frame: c.corteSalida, fuerza: 0.9, duracion: 8 });
     if (c.rafaga) g.push({ frame: c.corteEntrada, fuerza: 0.45, duracion: 4 });
   }
+  for (const f of CAIDAS_FOTO)
+    g.push({ frame: f + 4, fuerza: 0.35, duracion: 6 });
   return g;
 })();
 
@@ -96,6 +108,8 @@ const SONIDOS_AUTO: { frame: number; efecto: Efecto; volumen: number }[] =
       if (c.rafaga)
         s.push({ frame: c.corteEntrada, efecto: "tick", volumen: 0.25 });
     }
+    for (const f of CAIDAS_FOTO)
+      s.push({ frame: f, efecto: "obturador", volumen: 0.45 });
     return s;
   })();
 
@@ -308,6 +322,17 @@ export const Aftermovie: React.FC = () => {
               <Destello />
             </Sequence>
           );
+        }
+        if (clip.fotos) {
+          return entradasFoto(clip).map((f) => (
+            <Sequence
+              key={`fo${clip.indice}-${f}`}
+              from={f}
+              durationInFrames={3}
+            >
+              <Flash fuerza={0.5} />
+            </Sequence>
+          ));
         }
         if (clip.rafaga) {
           return (

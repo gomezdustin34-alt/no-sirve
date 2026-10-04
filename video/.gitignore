@@ -11,3 +11,5 @@ public/omi/clips/*
 !public/omi/clips/.gitkeep
 public/omi/musica/*
 !public/omi/musica/.gitkeep
+public/omi/fotos/*
+!public/omi/fotos/.gitkeep

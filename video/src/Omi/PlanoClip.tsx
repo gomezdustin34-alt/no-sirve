@@ -11,6 +11,7 @@ import {
 import { Movimiento } from "./config";
 import { COLORES, FUENTE } from "./estilo";
 import { Etiqueta } from "./Etiqueta";
+import { PlanoFotos } from "./Fotos";
 import { TituloAnimado } from "./TituloAnimado";
 import { ClipEnTimeline, FPS } from "./timeline";
 
@@ -164,7 +165,18 @@ export const PlanoClip: React.FC<{ clip: ClipEnTimeline }> = ({ clip }) => {
           filter: "contrast(1.06) saturate(1.1)",
         }}
       >
-        {clip.archivo ? <Video clip={clip} /> : <Ejemplo clip={clip} />}
+        {clip.fotos ? (
+          <PlanoFotos
+            fotos={clip.fotos}
+            pies={clip.pies}
+            semilla={clip.indice}
+            inicio={clip.transicionEntrada / 2}
+          />
+        ) : clip.archivo ? (
+          <Video clip={clip} />
+        ) : (
+          <Ejemplo clip={clip} />
+        )}
       </AbsoluteFill>
       {clip.etiqueta && (
         <Sequence from={inicioTexto} durationInFrames={finTexto - inicioTexto}>
@@ -173,7 +185,11 @@ export const PlanoClip: React.FC<{ clip: ClipEnTimeline }> = ({ clip }) => {
       )}
       {clip.texto && (
         <Sequence from={inicioTexto} durationInFrames={finTexto - inicioTexto}>
-          <TituloAnimado texto={clip.texto} subtexto={clip.subtexto} />
+          <TituloAnimado
+            texto={clip.texto}
+            subtexto={clip.subtexto}
+            abajo={Boolean(clip.fotos)}
+          />
         </Sequence>
       )}
     </AbsoluteFill>

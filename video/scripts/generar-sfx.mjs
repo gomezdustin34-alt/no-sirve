@@ -126,3 +126,13 @@ guardar(
     return (Math.sin(2 * Math.PI * 3200 * t) * 0.6 + n * 0.4) * Math.exp(-t * 160);
   }),
 );
+
+// Obturador: dos clics de cámara de fotos con un poco de mecanismo (0,18 s).
+guardar(
+  "obturador",
+  generar(0.18, (t) => {
+    const clic = (t0) =>
+      t >= t0 ? (ruido() * 0.7 + Math.sin(2 * Math.PI * 1800 * t) * 0.3) * Math.exp(-(t - t0) * 120) : 0;
+    return clic(0) + 0.7 * clic(0.075);
+  }),
+);

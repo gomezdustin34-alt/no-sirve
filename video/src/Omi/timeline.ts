@@ -38,6 +38,10 @@ export const energiaEn = (beat: number) => {
   return nivel;
 };
 
+/** Frames (del video final) donde cae cada foto de un plano de fotos. */
+export const entradasFoto = (c: { fotos?: string[]; corteEntrada: number }) =>
+  (c.fotos ?? []).map((_, k) => c.corteEntrada + Math.round(k * framesPorBeat));
+
 export const construirTimeline = () => {
   const clips: ClipEnTimeline[] = [];
   let beats = 0;

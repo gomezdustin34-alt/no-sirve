@@ -39,7 +39,8 @@ export type Efecto =
   | "click"
   | "glitch"
   | "tick"
-  | "subdrop";
+  | "subdrop"
+  | "obturador";
 
 export type Clip = {
   /** Descripción para ti. Solo se ve en las tarjetas de ejemplo. */
@@ -77,7 +78,29 @@ export type Clip = {
   drop?: boolean;
   /** Plano de la ráfaga rápida: destello y glitch pequeños en cada corte. */
   rafaga?: boolean;
+  /**
+   * Fotos (en vez de video): caen como polaroids, una por beat, y se
+   * apilan. Con `fotos`, `archivo` va en null y `desde` no se usa.
+   */
+  fotos?: string[];
+  /** Pie escrito en cada polaroid (mismo orden que `fotos`). */
+  pies?: string[];
 };
+
+/** Tus fotos (en public/omi/fotos/). */
+export const F01 = "omi/fotos/f01-tiendita-dona-mati.jpg";
+export const F02 = "omi/fotos/f02-profes-math-superpower.jpg";
+export const F03 = "omi/fotos/f03-mesa-omi-circuito-juegos.jpg";
+export const F04 = "omi/fotos/f04-museo-matematico.jpg";
+export const F05 = "omi/fotos/f05-profes-grados-4-5.jpg";
+export const F06 = "omi/fotos/f06-escenario-dia-creatividad.jpg";
+export const F07 = "omi/fotos/f07-estacion-bingo.jpg";
+export const F08 = "omi/fotos/f08-tiendita-explicando.jpg";
+export const F09 = "omi/fotos/f09-premiados-con-medallas.jpg";
+export const F10 = "omi/fotos/f10-entrega-diplomas.jpg";
+
+/** Fotos tomadas en vertical (para darles la forma correcta de polaroid). */
+export const FOTOS_VERTICALES = [F05, F06];
 
 /**
  * Energía visual por tramo de la canción (en beats): controla el pulso de
@@ -220,13 +243,12 @@ export const CLIPS: Clip[] = [
     efecto: "whoosh",
   },
   {
-    nombre: "Estudiantes moviéndose entre estaciones",
-    archivo: V2,
-    desde: 5,
+    nombre: "Foto: profes de la OMI, grados 4° y 5°",
+    archivo: null,
+    desde: 0,
     beats: 4,
-    movimiento: "derecha",
-    sonidoReal: 0.3,
-    etiqueta: "Estaciones de retos",
+    fotos: [F05],
+    pies: ["Grados 4° y 5°"],
     transicion: "glitch",
   },
 
@@ -294,12 +316,12 @@ export const CLIPS: Clip[] = [
 
   // ── MÁS QUE MATEMÁTICAS (beats 44–60): exposiciones ─────────
   {
-    nombre: "Museo de las Matemáticas",
-    archivo: V6,
+    nombre: "Foto: Museo Matemático",
+    archivo: null,
     desde: 0,
     beats: 2,
-    movimiento: "zoom-in",
-    etiqueta: "Museo de las Matemáticas",
+    fotos: [F04],
+    pies: ["Museo Matemático"],
     transicion: "corte",
   },
   {
@@ -490,58 +512,50 @@ export const CLIPS: Clip[] = [
     efecto: "whoosh",
   },
 
-  // ── RECONOCIMIENTOS (beats 94–100) ──────────────────────────
+  // ── ÁLBUM DE FOTOS (beats 94–100): una polaroid por beat ───
   {
-    nombre: "Escultura de π y letras OMΦ (120 fps)",
-    archivo: V17,
-    desde: 0.5,
-    beats: 2,
-    velocidad: 0.4,
-    movimiento: "zoom-in",
-    etiqueta: "Reconocimientos",
+    nombre: "Álbum: fotos que caen y se apilan",
+    archivo: null,
+    desde: 0,
+    beats: 6,
+    fotos: [F01, F08, F03, F07, F06],
+    pies: [
+      "La tiendita de Doña Mati",
+      "¡Pienso, calculo y compro!",
+      "Circuito de juegos",
+      "Estación Bingo Matemático",
+      "Día de la Creatividad 2026",
+    ],
     transicion: "corte",
-    efecto: "click",
-  },
-  {
-    nombre: "Medallas listas (120 fps)",
-    archivo: V17,
-    desde: 11,
-    beats: 2,
-    velocidad: 0.5,
-    movimiento: "derecha",
-    transicion: "corte",
-    efecto: "click",
-  },
-  {
-    nombre: "Diploma de mención de honor (120 fps)",
-    archivo: V17,
-    desde: 15.5,
-    beats: 2,
-    velocidad: 0.5,
-    movimiento: "zoom-in",
-    etiqueta: "Mención de honor",
-    transicion: "fundido",
   },
 
-  // ── CIERRE (beats 100–108) ──────────────────────────────────
+  // ── RECONOCIMIENTOS Y CIERRE (beats 100–108) ────────────────
   {
-    nombre: "Niño con carnet OMI levanta la mirada (lento)",
-    archivo: V2,
-    desde: 36,
-    beats: 4,
-    velocidad: 0.5,
-    movimiento: "zoom-out",
-    texto: "Así fue ese día…",
-    transicion: "matematica",
+    nombre: "Foto: entrega de diplomas y medallas",
+    archivo: null,
+    desde: 0,
+    beats: 2,
+    fotos: [F10],
+    pies: ["Reconocimientos"],
+    transicion: "zoom",
     efecto: "whoosh",
   },
   {
-    nombre: "Auditorio: Olimpiadas Matemáticas INETFRADPAS",
-    archivo: V16,
-    desde: 49,
-    beats: 4,
-    velocidad: 0.6,
-    movimiento: "zoom-out",
+    nombre: "Foto: premiados con medallas y diplomas",
+    archivo: null,
+    desde: 0,
+    beats: 3,
+    fotos: [F09],
+    texto: "Así fue ese día…",
+    transicion: "glitch",
+  },
+  {
+    nombre: "Foto: profes 'Math is my superpower'",
+    archivo: null,
+    desde: 0,
+    beats: 3,
+    fotos: [F02],
+    pies: ["Math is my superpower"],
     texto: "…y estuvo brutal.",
     transicion: "fundido",
   },

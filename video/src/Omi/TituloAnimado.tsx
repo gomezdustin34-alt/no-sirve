@@ -16,7 +16,9 @@ export const TituloAnimado: React.FC<{
   texto: string;
   subtexto?: string;
   tamano?: number;
-}> = ({ texto, subtexto, tamano }) => {
+  /** Abajo, en vez de al centro (para no tapar las fotos). */
+  abajo?: boolean;
+}> = ({ texto, subtexto, tamano, abajo }) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames, width } = useVideoConfig();
   const palabras = texto.split(" ");
@@ -52,7 +54,8 @@ export const TituloAnimado: React.FC<{
   return (
     <AbsoluteFill
       style={{
-        justifyContent: "center",
+        justifyContent: abajo ? "flex-end" : "center",
+        paddingBottom: abajo ? 330 : 0,
         alignItems: "center",
         opacity: salida,
         transform: `translateY(${(1 - salida) * -20}px)`,
