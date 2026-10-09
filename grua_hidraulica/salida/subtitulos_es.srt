@@ -1,0 +1,276 @@
+1
+00:00:11,500 --> 00:00:13,000
+Buenas tardes, mi nombre es Dylan Martínez
+
+2
+00:00:13,000 --> 00:00:15,100
+y soy el líder de la investigación.
+
+3
+00:00:15,260 --> 00:00:17,300
+Buenas tardes, mi nombre es (…) Porto
+
+4
+00:00:17,300 --> 00:00:19,550
+y soy la coordinadora de planeación.
+
+5
+00:00:19,740 --> 00:00:22,100
+Buenas tardes, mi nombre es (…)
+
+6
+00:00:22,100 --> 00:00:23,800
+y soy diseñadora (…).
+
+7
+00:00:24,060 --> 00:00:25,950
+Buenas tardes, soy (…) Contreras
+
+8
+00:00:25,950 --> 00:00:27,700
+y soy el encargado de la construcción.
+
+9
+00:00:27,820 --> 00:00:29,600
+Buenas tardes, soy Juan Chiquillo
+
+10
+00:00:29,600 --> 00:00:32,300
+y soy analista de calidad y evaluación.
+
+11
+00:00:32,460 --> 00:00:34,800
+Buenas tardes, mi nombre es Deibelis Mauri
+
+12
+00:00:34,800 --> 00:00:37,800
+y soy la relatora y gestora del informe.
+
+13
+00:00:37,900 --> 00:00:40,200
+Yo soy la coordinadora de planeación
+
+14
+00:00:40,200 --> 00:00:42,700
+y a continuación mis compañeros me van a dar
+
+15
+00:00:42,700 --> 00:00:45,800
+una breve información sobre la grúa hidráulica.
+
+16
+00:00:46,060 --> 00:00:47,450
+Bueno, como pueden ver,
+
+17
+00:00:47,450 --> 00:00:50,450
+soy la relatora y gestora del informe.
+
+18
+00:00:50,620 --> 00:00:53,300
+Como pueden ver, nuestro equipo desarrolló
+
+19
+00:00:53,300 --> 00:00:57,200
+la actividad STEM «Innovación hidráulica»,
+
+20
+00:00:57,420 --> 00:01:01,200
+cuyo reto era construir una grúa
+
+21
+00:01:01,200 --> 00:01:03,200
+utilizando materiales reciclables
+
+22
+00:01:03,200 --> 00:01:05,600
+para poder mover cargas pequeñas
+
+23
+00:01:05,600 --> 00:01:08,500
+de manera económica y sostenible.
+
+24
+00:01:08,710 --> 00:01:11,300
+Primeramente hicimos la investigación
+
+25
+00:01:11,300 --> 00:01:14,100
+de la función hidráulica y el principio de Pascal.
+
+26
+00:01:14,230 --> 00:01:16,000
+Luego planeamos el trabajo
+
+27
+00:01:16,000 --> 00:01:19,350
+con un cronograma, boceto y la lista de materiales.
+
+28
+00:01:19,750 --> 00:01:22,550
+Después construimos las estructuras
+
+29
+00:01:22,550 --> 00:01:24,750
+con cartón y palillos,
+
+30
+00:01:24,790 --> 00:01:26,950
+e instalamos el sistema
+
+31
+00:01:26,950 --> 00:01:28,950
+con agua, jeringas y mangueras.
+
+32
+00:01:29,030 --> 00:01:31,150
+Y por último realizamos (…)
+
+33
+00:01:31,150 --> 00:01:33,550
+para evaluar su funcionamiento.
+
+34
+00:01:33,687 --> 00:01:35,817
+Buenas tardes, mi nombre es Dylan Martínez.
+
+35
+00:01:35,907 --> 00:01:38,667
+Pues yo lo investigué en la página web
+
+36
+00:01:38,750 --> 00:01:41,500
+que te habla sobre todo cómo armar una grúa.
+
+37
+00:01:41,733 --> 00:01:45,383
+Yo soy la diseñadora estructural.
+
+38
+00:01:45,643 --> 00:01:47,983
+Aquí les voy a mostrar el diseño.
+
+39
+00:01:48,413 --> 00:01:50,833
+Esta es la parte de la base.
+
+40
+00:01:51,263 --> 00:01:54,183
+La hice con las medidas que serían
+
+41
+00:01:54,183 --> 00:01:58,883
+11 centímetros y 22 centímetros.
+
+42
+00:01:59,123 --> 00:02:01,383
+Estas serían las partes laterales.
+
+43
+00:02:01,647 --> 00:02:04,967
+Cada una midió 12 centímetros.
+
+44
+00:02:05,223 --> 00:02:07,983
+Bueno, esta parte de acá sería
+
+45
+00:02:07,983 --> 00:02:10,883
+lo que sostiene la grúa,
+
+46
+00:02:10,983 --> 00:02:13,283
+que son 22 centímetros.
+
+47
+00:02:13,863 --> 00:02:16,583
+Esto es lo que sostienen
+
+48
+00:02:16,583 --> 00:02:19,183
+las partes laterales de la grúa,
+
+49
+00:02:19,303 --> 00:02:21,283
+que serían 3 centímetros.
+
+50
+00:02:21,383 --> 00:02:22,683
+Buenas tardes, soy (…) Contreras,
+
+51
+00:02:22,683 --> 00:02:24,133
+soy el encargado de la construcción.
+
+52
+00:02:24,193 --> 00:02:27,183
+Bueno, primero que todo, utilizamos una base de cartón.
+
+53
+00:02:27,953 --> 00:02:31,883
+Hicimos cuatro columnas de cartón a la medida,
+
+54
+00:02:31,953 --> 00:02:33,733
+las pegamos con silicona,
+
+55
+00:02:33,873 --> 00:02:36,783
+usamos una basecita también de cartón
+
+56
+00:02:36,833 --> 00:02:39,233
+para pegar esta basecita que ven aquí.
+
+57
+00:02:39,793 --> 00:02:41,583
+Utilizamos lana negra,
+
+58
+00:02:41,633 --> 00:02:45,433
+utilizamos dos mangueras
+
+59
+00:02:45,473 --> 00:02:47,883
+y dos jeringas y un líquido.
+
+60
+00:03:09,013 --> 00:03:10,433
+A continuación vamos a probar
+
+61
+00:03:10,433 --> 00:03:13,733
+el funcionamiento de nuestra grúa
+
+62
+00:03:13,813 --> 00:03:16,333
+y vamos a analizar si funciona correctamente.
+
+63
+00:03:18,403 --> 00:03:20,583
+Como pueden ver, nuestra grúa
+
+64
+00:03:20,643 --> 00:03:22,483
+funcionó correctamente,
+
+65
+00:03:22,483 --> 00:03:23,633
+tal como estaba planeado.
+
+66
+00:03:23,683 --> 00:03:24,683
+Muchas gracias.
+
+67
+00:03:28,893 --> 00:03:31,383
+Entendimos que planear, trabajar como equipo
+
+68
+00:03:31,383 --> 00:03:33,833
+y documentar cada fase nos ayuda a mejorar.
+
+69
+00:03:34,013 --> 00:03:34,683
+Muchas gracias.
+

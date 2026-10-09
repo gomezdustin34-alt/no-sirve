@@ -1,0 +1,80 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Inter SemiBold,46,&H00FFFFFF,&H00FFFFFF,&H00000000,&H50201008,0,0,0,0,100,100,0,0,3,10,0,2,80,80,50,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:11.50,0:00:13.00,Default,,0,0,0,,Buenas tardes, mi nombre es Dylan Martínez
+Dialogue: 0,0:00:13.00,0:00:15.10,Default,,0,0,0,,y soy el líder de la investigación.
+Dialogue: 0,0:00:15.26,0:00:17.30,Default,,0,0,0,,Buenas tardes, mi nombre es (…) Porto
+Dialogue: 0,0:00:17.30,0:00:19.55,Default,,0,0,0,,y soy la coordinadora de planeación.
+Dialogue: 0,0:00:19.74,0:00:22.10,Default,,0,0,0,,Buenas tardes, mi nombre es (…)
+Dialogue: 0,0:00:22.10,0:00:23.80,Default,,0,0,0,,y soy diseñadora (…).
+Dialogue: 0,0:00:24.06,0:00:25.95,Default,,0,0,0,,Buenas tardes, soy (…) Contreras
+Dialogue: 0,0:00:25.95,0:00:27.70,Default,,0,0,0,,y soy el encargado de la construcción.
+Dialogue: 0,0:00:27.82,0:00:29.60,Default,,0,0,0,,Buenas tardes, soy Juan Chiquillo
+Dialogue: 0,0:00:29.60,0:00:32.30,Default,,0,0,0,,y soy analista de calidad y evaluación.
+Dialogue: 0,0:00:32.46,0:00:34.80,Default,,0,0,0,,Buenas tardes, mi nombre es Deibelis Mauri
+Dialogue: 0,0:00:34.80,0:00:37.80,Default,,0,0,0,,y soy la relatora y gestora del informe.
+Dialogue: 0,0:00:37.90,0:00:40.20,Default,,0,0,0,,Yo soy la coordinadora de planeación
+Dialogue: 0,0:00:40.20,0:00:42.70,Default,,0,0,0,,y a continuación mis compañeros me van a dar
+Dialogue: 0,0:00:42.70,0:00:45.80,Default,,0,0,0,,una breve información sobre la grúa {\c&HE6E15C&}hidráulica.{\c&HFFFFFF&}
+Dialogue: 0,0:00:46.06,0:00:47.45,Default,,0,0,0,,Bueno, como pueden ver,
+Dialogue: 0,0:00:47.45,0:00:50.45,Default,,0,0,0,,soy la relatora y gestora del informe.
+Dialogue: 0,0:00:50.62,0:00:53.30,Default,,0,0,0,,Como pueden ver, nuestro equipo desarrolló
+Dialogue: 0,0:00:53.30,0:00:57.20,Default,,0,0,0,,la actividad STEM «Innovación {\c&HE6E15C&}hidráulica»,{\c&HFFFFFF&}
+Dialogue: 0,0:00:57.42,0:01:01.20,Default,,0,0,0,,cuyo reto era construir una grúa
+Dialogue: 0,0:01:01.20,0:01:03.20,Default,,0,0,0,,utilizando materiales {\c&HE6E15C&}reciclables{\c&HFFFFFF&}
+Dialogue: 0,0:01:03.20,0:01:05.60,Default,,0,0,0,,para poder mover cargas pequeñas
+Dialogue: 0,0:01:05.60,0:01:08.50,Default,,0,0,0,,de manera económica y sostenible.
+Dialogue: 0,0:01:08.71,0:01:11.30,Default,,0,0,0,,Primeramente hicimos la investigación
+Dialogue: 0,0:01:11.30,0:01:14.10,Default,,0,0,0,,de la función {\c&HE6E15C&}hidráulica{\c&HFFFFFF&} y el principio de {\c&HE6E15C&}Pascal.{\c&HFFFFFF&}
+Dialogue: 0,0:01:14.23,0:01:16.00,Default,,0,0,0,,Luego planeamos el trabajo
+Dialogue: 0,0:01:16.00,0:01:19.35,Default,,0,0,0,,con un {\c&HE6E15C&}cronograma,{\c&HFFFFFF&} {\c&HE6E15C&}boceto{\c&HFFFFFF&} y la lista de materiales.
+Dialogue: 0,0:01:19.75,0:01:22.55,Default,,0,0,0,,Después construimos las estructuras
+Dialogue: 0,0:01:22.55,0:01:24.75,Default,,0,0,0,,con cartón y palillos,
+Dialogue: 0,0:01:24.79,0:01:26.95,Default,,0,0,0,,e instalamos el sistema
+Dialogue: 0,0:01:26.95,0:01:28.95,Default,,0,0,0,,con {\c&HE6E15C&}agua,{\c&HFFFFFF&} {\c&HE6E15C&}jeringas{\c&HFFFFFF&} y {\c&HE6E15C&}mangueras.{\c&HFFFFFF&}
+Dialogue: 0,0:01:29.03,0:01:31.15,Default,,0,0,0,,Y por último realizamos (…)
+Dialogue: 0,0:01:31.15,0:01:33.55,Default,,0,0,0,,para evaluar su funcionamiento.
+Dialogue: 0,0:01:33.68,0:01:35.81,Default,,0,0,0,,Buenas tardes, mi nombre es Dylan Martínez.
+Dialogue: 0,0:01:35.90,0:01:38.66,Default,,0,0,0,,Pues yo lo investigué en la página web
+Dialogue: 0,0:01:38.75,0:01:41.50,Default,,0,0,0,,que te habla sobre todo cómo armar una grúa.
+Dialogue: 0,0:01:41.73,0:01:45.38,Default,,0,0,0,,Yo soy la diseñadora estructural.
+Dialogue: 0,0:01:45.64,0:01:47.98,Default,,0,0,0,,Aquí les voy a mostrar el diseño.
+Dialogue: 0,0:01:48.41,0:01:50.83,Default,,0,0,0,,Esta es la parte de la base.
+Dialogue: 0,0:01:51.26,0:01:54.18,Default,,0,0,0,,La hice con las medidas que serían
+Dialogue: 0,0:01:54.18,0:01:58.88,Default,,0,0,0,,11 {\c&HE6E15C&}centímetros{\c&HFFFFFF&} y 22 {\c&HE6E15C&}centímetros.{\c&HFFFFFF&}
+Dialogue: 0,0:01:59.12,0:02:01.38,Default,,0,0,0,,Estas serían las partes laterales.
+Dialogue: 0,0:02:01.64,0:02:04.96,Default,,0,0,0,,Cada una midió 12 {\c&HE6E15C&}centímetros.{\c&HFFFFFF&}
+Dialogue: 0,0:02:05.22,0:02:07.98,Default,,0,0,0,,Bueno, esta parte de acá sería
+Dialogue: 0,0:02:07.98,0:02:10.88,Default,,0,0,0,,lo que sostiene la grúa,
+Dialogue: 0,0:02:10.98,0:02:13.28,Default,,0,0,0,,que son 22 {\c&HE6E15C&}centímetros.{\c&HFFFFFF&}
+Dialogue: 0,0:02:13.86,0:02:16.58,Default,,0,0,0,,Esto es lo que sostienen
+Dialogue: 0,0:02:16.58,0:02:19.18,Default,,0,0,0,,las partes laterales de la grúa,
+Dialogue: 0,0:02:19.30,0:02:21.28,Default,,0,0,0,,que serían 3 {\c&HE6E15C&}centímetros.{\c&HFFFFFF&}
+Dialogue: 0,0:02:21.38,0:02:22.68,Default,,0,0,0,,Buenas tardes, soy (…) Contreras,
+Dialogue: 0,0:02:22.68,0:02:24.13,Default,,0,0,0,,soy el encargado de la construcción.
+Dialogue: 0,0:02:24.19,0:02:27.18,Default,,0,0,0,,Bueno, primero que todo, utilizamos una base de cartón.
+Dialogue: 0,0:02:27.95,0:02:31.88,Default,,0,0,0,,Hicimos cuatro columnas de cartón a la medida,
+Dialogue: 0,0:02:31.95,0:02:33.73,Default,,0,0,0,,las pegamos con silicona,
+Dialogue: 0,0:02:33.87,0:02:36.78,Default,,0,0,0,,usamos una basecita también de cartón
+Dialogue: 0,0:02:36.83,0:02:39.23,Default,,0,0,0,,para pegar esta basecita que ven aquí.
+Dialogue: 0,0:02:39.79,0:02:41.58,Default,,0,0,0,,Utilizamos lana negra,
+Dialogue: 0,0:02:41.63,0:02:45.43,Default,,0,0,0,,utilizamos dos {\c&HE6E15C&}mangueras{\c&HFFFFFF&}
+Dialogue: 0,0:02:45.47,0:02:47.88,Default,,0,0,0,,y dos {\c&HE6E15C&}jeringas{\c&HFFFFFF&} y un {\c&HE6E15C&}líquido.{\c&HFFFFFF&}
+Dialogue: 0,0:03:09.01,0:03:10.43,Default,,0,0,0,,A continuación vamos a probar
+Dialogue: 0,0:03:10.43,0:03:13.73,Default,,0,0,0,,el funcionamiento de nuestra grúa
+Dialogue: 0,0:03:13.81,0:03:16.33,Default,,0,0,0,,y vamos a analizar si funciona correctamente.
+Dialogue: 0,0:03:18.40,0:03:20.58,Default,,0,0,0,,Como pueden ver, nuestra grúa
+Dialogue: 0,0:03:20.64,0:03:22.48,Default,,0,0,0,,funcionó correctamente,
+Dialogue: 0,0:03:22.48,0:03:23.63,Default,,0,0,0,,tal como estaba planeado.
+Dialogue: 0,0:03:23.68,0:03:24.68,Default,,0,0,0,,Muchas gracias.
+Dialogue: 0,0:03:28.89,0:03:31.38,Default,,0,0,0,,Entendimos que planear, trabajar como equipo
+Dialogue: 0,0:03:31.38,0:03:33.83,Default,,0,0,0,,y documentar cada fase nos ayuda a mejorar.
+Dialogue: 0,0:03:34.01,0:03:34.68,Default,,0,0,0,,Muchas gracias.
