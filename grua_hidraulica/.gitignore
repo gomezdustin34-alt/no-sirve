@@ -1,0 +1,8 @@
+# Material pesado: no se versiona (vídeos originales, intermedios y resultados renderizados)
+fuentes/
+trabajo/
+modelos/
+salida/*.mp4
+salida/audio/
+salida/fotogramas/
+__pycache__/
