@@ -68,8 +68,8 @@ def draw_cards(img, sec, T):
         y = 345 + 170 * rs; x = 60 - (1 - a_in) * 50
         _p(img, with_alpha(im, a), (int(x - pad), int(y - pad)))
 
-TITLES = {"q": ("INTEGRANTE 3  ·  FUNCIONES POLINÓMICAS", "Función cuadrática"),
-          "c": ("INTEGRANTE 3  ·  FUNCIONES POLINÓMICAS", "Función cúbica")}
+TITLES = {"q": ("INTEGRANTE 3  ·  ALEJANDRO GÓMEZ", "Función cuadrática"),
+          "c": ("INTEGRANTE 3  ·  ALEJANDRO GÓMEZ", "Función cúbica")}
 def draw_header(img, sec, T, x=60):
     d = ImageDraw.Draw(img, "RGBA"); small, big = TITLES[sec]
     a = ease((T - SEC_START[sec] + .1) / .5)
@@ -109,7 +109,7 @@ def mic_badge(img, lvl, t):
         h = 6 + 22 * lvl * (0.5 + 0.5 * math.sin(t * 9 + i * 1.7)) ** 2 * (1 if i % 2 else .8)
         cx = x + 22 + i * 8
         d.rounded_rectangle([cx, y + 18 - h / 2, cx + 4, y + 18 + h / 2], 2, fill=PINK + (255,))
-    d.text((x + 72, y + 8), "Integrante 3 · narración", font=font("sb", 16), fill=WHITE + (235,))
+    d.text((x + 72, y + 8), "Alejandro Gómez · narración", font=font("sb", 16), fill=WHITE + (235,))
 
 # ---- graph scenes ----
 QG = Graph((110, 200, 760, 600), (-1, 7), (-2, 9), 1, 1, xlabels=[1, 2, 3, 4, 5, 6], ylabels=[-1, 2, 4, 6, 8])
@@ -203,7 +203,7 @@ def intro_scene(t):
     img = background(t); d = ImageDraw.Draw(img, "RGBA")
     a = ease(t / .6); b = ease((t - .35) / .6); out = clamp((2.2 - t) / .35)
     f1 = font("sb", 22); f2 = font("xb", 92); f3 = font("m", 30)
-    s1 = "INTEGRANTE 3"; s2 = "Funciones polinómicas"; s3 = "Cuadrática  ·  Cúbica"
+    s1 = "INTEGRANTE 3  ·  ALEJANDRO GÓMEZ"; s2 = "Funciones polinómicas"; s3 = "Cuadrática  ·  Cúbica"
     d.text(((W - f1.getlength(s1)) / 2, 230 - (1 - a) * 20), s1, font=f1, fill=PINK + (int(255 * a * out),))
     d.text(((W - f2.getlength(s2)) / 2, 270 + (1 - b) * 30), s2, font=f2, fill=WHITE + (int(255 * b * out),))
     w = 260 * ease((t - .6) / .6)
@@ -218,7 +218,7 @@ def thanks_scene(t, dur, lvl):
     s = "¡Muchas gracias!"
     al = int(255 * clamp(t / .4))
     d.text(((W - f.getlength(s)) / 2, 290), s, font=f, fill=WHITE + (al,))
-    s2 = "Integrante 3  ·  Función cuadrática y cúbica"; f2 = font("m", 26)
+    s2 = "Alejandro Gómez  ·  Integrante 3"; f2 = font("m", 26)
     d.text(((W - f2.getlength(s2)) / 2, 420), s2, font=f2, fill=LAV + (int(al * ease((t - .4) / .5)),))
     for i in range(14):
         ang = i / 14 * 2 * math.pi; r = 220 + 160 * ease(t / 1.2)

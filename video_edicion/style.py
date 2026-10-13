@@ -55,7 +55,7 @@ def _alt(f):
     k = f.size
     if k not in _dj: _dj[k] = ImageFont.truetype(DJ, int(k * .95))
     return _dj[k]
-ALT = set("ℝ")
+ALT = set("ℝ∛⌊⌋")
 def _runs(s):
     out = []
     for ch in s:
@@ -96,7 +96,7 @@ def make_card(label, text, w=None, accent=VIOLET2, big=46, sub=None):
     im = im.resize((w, h), Image.LANCZOS); d = ImageDraw.Draw(im)
     d.text((30, 20), label.upper(), font=fl, fill=accent + (255,))
     mtext(d, (30, 50), text, ft, WHITE + (255,))
-    if sub: d.text((30, 50 + big + 16), sub, font=fs, fill=LAV + (230,))
+    if sub: mtext(d, (30, 50 + big + 16), sub, fs, LAV + (230,))
     g, pad = glow_rect(w, h, 20, accent, 16, 70)
     g.alpha_composite(im, (pad, pad))
     return g, pad
@@ -143,6 +143,7 @@ class Graph:
         pts = []
         for i in range(n + 1):
             x = xa + (xb - xa) * i / n; y = f(x)
+            if y != y: continue
             X, Y = self.px(x, y); pts.append((X * sc, Y * sc))
         return pts
 
