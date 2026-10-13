@@ -10,7 +10,7 @@ T0, T1 = 0.0, 81.1
 DUR = round((T1 - T0) * FPS) / FPS
 SC = 2
 def _p(img, im, pos): img.paste(im, pos, im)
-TAG = "INTEGRANTE 8  ·  FUNCIONES RESTANTES Y CONCLUSIÓN"
+TAG = "INTEGRANTE 8  ·  JAIRO MALDONADO"
 
 SECS = [(0.0, 20.0, "Trigonométrica inversa"), (20.0, 38.6, "Función parte entera"), (38.6, 55.0, "Función a trozos"), (55.0, 999, "Conclusión")]
 EVENTS = [
@@ -129,7 +129,7 @@ def graph_frame(T, name, t):
         s3 = "Taller de funciones matemáticas  ·  Grado 1106"; f3 = font("sb", 20)
         d.text(((W - f3.getlength(s3)) / 2, 460), s3, font=f3, fill=PINK + (int(al * ease((t - .6) / .5)),))
         f4 = font("m", 17)
-        for j, s4 in enumerate(["Nathaly Sánchez  ·  Juan Candanoza  ·  Alejandro Gómez  ·  Dustin Gómez", "Miller Pinedo  ·  Isabella Bobadilla  ·  Álvarez Chaveau"]):
+        for j, s4 in enumerate(["Nathaly Sánchez  ·  Juan Candanoza  ·  Dustin Gómez  ·  Alejandro Gómez", "Miller Pinedo  ·  Isabella Bobadilla  ·  Álvarez Chaveau  ·  Jairo Maldonado"]):
             d.text(((W - f4.getlength(s4)) / 2, 510 + 28 * j), s4, font=f4, fill=LAV + (int(al * ease((t - .9 - .2 * j) / .5)),))
         for i in range(16):
             ang = i / 16 * 2 * math.pi; r = 220 + 160 * ease(t / 1.2)

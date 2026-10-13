@@ -61,7 +61,7 @@ def draw_header(img, T):
     for sa, sb, name in SECS:
         if not (sa <= T < sb): continue
         a = ease((T - sa + .1) / .5) * clamp((sb - T) / .3)
-        d.text((60, 38), "INTEGRANTE 4  ·  DUSTIN GÓMEZ", font=font("sb", 16), fill=LAV + (int(220 * a),))
+        d.text((60, 38), "INTEGRANTE 4  ·  ALEJANDRO GÓMEZ", font=font("sb", 16), fill=LAV + (int(220 * a),))
         d.text((60 - (1 - a) * 30, 60), name, font=font("xb", 46), fill=WHITE + (int(255 * a),))
         w = font("xb", 46).getlength(name)
         d.rounded_rectangle([60, 120, 60 + w * .35 * a, 125], 3, fill=PINK + (int(255 * a),))
