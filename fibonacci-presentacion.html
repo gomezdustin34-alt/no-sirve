@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fibonacci: los números de la naturaleza</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;800&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1610; --bg2:#14231a; --panel:rgba(255,248,225,.06); --line:rgba(232,184,74,.28);
+  --gold:#e8b84a; --gold2:#f7d98b; --amber:#c98a2b; --leaf:#86b86b; --leaf2:#b9dc8f;
+  --cream:#f6eedb; --muted:#bdb69e; --brown:#5a3a1c;
+  --title:"Playfair Display", Georgia, "Times New Roman", serif;
+  --body:"Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --h1:clamp(2.4rem, 6.2vw, 6rem);
+  --h2:clamp(2rem, 4.6vw, 4.2rem);
+  --big:clamp(1.4rem, 2.7vw, 2.4rem);
+  --txt:clamp(1.15rem, 2.1vw, 1.9rem);
+  --small:clamp(.95rem, 1.4vw, 1.25rem);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{
+  background:radial-gradient(ellipse at 20% 10%, #1d3324 0%, var(--bg) 55%) fixed, var(--bg);
+  color:var(--cream);font-family:var(--body);
+  -webkit-tap-highlight-color:transparent;user-select:none;
+}
+#dust{position:fixed;inset:0;z-index:0;pointer-events:none}
+.deck{position:relative;z-index:1;width:100vw;height:100vh;height:100dvh}
+
+/* ---------- slides ---------- */
+.slide{
+  position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;justify-content:safe center;align-items:center;
+  padding:clamp(16px,4vw,64px) clamp(16px,5vw,90px) clamp(70px,9vh,100px);
+  opacity:0;visibility:hidden;transition:opacity .6s ease, visibility 0s linear .6s;
+  overflow-y:auto;overflow-x:hidden;
+}
+.slide.active{opacity:1;visibility:visible;transition:opacity .6s ease}
+h1,h2{font-family:var(--title);font-weight:800;line-height:1.08;text-align:center}
+h1{font-size:var(--h1)}
+h2{font-size:var(--h2);margin-bottom:clamp(14px,3vh,36px)}
+.gold{color:var(--gold);background:linear-gradient(100deg,var(--gold2),var(--gold) 45%,var(--amber));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.leaf{color:var(--leaf2)}
+.muted{color:var(--muted)}
+.tag{display:inline-block;font-size:var(--small);letter-spacing:.25em;text-transform:uppercase;color:var(--leaf2);font-weight:800;margin-bottom:10px}
+
+/* entrance animations: only run while the slide is active */
+.a{opacity:0}
+.slide.active .a{animation:up .9s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0) * .18s + .15s)}
+.slide.active .a.l{animation-name:fromLeft}
+.slide.active .a.r{animation-name:fromRight}
+.slide.active .a.z{animation-name:zoom}
+@keyframes up{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+@keyframes fromLeft{from{opacity:0;transform:translateX(-80px)}to{opacity:1;transform:none}}
+@keyframes fromRight{from{opacity:0;transform:translateX(80px)}to{opacity:1;transform:none}}
+@keyframes zoom{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(0)}70%{transform:scale(1.18)}100%{transform:scale(1)}}
+@keyframes glow{0%,100%{text-shadow:0 0 0 rgba(232,184,74,0)}50%{text-shadow:0 0 30px rgba(232,184,74,.55)}}
+
+/* click-to-reveal steps (advanced with → / click too) */
+.step{opacity:0;transform:translateY(30px) scale(.97);transition:all .7s cubic-bezier(.2,.8,.2,1)}
+.step.shown{opacity:1;transform:none}
+
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:clamp(14px,2.4vw,30px);backdrop-filter:blur(4px)}
+.btn{
+  font:800 var(--txt)/1 var(--body);color:#1b1406;cursor:pointer;border:none;border-radius:999px;
+  padding:.6em 1.2em;background:linear-gradient(135deg,var(--gold2),var(--gold) 55%,var(--amber));
+  box-shadow:0 6px 24px rgba(232,184,74,.3);transition:transform .15s, filter .2s
+}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.btn:active{transform:scale(.96)}
+.btn:disabled{filter:grayscale(.8) brightness(.6);cursor:default;transform:none}
+.btn.ghost{background:transparent;color:var(--gold2);border:2px solid var(--gold);box-shadow:none}
+
+/* reveal cards (question → answer) */
+.reveal{cursor:pointer;border:2px dashed var(--gold);border-radius:20px;padding:clamp(12px,1.8vw,22px);text-align:center;transition:background .3s, border-color .3s}
+.reveal:hover{background:rgba(232,184,74,.08)}
+.reveal .q{font-weight:800;font-size:var(--big)}
+.reveal .ans{max-height:0;overflow:hidden;opacity:0;transition:all .6s cubic-bezier(.2,.8,.2,1);font-size:var(--big);color:var(--gold2);font-weight:800}
+.reveal .hint{font-size:var(--small);color:var(--muted);margin-top:4px}
+.reveal.open{border-style:solid;background:rgba(232,184,74,.1)}
+.reveal.open .ans{max-height:300px;opacity:1;margin-top:10px}
+.reveal.open .hint{display:none}
+
+/* ---------- UI chrome ---------- */
+#progress{position:fixed;top:0;left:0;height:6px;z-index:10;background:linear-gradient(90deg,var(--leaf),var(--gold));transition:width .5s ease;box-shadow:0 0 14px rgba(232,184,74,.6)}
+.chrome{position:fixed;z-index:10;display:flex;gap:10px;align-items:center}
+.chrome.br{right:clamp(10px,2vw,24px);bottom:clamp(10px,2vh,20px)}
+.chrome.tr{right:clamp(10px,2vw,24px);top:16px}
+.icon{width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:rgba(13,22,16,.7);color:var(--gold2);font-size:22px;cursor:pointer;display:grid;place-items:center;transition:background .2s}
+.icon:hover{background:rgba(232,184,74,.2)}
+#counter{font-weight:800;font-size:1.1rem;color:var(--gold2);min-width:64px;text-align:center;font-variant-numeric:tabular-nums}
+#hint{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:9;color:var(--muted);font-size:var(--small);transition:opacity .6s;pointer-events:none;text-align:center;width:max-content;max-width:calc(100vw - 200px)}
+
+/* ---------- 1. cover ---------- */
+#s1 .spiral-bg{position:absolute;inset:0;width:100%;height:100%;opacity:.5}
+.sq{fill:none;stroke:var(--line);stroke-width:.25;opacity:0}
+.slide.active .sq{animation:sqIn .6s ease forwards;animation-delay:calc(var(--k) * .35s)}
+@keyframes sqIn{to{opacity:1}}
+.sq-label{fill:rgba(232,184,74,.55);font-family:var(--title);text-anchor:middle;dominant-baseline:central;opacity:0}
+.slide.active .sq-label{animation:sqIn .6s ease forwards;animation-delay:calc(var(--k) * .35s + .2s)}
+.spiral-path{fill:none;stroke:var(--gold);stroke-width:.55;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;filter:drop-shadow(0 0 1.2px rgba(247,217,139,.9))}
+.slide.active .spiral-path{animation:draw 5.5s ease-in-out .3s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.cover{position:relative;text-align:center;max-width:1100px}
+.cover h1{margin:6px 0 clamp(18px,4vh,40px)}
+.cover .who{font-size:var(--big);font-weight:700}
+.cover .grade{display:inline-block;margin-top:18px;font-size:var(--txt);font-weight:800;padding:.35em 1.1em;border-radius:999px;border:2px solid var(--gold);color:var(--gold2)}
+.seq-ribbon{margin-top:clamp(18px,4vh,40px);font-family:var(--title);font-size:var(--txt);letter-spacing:.3em;color:var(--muted)}
+
+/* ---------- 2. sunflower ---------- */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,60px);align-items:center;width:100%;max-width:1400px}
+.flower-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
+#flower{width:min(42vw,62vh);height:min(42vw,62vh)}
+.seed{transform-box:fill-box;transform-origin:center;transform:scale(0);transition:fill .5s}
+.slide.active .seed{animation:pop .5s ease forwards}
+.petal{transform-origin:0 0;opacity:0}
+.slide.active .petal{animation:petal .7s ease forwards}
+@keyframes petal{from{opacity:0;transform:rotate(var(--rot)) scale(.3)}to{opacity:1;transform:rotate(var(--rot)) scale(1)}}
+.bigq{font-family:var(--title);font-size:clamp(2.6rem,6.5vw,6.5rem);font-weight:800;line-height:1.05}
+.slide.active .bigq{animation:up .9s both .3s, glow 3s ease-in-out 1.5s infinite}
+.answer-line{font-size:var(--big);margin-top:clamp(20px,4vh,40px);line-height:1.35;border-left:6px solid var(--gold);padding-left:20px}
+.tiny-note{font-size:var(--small);color:var(--muted);text-align:center}
+
+/* ---------- 3. timeline ---------- */
+.timeline{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2.5vw,40px);width:100%;max-width:1400px;padding-top:44px}
+.timeline::before{content:"";position:absolute;top:20px;left:5%;height:5px;border-radius:5px;width:0;background:linear-gradient(90deg,var(--leaf),var(--gold))}
+.slide.active .timeline::before{animation:grow 1.6s cubic-bezier(.6,0,.2,1) .2s forwards}
+@keyframes grow{to{width:90%}}
+.node{position:relative;text-align:center}
+.node::before{content:"";position:absolute;top:-34px;left:50%;width:26px;height:26px;margin-left:-13px;border-radius:50%;background:var(--bg);border:5px solid var(--gold);transform:scale(0)}
+.slide.active .node::before{animation:pop .5s ease forwards;animation-delay:calc(var(--i) * .5s + .4s)}
+.slide.active .node.a{animation-delay:calc(var(--i) * .5s + .5s)}
+.node .card{margin-top:20px}
+.node .emoji{font-size:clamp(2.4rem,5vw,4.2rem)}
+.node .year{font-family:var(--title);font-size:var(--h2);font-weight:800;color:var(--gold2)}
+.node .what{font-size:var(--big);font-weight:800;margin:6px 0}
+.node .det{font-size:var(--txt);color:var(--muted);line-height:1.3}
+.fi{color:var(--gold2);font-weight:800}
+
+/* ---------- 4. romans vs arabic ---------- */
+.versus{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(12px,3vw,40px);align-items:stretch;width:100%;max-width:1300px}
+.vs{align-self:center;font-family:var(--title);font-size:var(--h2);color:var(--gold);font-weight:800}
+.calc{text-align:center;display:flex;flex-direction:column;justify-content:center}
+.calc h3{font-size:var(--big);margin-bottom:12px}
+.sum{font-family:var(--title);font-size:clamp(2rem,5vw,4.6rem);font-weight:800;line-height:1.15;display:inline-grid;justify-items:end;margin:0 auto}
+.sum .row{opacity:0}
+.slide.active .sum .row{animation:up .6s both;animation-delay:var(--d)}
+.sum .bar{width:100%;height:5px;background:var(--cream);border-radius:3px;margin:4px 0;transform:scaleX(0);transform-origin:right}
+.slide.active .sum .bar{animation:barIn .5s forwards;animation-delay:var(--d)}
+@keyframes barIn{to{transform:scaleX(1)}}
+.sum .res{color:var(--gold2)}
+.carry{font-size:.45em;color:var(--leaf2);height:.9em}
+.roman .sum{letter-spacing:.06em}
+.reaction{font-size:var(--txt);margin-top:14px;color:var(--muted);opacity:0}
+.slide.active .reaction{animation:up .6s both;animation-delay:var(--d)}
+.key{margin-top:clamp(16px,3vh,32px);max-width:1200px;width:100%;display:flex;gap:clamp(12px,2vw,30px);align-items:center;justify-content:center;flex-wrap:wrap;text-align:center}
+.key .pill{font-size:var(--big);font-weight:800;padding:.4em 1em;border-radius:18px;background:rgba(134,184,107,.15);border:2px solid var(--leaf)}
+.pv{display:inline-flex;gap:6px;font-family:var(--title)}
+.pv span{display:inline-block;padding:.05em .35em;border-radius:10px;background:rgba(232,184,74,.18)}
+.pv small{display:block;font-family:var(--body);font-size:.45em;color:var(--muted)}
+
+/* ---------- 5. liber abaci ---------- */
+.book-wrap{perspective:1200px;display:flex;justify-content:center}
+.book{
+  width:min(30vw,44vh);aspect-ratio:3/4;border-radius:6px 16px 16px 6px;position:relative;
+  background:linear-gradient(120deg,#6b3f1c,#4a2810 60%,#3a1f0c);box-shadow:-14px 18px 40px rgba(0,0,0,.6), inset 10px 0 0 rgba(0,0,0,.25);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:3px solid var(--amber);
+  transform:rotateY(-25deg) rotateX(6deg)
+}
+.slide.active .book{animation:bookIn 1.4s cubic-bezier(.2,.8,.2,1) both, float 5s ease-in-out 1.4s infinite}
+@keyframes bookIn{from{opacity:0;transform:rotateY(-110deg) translateX(-60px)}to{opacity:1;transform:rotateY(-25deg) rotateX(6deg)}}
+@keyframes float{0%,100%{transform:rotateY(-25deg) rotateX(6deg) translateY(0)}50%{transform:rotateY(-18deg) rotateX(6deg) translateY(-12px)}}
+.book::after{content:"";position:absolute;inset:14px;border:2px solid rgba(247,217,139,.55);border-radius:4px 10px 10px 4px}
+.book .bt{font-family:var(--title);font-size:clamp(1.8rem,3.6vw,3.4rem);font-weight:800;color:var(--gold2);line-height:1}
+.book .by{font-size:var(--small);color:var(--gold2);opacity:.8;margin-top:12px;letter-spacing:.2em}
+.book .orn{font-size:clamp(1.6rem,3vw,2.6rem);color:var(--gold);margin:10px 0}
+.facts{display:flex;flex-direction:column;gap:clamp(12px,2.2vh,24px)}
+.fact{display:flex;align-items:center;gap:20px}
+.fact .num{font-family:var(--title);font-weight:800;font-size:clamp(2.4rem,5vw,4.6rem);color:var(--gold2);min-width:3.2em;text-align:right;font-variant-numeric:tabular-nums;line-height:1}
+.fact .lbl{font-size:var(--big);font-weight:700;line-height:1.2}
+.meaning{font-size:var(--big);text-align:center;margin-top:clamp(16px,3vh,30px)}
+.meaning em{font-family:var(--title);color:var(--gold2)}
+
+/* ---------- 6. rabbits ---------- */
+.rab{display:grid;grid-template-columns:minmax(260px,.85fr) 1.4fr;gap:clamp(14px,2.5vw,36px);width:100%;max-width:1500px;align-items:stretch}
+.rules{display:flex;flex-direction:column;gap:clamp(10px,1.8vh,18px)}
+.rules h2{text-align:left;margin-bottom:4px;font-size:clamp(1.8rem,3.6vw,3.2rem)}
+.rule{font-size:var(--txt);line-height:1.3;display:flex;gap:12px;align-items:flex-start}
+.rule b{color:var(--gold2)}
+.rule .ico{font-size:1.4em;line-height:1}
+.stage-panel{display:flex;flex-direction:column;gap:10px;min-height:min(58vh,620px)}
+.stage-top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px}
+.month{font-size:var(--big);font-weight:800}
+.total{font-family:var(--title);font-size:clamp(2.2rem,4.6vw,4.2rem);font-weight:800;color:var(--gold2);line-height:1}
+.total small{font-family:var(--body);font-size:.4em;color:var(--muted);font-weight:700}
+#stage{--s:72px;flex:1;display:flex;flex-wrap:wrap;align-content:flex-start;justify-content:center;gap:calc(var(--s) * .12);padding:10px;border-radius:16px;background:rgba(0,0,0,.18);overflow:hidden}
+.pair{width:var(--s);height:var(--s);border-radius:50%;display:grid;place-items:center;font-size:calc(var(--s) * .55);line-height:1;transition:background .6s, box-shadow .6s, width .4s, height .4s, font-size .4s}
+.pair.young{background:rgba(134,184,107,.25);box-shadow:inset 0 0 0 3px var(--leaf2)}
+.pair.adult{background:rgba(232,184,74,.3);box-shadow:inset 0 0 0 3px var(--gold)}
+.pair.new{animation:pop .6s ease}
+.pair.grow{animation:growUp .7s ease}
+@keyframes growUp{50%{transform:scale(1.25) rotate(-8deg)}}
+.legend{display:flex;gap:20px;flex-wrap:wrap;font-size:var(--small);font-weight:700;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.dot{width:18px;height:18px;border-radius:50%;display:inline-block}
+.dot.y{background:rgba(134,184,107,.25);box-shadow:inset 0 0 0 3px var(--leaf2)}
+.dot.ad{background:rgba(232,184,74,.3);box-shadow:inset 0 0 0 3px var(--gold)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;min-height:44px}
+.chip{font-weight:800;font-size:var(--txt);padding:.15em .6em;border-radius:12px;background:rgba(232,184,74,.15);border:1px solid var(--line);animation:pop .4s ease}
+.ctrls{display:flex;gap:12px;flex-wrap:wrap}
+
+/* ---------- 7. sequence ---------- */
+#eq{font-family:var(--title);font-weight:800;font-size:clamp(2.4rem,6vw,5.6rem);min-height:1.3em;text-align:center;margin-bottom:clamp(14px,3vh,34px)}
+#eq .pl{color:var(--leaf2)}
+#eq .rs{color:var(--gold2)}
+.tiles{display:grid;grid-template-columns:repeat(6,1fr);gap:clamp(8px,1.4vw,18px);width:100%;max-width:1300px}
+.tile{position:relative;aspect-ratio:1.25;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--panel);border:2px solid var(--line);opacity:0;transform:scale(.5) translateY(20px);transition:opacity .5s, transform .5s cubic-bezier(.2,1.4,.4,1), border-color .3s, background .3s}
+.tile.on{opacity:1;transform:none}
+.tile .n{font-family:var(--title);font-weight:800;font-size:clamp(1.8rem,4.2vw,4rem);line-height:1}
+.tile .how{font-size:var(--small);color:var(--muted);margin-top:4px;font-weight:700}
+.tile.src{border-color:var(--leaf2);background:rgba(134,184,107,.18)}
+.tile.hot{border-color:var(--gold);background:rgba(232,184,74,.22);box-shadow:0 0 30px rgba(232,184,74,.4)}
+.seq-ctrls{margin-top:clamp(14px,3vh,30px);display:flex;gap:14px;justify-content:center}
+
+/* ---------- 8. golden ratio ---------- */
+.ratio{display:grid;grid-template-columns:minmax(280px,.9fr) 1.3fr;gap:clamp(14px,2.5vw,36px);width:100%;max-width:1500px;align-items:stretch}
+.divs{display:flex;flex-direction:column;gap:4px;min-height:200px}
+.drow{display:grid;grid-template-columns:1fr auto;align-items:baseline;font-size:clamp(1rem,min(1.8vw,3.2vh),1.7rem);font-weight:800;padding:.12em .6em;border-radius:12px;background:rgba(255,255,255,.04);animation:fromLeft .5s ease both;font-variant-numeric:tabular-nums}
+.drow .d{color:var(--cream)}
+.drow .v{color:var(--gold2);font-family:var(--title)}
+.drow.last{background:rgba(232,184,74,.15);outline:2px solid var(--gold)}
+.chart-panel{display:flex;flex-direction:column;gap:12px}
+#chart{width:100%;height:auto;flex:1;min-height:240px}
+#chart .grid{stroke:rgba(246,238,219,.12);stroke-width:1}
+#chart .axis-t{fill:var(--muted);font-size:14px;font-family:var(--body);font-weight:700}
+#chart .phi{stroke:var(--gold);stroke-width:2;stroke-dasharray:8 6}
+#chart .phi-t{fill:var(--gold2);font-size:18px;font-weight:800;font-family:var(--body)}
+#chart .ln{fill:none;stroke:var(--leaf2);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+#chart .pt{fill:var(--leaf2);stroke:var(--bg);stroke-width:2;animation:pop .4s ease;transform-box:fill-box;transform-origin:center}
+#chart .pt-last{fill:var(--gold2)}
+#chart .lab{fill:var(--cream);font-size:16px;font-weight:800;font-family:var(--body)}
+#chart .hit{fill:transparent;cursor:pointer}
+#tip{position:fixed;z-index:20;pointer-events:none;background:#1c2b20;border:1px solid var(--gold);border-radius:10px;padding:6px 10px;font-weight:800;font-size:16px;opacity:0;transition:opacity .15s}
+.phi-ans{font-family:var(--title)}
+
+/* ---------- 9. closing ---------- */
+#s9 .spiral-bg{position:absolute;inset:0;width:100%;height:100%;opacity:.35}
+.phi-big{font-family:var(--title);font-size:clamp(6rem,18vw,14rem);font-weight:800;line-height:1}
+.slide.active .phi-big{animation:zoom 1s both .2s, glow 3s ease-in-out 1.3s infinite}
+.formula{font-family:var(--title);font-size:var(--h2);margin:10px 0 clamp(18px,4vh,40px)}
+
+/* ---------- responsive ---------- */
+@media (max-width:820px){
+  .two,.rab,.ratio{grid-template-columns:1fr}
+  #flower{width:min(80vw,46vh);height:min(80vw,46vh)}
+  .timeline{grid-template-columns:1fr;padding-top:0;padding-left:44px;gap:22px}
+  .timeline::before{top:0;left:18px;width:5px;height:0}
+  .slide.active .timeline::before{animation:growV 1.6s cubic-bezier(.6,0,.2,1) .2s forwards}
+  @keyframes growV{to{height:100%}}
+  .node{text-align:left}
+  .node::before{top:8px;left:-38px;margin-left:0}
+  .node .card{margin-top:0}
+  .versus{grid-template-columns:1fr}
+  .tiles{grid-template-columns:repeat(4,1fr)}
+  .book{width:min(52vw,34vh)}
+  .slide{justify-content:flex-start}
+  .stage-panel{min-height:46vh}
+  #hint{display:none}
+}
+/* shorter screens (projectors at 1366×768, laptops): tighten the dense slides */
+@media (max-height:860px) and (min-width:821px){
+  :root{--h2:clamp(1.8rem,min(4.2vw,7vh),3.6rem);--big:clamp(1.2rem,min(2.4vw,4vh),2.1rem);--txt:clamp(1.05rem,min(1.9vw,3.4vh),1.7rem)}
+  .slide{padding-top:28px;padding-bottom:78px}
+  .rules h2{font-size:clamp(1.6rem,min(3.2vw,6vh),2.8rem)}
+  #s6 .reveal .ans{font-size:var(--txt)}
+  #s6 .reveal .ans[style]{font-size:clamp(2rem,min(4vw,7vh),3.6rem) !important}
+  .stage-panel{min-height:0}
+  #s8 h2{margin-bottom:12px}
+  #chart{min-height:0}
+  .btn{padding:.5em 1.1em}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01s !important;animation-delay:0s !important;transition-duration:.01s !important}
+}
+</style>
+</head>
+<body>
+<canvas id="dust"></canvas>
+<div id="progress"></div>
+
+<main class="deck">
+
+<!-- 1. PORTADA -->
+<section class="slide" id="s1">
+  <svg class="spiral-bg" id="spiral1" preserveAspectRatio="xMidYMid meet"></svg>
+  <div class="cover">
+    <div class="tag a" style="--i:1">Matemáticas · Exposición</div>
+    <h1 class="a z" style="--i:2"><span class="gold">Fibonacci:</span><br>los números de la naturaleza</h1>
+    <div class="who a" style="--i:4">Edgar Rivero <span class="muted">&amp;</span> Andrey Quiroz</div>
+    <div class="grade a" style="--i:5">Grado 11-06</div>
+    <div class="seq-ribbon a" style="--i:7">1 · 1 · 2 · 3 · 5 · 8 · 13 · 21 · 34 …</div>
+  </div>
+</section>
+
+<!-- 2. PREGUNTA DE ARRANQUE -->
+<section class="slide" id="s2">
+  <div class="two">
+    <div class="flower-wrap a l" style="--i:0">
+      <svg id="flower" viewBox="-150 -150 300 300" aria-label="Girasol dibujado con semillas en espiral"></svg>
+      <button class="btn ghost" id="spiralBtn" style="font-size:var(--small)">🌻 Resaltar espirales</button>
+      <div class="tiny-note" id="spiralNote">&nbsp;</div>
+    </div>
+    <div>
+      <div class="tag a" style="--i:1">Para empezar…</div>
+      <div class="bigq">¿Cuántas espirales ven?</div>
+      <p class="answer-line step">Hoy vamos a ver por qué <b class="gold">casi siempre</b> salen los <b class="gold">mismos números</b>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3. QUIÉN FUE -->
+<section class="slide" id="s3">
+  <div class="tag a" style="--i:0">El personaje</div>
+  <h2 class="a" style="--i:0">¿Quién fue <span class="gold">Fibonacci</span>?</h2>
+  <div class="timeline">
+    <div class="node a" style="--i:0">
+      <div class="card panel">
+        <div class="emoji">🇮🇹</div>
+        <div class="year">≈ 1175</div>
+        <div class="what">Leonardo de Pisa</div>
+        <div class="det">Matemático italiano, nace en Pisa</div>
+      </div>
+    </div>
+    <div class="node a" style="--i:1">
+      <div class="card panel">
+        <div class="emoji">🧳</div>
+        <div class="year">El apodo</div>
+        <div class="what"><span class="fi">fi</span>lius <span class="fi">Bonacci</span></div>
+        <div class="det">“Hijo de Bonacci”: su padre era un mercader que viajaba mucho</div>
+      </div>
+    </div>
+    <div class="node a" style="--i:2">
+      <div class="card panel">
+        <div class="emoji">🐪</div>
+        <div class="year">Juventud</div>
+        <div class="what">Norte de África</div>
+        <div class="det">En la actual Argelia aprende las matemáticas de la cultura árabe</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. ROMANOS VS ARÁBIGOS -->
+<section class="slide" id="s4">
+  <h2 class="a" style="--i:0">Romanos <span class="muted">vs.</span> <span class="gold">arábigos</span></h2>
+  <div class="versus">
+    <div class="calc panel roman a l" style="--i:1">
+      <h3>🏛️ Números romanos</h3>
+      <div class="sum">
+        <div class="carry"></div>
+        <div class="row" style="--d:.7s">XXVII</div>
+        <div class="row" style="--d:1s">+ XLVIII</div>
+        <div class="bar" style="--d:1.3s"></div>
+        <div class="row res" style="--d:3.2s">LXXV</div>
+      </div>
+      <div class="reaction" style="--d:2s">🤯 ¿Y cómo se lleva aquí?</div>
+    </div>
+    <div class="vs a z" style="--i:2">VS</div>
+    <div class="calc panel a r" style="--i:1">
+      <h3>✏️ Números arábigos</h3>
+      <div class="sum">
+        <div class="carry row" style="--d:2.2s">1&nbsp;&nbsp;&nbsp;</div>
+        <div class="row" style="--d:.7s">27</div>
+        <div class="row" style="--d:1s">+ 48</div>
+        <div class="bar" style="--d:1.3s"></div>
+        <div class="row res" style="--d:2.5s">75</div>
+      </div>
+      <div class="reaction" style="--d:2.8s">😎 Columna por columna. ¡Fácil!</div>
+    </div>
+  </div>
+  <div class="key step">
+    <div class="pill">⓪ Tienen el <span class="gold">cero</span></div>
+    <div class="pill">📍 Valor según la <span class="gold">posición</span>:
+      <span class="pv"><span>7<small>decenas</small></span><span>5<small>unidades</small></span></span>
+    </div>
+  </div>
+</section>
+
+<!-- 5. LIBER ABACI -->
+<section class="slide" id="s5">
+  <h2 class="a" style="--i:0">El <span class="gold">Liber Abaci</span></h2>
+  <div class="two" style="max-width:1200px">
+    <div class="book-wrap">
+      <div class="book">
+        <div class="orn">✦ ❦ ✦</div>
+        <div class="bt">Liber<br>Abaci</div>
+        <div class="orn">1 2 3</div>
+        <div class="by">LEONARDO PISANO</div>
+      </div>
+    </div>
+    <div class="facts">
+      <div class="fact a r" style="--i:2"><div class="num" data-count="1202">0</div><div class="lbl">año en que lo publicó</div></div>
+      <div class="fact a r" style="--i:3"><div class="num" data-count="27">0</div><div class="lbl">años tenía<br><span class="muted">¡casi nuestra edad!</span></div></div>
+      <div class="fact a r" style="--i:4"><div class="num" data-count="300" data-prefix="≈">0</div><div class="lbl">años tardó Europa en adoptar los números arábigos</div></div>
+    </div>
+  </div>
+  <div class="meaning a" style="--i:6">📖 <em>Liber Abaci</em> = “el libro del cálculo” · enseñó los números arábigos en Europa</div>
+</section>
+
+<!-- 6. CONEJOS -->
+<section class="slide" id="s6">
+  <div class="rab">
+    <div class="rules a l" style="--i:0">
+      <div class="tag">Problema del Liber Abaci</div>
+      <h2>Los <span class="gold">conejos</span> 🐇</h2>
+      <div class="rule"><span class="ico">🍼</span><span>Una pareja recién nacida tarda <b>1 mes</b> en madurar.</span></div>
+      <div class="rule"><span class="ico">💛</span><span>Desde su <b>segundo mes</b>, tiene <b>una pareja nueva</b> cada mes.</span></div>
+      <div class="reveal" id="ruleCard">
+        <div class="q">🤔 ¿Qué regla ven?</div>
+        <div class="hint">clic para revelar</div>
+        <div class="ans">Cada número es la suma de los dos anteriores.</div>
+      </div>
+      <div class="reveal" id="challengeCard">
+        <div class="q">🎯 ¿Cuántas parejas habrá en 12 meses?</div>
+        <div class="hint">clic para revelar</div>
+        <div class="ans" style="font-size:clamp(2.4rem,5vw,4.4rem);font-family:var(--title)">144 parejas</div>
+      </div>
+    </div>
+    <div class="stage-panel panel a r" style="--i:1">
+      <div class="stage-top">
+        <div class="month" id="monthLbl">Mes 1</div>
+        <div class="total"><span id="totalLbl">1</span> <small id="totalWord">pareja</small></div>
+      </div>
+      <div id="stage"></div>
+      <div class="legend"><span><i class="dot y"></i>🐰 Joven</span><span><i class="dot ad"></i>🐇 Adulta (tiene crías)</span></div>
+      <div class="chips" id="chips"></div>
+      <div class="ctrls">
+        <button class="btn" id="nextMonth">Siguiente mes ▶</button>
+        <button class="btn ghost" id="resetRabbits">↺ Reiniciar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. SUCESIÓN -->
+<section class="slide" id="s7">
+  <h2 class="a" style="--i:0">La sucesión de <span class="gold">Fibonacci</span></h2>
+  <div id="eq">&nbsp;</div>
+  <div class="tiles" id="tiles"></div>
+  <div class="seq-ctrls"><button class="btn ghost" id="replaySeq">↻ Repetir</button></div>
+</section>
+
+<!-- 8. NÚMERO DE ORO -->
+<section class="slide" id="s8">
+  <h2 class="a" style="--i:0">El <span class="gold">número de oro</span></h2>
+  <div class="ratio">
+    <div class="panel a l" style="--i:1;display:flex;flex-direction:column;gap:12px">
+      <div style="font-size:var(--txt);font-weight:700">Dividimos cada número entre el <b class="gold">anterior</b>:</div>
+      <div class="divs" id="divs"></div>
+      <div class="ctrls">
+        <button class="btn" id="nextDiv">Dividir ▶</button>
+        <button class="btn ghost" id="resetDiv">↺</button>
+      </div>
+    </div>
+    <div class="chart-panel panel a r" style="--i:2">
+      <svg id="chart" viewBox="0 0 640 380" role="img" aria-label="Gráfica de los cocientes acercándose a 1,618"></svg>
+      <div class="reveal" id="phiCard">
+        <div class="q">🔍 ¿A qué número se acercan?</div>
+        <div class="hint">clic para revelar</div>
+        <div class="ans"><span class="phi-ans">1,618…</span> ✨ el número de oro <span class="phi-ans">φ</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. CIERRE -->
+<section class="slide" id="s9">
+  <svg class="spiral-bg" id="spiral2" preserveAspectRatio="xMidYMid meet"></svg>
+  <div class="cover">
+    <div class="phi-big gold">φ</div>
+    <div class="formula a" style="--i:3">φ = <span class="gold">(1 + √5) ÷ 2</span> ≈ 1,618</div>
+    <h1 class="a z" style="--i:5">¡Gracias!</h1>
+    <div class="who a" style="--i:6">¿Preguntas? 🙋</div>
+    <div class="seq-ribbon a" style="--i:8">Edgar Rivero · Andrey Quiroz · 11-06</div>
+  </div>
+</section>
+
+</main>
+
+<div class="chrome tr"><button class="icon" id="fsBtn" title="Pantalla completa (F)">⛶</button></div>
+<div class="chrome br">
+  <button class="icon" id="prevBtn" title="Anterior">◀</button>
+  <div id="counter">1 / 9</div>
+  <button class="icon" id="nextBtn" title="Siguiente">▶</button>
+</div>
+<div id="hint">Usa ← → del teclado, haz clic o desliza para avanzar</div>
+<div id="tip"></div>
+
+<script>
+(() => {
+const $ = s => document.querySelector(s);
+const NS = 'http://www.w3.org/2000/svg';
+const el = (tag, attrs = {}, parent) => {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+};
+const fmt = (x, d = 5) => x.toFixed(d).replace('.', ',');
+
+/* ================= golden dust background ================= */
+const cv = $('#dust'), cx = cv.getContext('2d');
+let W, H, motes = [];
+function sizeDust() {
+  W = cv.width = innerWidth * devicePixelRatio; H = cv.height = innerHeight * devicePixelRatio;
+  motes = Array.from({length: 45}, () => ({x: Math.random() * W, y: Math.random() * H, r: (Math.random() * 2 + .6) * devicePixelRatio, v: Math.random() * .3 + .1, p: Math.random() * 6.28}));
+}
+function dust() {
+  cx.clearRect(0, 0, W, H);
+  for (const m of motes) {
+    m.y -= m.v; m.p += .01; m.x += Math.sin(m.p) * .3;
+    if (m.y < -10) { m.y = H + 10; m.x = Math.random() * W; }
+    cx.beginPath(); cx.arc(m.x, m.y, m.r, 0, 6.28);
+    cx.fillStyle = `rgba(232,184,74,${.25 + .2 * Math.sin(m.p * 2)})`; cx.fill();
+  }
+  requestAnimationFrame(dust);
+}
+addEventListener('resize', sizeDust); sizeDust(); dust();
+
+/* ================= golden spiral (slides 1 & 9) ================= */
+function buildSpiral(svg, n) {
+  const f = [1, 1]; while (f.length < n) f.push(f[f.length - 1] + f[f.length - 2]);
+  const dirs = ['down', 'right', 'up', 'left'];
+  const bb = {x0: 0, y0: 0, x1: 1, y1: 1};
+  const sqs = [{x: 0, y: 0, s: 1, d: 'down'}];
+  for (let i = 1; i < n; i++) {
+    const s = f[i], d = dirs[i % 4]; let x, y;
+    if (d === 'right') { x = bb.x1; y = bb.y0; }
+    if (d === 'up')    { x = bb.x0; y = bb.y0 - s; }
+    if (d === 'left')  { x = bb.x0 - s; y = bb.y0; }
+    if (d === 'down')  { x = bb.x0; y = bb.y1; }
+    sqs.push({x, y, s, d});
+    bb.x0 = Math.min(bb.x0, x); bb.y0 = Math.min(bb.y0, y);
+    bb.x1 = Math.max(bb.x1, x + s); bb.y1 = Math.max(bb.y1, y + s);
+  }
+  const pad = 4;
+  svg.setAttribute('viewBox', `${bb.x0 - pad} ${bb.y0 - pad} ${bb.x1 - bb.x0 + 2 * pad} ${bb.y1 - bb.y0 + 2 * pad}`);
+  let d = '';
+  sqs.forEach((q, k) => {
+    el('rect', {x: q.x, y: q.y, width: q.s, height: q.s, class: 'sq', style: `--k:${k}`}, svg);
+    if (q.s >= 3) {
+      const t = el('text', {x: q.x + q.s / 2, y: q.y + q.s / 2, class: 'sq-label', style: `--k:${k};font-size:${q.s * .28}px`}, svg);
+      t.textContent = q.s;
+    }
+    const pts = {
+      down:  [[q.x, q.y], [q.x + q.s, q.y + q.s]],
+      right: [[q.x, q.y + q.s], [q.x + q.s, q.y]],
+      up:    [[q.x + q.s, q.y + q.s], [q.x, q.y]],
+      left:  [[q.x + q.s, q.y], [q.x, q.y + q.s]]
+    }[q.d];
+    if (k === 0) d += `M${pts[0][0]} ${pts[0][1]}`;
+    d += ` A${q.s} ${q.s} 0 0 0 ${pts[1][0]} ${pts[1][1]}`;
+  });
+  el('path', {d, class: 'spiral-path', pathLength: 1}, svg);
+}
+buildSpiral($('#spiral1'), 10);
+buildSpiral($('#spiral2'), 10);
+
+/* ================= sunflower (slide 2) ================= */
+const flower = $('#flower');
+const PET = 34;
+for (let i = 0; i < PET; i++) {
+  const rot = i * 360 / PET + (i % 2) * 5;
+  const g = el('g', {class: 'petal', style: `--rot:${rot}deg;transform:rotate(${rot}deg);animation-delay:${i * 25}ms`}, flower);
+  el('ellipse', {cx: 118, cy: 0, rx: 30, ry: 11, fill: i % 2 ? '#f2c230' : '#e8a91f', stroke: '#b97a10', 'stroke-width': .8}, g);
+}
+el('circle', {cx: 0, cy: 0, r: 100, fill: '#3b240f'}, flower);
+const SEEDS = 620, GA = Math.PI * (3 - Math.sqrt(5)), seeds = [];
+for (let n = 1; n <= SEEDS; n++) {
+  const r = 3.95 * Math.sqrt(n), a = n * GA;
+  seeds.push(el('circle', {cx: r * Math.cos(a), cy: r * Math.sin(a), r: 1.7 + n / SEEDS * 1.6, class: 'seed', fill: '#8a5a2b', style: `animation-delay:${400 + n * 2.5}ms`}, flower));
+}
+const modes = [null, 21, 34];
+let mode = 0;
+$('#spiralBtn').addEventListener('click', () => {
+  mode = (mode + 1) % modes.length;
+  const k = modes[mode];
+  seeds.forEach((s, i) => {
+    const n = i + 1;
+    s.setAttribute('fill', !k ? '#8a5a2b' : ((n % k) % 2 ? '#e8b84a' : '#4f8a3a'));
+  });
+  $('#spiralBtn').textContent = k ? (mode === 1 ? '🌻 Ver la otra dirección' : '🌻 Quitar colores') : '🌻 Resaltar espirales';
+  $('#spiralNote').innerHTML = k ? `Hacia un lado: <b class="gold" style="font-size:1.4em">${k}</b> espirales` : '&nbsp;';
+});
+
+/* ================= counters (slide 5) ================= */
+function runCounters(slide) {
+  slide.querySelectorAll('[data-count]').forEach((n, idx) => {
+    const target = +n.dataset.count, pre = n.dataset.prefix || '', start = performance.now() + 500 + idx * 180;
+    n.textContent = pre + '0';
+    const tick = t => {
+      const p = Math.min(Math.max((t - start) / 1400, 0), 1), e = 1 - Math.pow(1 - p, 3);
+      n.textContent = pre + Math.round(target * e);
+      if (p < 1 && slide.classList.contains('active')) requestAnimationFrame(tick);
+      else n.textContent = pre + target;
+    };
+    requestAnimationFrame(tick);
+  });
+}
+
+/* ================= rabbits (slide 6) ================= */
+const stage = $('#stage');
+let month, pairs;
+function sizeFor(c) { return c <= 3 ? 90 : c <= 8 ? 72 : c <= 21 ? 54 : c <= 34 ? 44 : c <= 55 ? 36 : c <= 89 ? 30 : 24; }
+function pairEl(type, isNew) {
+  const p = document.createElement('div');
+  p.className = `pair ${type}${isNew ? ' new' : ''}`;
+  p.textContent = type === 'young' ? '🐰' : '🐇';
+  return p;
+}
+function renderRabbitInfo() {
+  const total = pairs.length;
+  $('#monthLbl').textContent = `Mes ${month}`;
+  $('#totalLbl').textContent = total;
+  $('#totalWord').textContent = total === 1 ? 'pareja' : 'parejas';
+  let s = sizeFor(total);
+  if (innerWidth < 820) s = Math.round(s * .7);
+  stage.style.setProperty('--s', s + 'px');
+  const chip = document.createElement('span'); chip.className = 'chip'; chip.textContent = total;
+  $('#chips').appendChild(chip);
+  $('#nextMonth').disabled = month >= 12;
+}
+function resetRabbits() {
+  month = 1; stage.innerHTML = ''; $('#chips').innerHTML = '';
+  pairs = [pairEl('young', true)]; stage.appendChild(pairs[0]);
+  renderRabbitInfo();
+}
+function nextMonth() {
+  if (month >= 12) return;
+  month++;
+  const adults = pairs.filter(p => p.classList.contains('adult')).length;
+  pairs.forEach(p => {
+    if (p.classList.contains('young')) {
+      p.classList.replace('young', 'adult'); p.textContent = '🐇';
+      p.classList.remove('new', 'grow'); void p.offsetWidth; p.classList.add('grow');
+    } else p.classList.remove('new', 'grow');
+  });
+  for (let i = 0; i < adults; i++) { const p = pairEl('young', true); pairs.push(p); stage.appendChild(p); }
+  renderRabbitInfo();
+}
+$('#nextMonth').addEventListener('click', nextMonth);
+$('#resetRabbits').addEventListener('click', resetRabbits);
+resetRabbits();
+
+/* ================= sequence (slide 7) ================= */
+const FIB = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144];
+const tilesBox = $('#tiles');
+const tiles = FIB.map((v, i) => {
+  const t = document.createElement('div'); t.className = 'tile';
+  t.innerHTML = `<div class="n">${v}</div><div class="how">${i < 2 ? 'inicio' : FIB[i - 2] + ' + ' + FIB[i - 1]}</div>`;
+  tilesBox.appendChild(t); return t;
+});
+let seqTimers = [];
+function stopSeq() { seqTimers.forEach(clearTimeout); seqTimers = []; }
+function runSeq() {
+  stopSeq();
+  tiles.forEach(t => t.classList.remove('on', 'src', 'hot'));
+  $('#eq').innerHTML = '&nbsp;';
+  FIB.forEach((v, i) => {
+    seqTimers.push(setTimeout(() => {
+      tiles.forEach(t => t.classList.remove('src', 'hot'));
+      if (i < 2) $('#eq').innerHTML = `Empezamos con <span class="rs">1</span> y <span class="rs">1</span>`;
+      else {
+        tiles[i - 2].classList.add('src'); tiles[i - 1].classList.add('src');
+        $('#eq').innerHTML = `${FIB[i - 2]} <span class="pl">+</span> ${FIB[i - 1]} <span class="pl">=</span> <span class="rs">${v}</span>`;
+      }
+      tiles[i].classList.add('on', 'hot');
+      if (i === FIB.length - 1) seqTimers.push(setTimeout(() => {
+        tiles.forEach(t => t.classList.remove('src', 'hot'));
+        $('#eq').innerHTML = `Cada número = <span class="rs">suma de los dos anteriores</span>`;
+      }, 1600));
+    }, 700 + i * 1150));
+  });
+}
+$('#replaySeq').addEventListener('click', runSeq);
+
+/* ================= golden ratio (slide 8) ================= */
+const RAT = [];
+for (let i = 3; i < FIB.length; i++) RAT.push({a: FIB[i], b: FIB[i - 1], v: FIB[i] / FIB[i - 1]});
+const chart = $('#chart'), PHI = (1 + Math.sqrt(5)) / 2;
+const CW = 640, CH = 380, M = {l: 58, r: 24, t: 24, b: 44};
+const yMin = 1.45, yMax = 1.70;
+const X = i => M.l + (i + .5) * (CW - M.l - M.r) / RAT.length;
+const Y = v => M.t + (yMax - v) / (yMax - yMin) * (CH - M.t - M.b);
+let shown = 0;
+function drawChart() {
+  chart.innerHTML = '';
+  [1.50, 1.55, 1.60, 1.65, 1.70].forEach(v => {
+    el('line', {x1: M.l, x2: CW - M.r, y1: Y(v), y2: Y(v), class: 'grid'}, chart);
+    el('text', {x: M.l - 10, y: Y(v) + 5, 'text-anchor': 'end', class: 'axis-t'}, chart).textContent = fmt(v, 2);
+  });
+  RAT.forEach((r, i) => {
+    el('text', {x: X(i), y: CH - M.b + 26, 'text-anchor': 'middle', class: 'axis-t'}, chart).textContent = `${r.a}÷${r.b}`;
+  });
+  el('line', {x1: M.l, x2: CW - M.r, y1: Y(PHI), y2: Y(PHI), class: 'phi'}, chart);
+  el('text', {x: CW - M.r - 4, y: Y(PHI) - 10, 'text-anchor': 'end', class: 'phi-t'}, chart).textContent = 'φ ≈ 1,618';
+  const pts = RAT.slice(0, shown);
+  if (pts.length > 1) el('path', {class: 'ln', d: pts.map((r, i) => `${i ? 'L' : 'M'}${X(i)} ${Y(r.v)}`).join(' ')}, chart);
+  pts.forEach((r, i) => {
+    const last = i === pts.length - 1;
+    el('circle', {cx: X(i), cy: Y(r.v), r: last ? 8 : 6, class: 'pt' + (last ? ' pt-last' : '')}, chart);
+    if (last) el('text', {x: X(i), y: Y(r.v) + (r.v > PHI ? -16 : 28), 'text-anchor': 'middle', class: 'lab'}, chart).textContent = fmt(r.v, 3);
+    const hit = el('circle', {cx: X(i), cy: Y(r.v), r: 20, class: 'hit'}, chart);
+    hit.addEventListener('pointerenter', e => showTip(e, `${r.a} ÷ ${r.b} = ${fmt(r.v)}`));
+    hit.addEventListener('pointermove', moveTip);
+    hit.addEventListener('pointerleave', hideTip);
+  });
+}
+const tip = $('#tip');
+function showTip(e, txt) { tip.textContent = txt; tip.style.opacity = 1; moveTip(e); }
+function moveTip(e) { tip.style.left = (e.clientX + 14) + 'px'; tip.style.top = (e.clientY - 40) + 'px'; }
+function hideTip() { tip.style.opacity = 0; }
+function renderDivs() {
+  const box = $('#divs'); box.innerHTML = '';
+  RAT.slice(0, shown).forEach((r, i) => {
+    const row = document.createElement('div');
+    row.className = 'drow' + (i === shown - 1 ? ' last' : '');
+    row.innerHTML = `<span class="d">${r.a} ÷ ${r.b}</span><span class="v">${fmt(r.v)}</span>`;
+    box.appendChild(row);
+  });
+  $('#nextDiv').disabled = shown >= RAT.length;
+  drawChart();
+}
+$('#nextDiv').addEventListener('click', () => { if (shown < RAT.length) { shown++; renderDivs(); } });
+$('#resetDiv').addEventListener('click', () => { shown = 0; renderDivs(); $('#phiCard').classList.remove('open'); });
+renderDivs();
+
+/* reveal cards */
+document.querySelectorAll('.reveal').forEach(c => c.addEventListener('click', () => c.classList.toggle('open')));
+
+/* ================= navigation ================= */
+const slides = [...document.querySelectorAll('.slide')];
+let cur = 0;
+const hooks = {
+  s5: {enter: s => runCounters(s)},
+  s7: {enter: runSeq, leave: stopSeq}
+};
+function go(n) {
+  if (n < 0 || n >= slides.length || n === cur && slides[cur].classList.contains('active')) return;
+  const old = slides[cur];
+  old.classList.remove('active');
+  hooks[old.id]?.leave?.(old);
+  cur = n;
+  const s = slides[cur];
+  s.querySelectorAll('.step').forEach(st => st.classList.remove('shown'));
+  s.scrollTop = 0;
+  s.classList.add('active');
+  hooks[s.id]?.enter?.(s);
+  $('#progress').style.width = ((cur + 1) / slides.length * 100) + '%';
+  $('#counter').textContent = `${cur + 1} / ${slides.length}`;
+  if (cur > 0) $('#hint').style.opacity = 0;
+  history.replaceState(null, '', '#' + (cur + 1));
+}
+function next() {
+  const pending = slides[cur].querySelector('.step:not(.shown)');
+  if (pending) { pending.classList.add('shown'); return; }
+  go(cur + 1);
+}
+function prev() { go(cur - 1); }
+
+addEventListener('keydown', e => {
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); prev(); }
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(slides.length - 1);
+  else if (e.key === 'f' || e.key === 'F') toggleFS();
+});
+
+/* click anywhere: left fifth goes back, the rest advances (buttons & cards excluded) */
+document.addEventListener('click', e => {
+  if (e.target.closest('button, .reveal, .chrome, #stage, #chart, #flower, a')) return;
+  if (e.clientX < innerWidth * .2) prev(); else next();
+});
+$('#prevBtn').addEventListener('click', prev);
+$('#nextBtn').addEventListener('click', next);
+
+/* swipe */
+let tx = 0, ty = 0;
+addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, {passive: true});
+addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.3) dx < 0 ? next() : prev();
+}, {passive: true});
+
+/* fullscreen */
+function toggleFS() {
+  const d = document, r = d.documentElement;
+  if (!(d.fullscreenElement || d.webkitFullscreenElement)) (r.requestFullscreen || r.webkitRequestFullscreen)?.call(r);
+  else (d.exitFullscreen || d.webkitExitFullscreen)?.call(d);
+}
+$('#fsBtn').addEventListener('click', toggleFS);
+const fsIcon = () => $('#fsBtn').textContent = (document.fullscreenElement || document.webkitFullscreenElement) ? '✕' : '⛶';
+document.addEventListener('fullscreenchange', fsIcon);
+document.addEventListener('webkitfullscreenchange', fsIcon);
+
+/* start (supports #3 in the URL) */
+const start = Math.min(Math.max(parseInt(location.hash.slice(1)) - 1 || 0, 0), slides.length - 1);
+cur = start; go(start); if (!slides[start].classList.contains('active')) { slides[start].classList.add('active'); hooks[slides[start].id]?.enter?.(slides[start]); }
+})();
+</script>
+</body>
+</html>
