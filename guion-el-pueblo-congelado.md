@@ -1,7 +1,7 @@
 # "El pueblo congelado" — Formato "¿y si te pasara a ti?" con reglas
 
 **Formato:** Short vertical 9:16 · **Duración objetivo:** 52–58 s · **Estilo:** tu misma animación 2D
-**Tipo:** historia en segunda persona ("tú") con **reglas** y **días**, inspirada en ese formato pero con historia propia y ambientada en un pueblo costeño.
+**Tipo:** historia en segunda persona ("tú") con **reglas** y **días**, inspirada en ese formato pero con historia propia, en un pueblo cualquiera (sin regionalismos).
 
 **Ventaja de producción:** la gente congelada son **dibujos quietos**, así que te ahorras animarla. El movimiento lo ponen el protagonista, la cámara y los detalles suspendidos en el aire (pájaros, polvo, agua).
 
@@ -20,7 +20,7 @@ Final: el reloj de la iglesia avanza a las **3:01**… y **todos los congelados 
 | Tiempo | Imagen | Voz (narrador, en segunda persona) | Texto en pantalla | Sonido | Cámara / movimiento |
 |---|---|---|---|---|---|
 | **0:00–0:03** (GANCHO) | **Cara del protagonista iluminada** por la luz de la ventana, ojos muy abiertos; detrás, por la ventana, un pájaro quieto en el aire | 🎙️ **Desde el fotograma 0**, susurro: *"Shhh… Si un día te despiertas y todo tu pueblo está congelado… menos tú… no hagas ruido."* | **Centro, grande: "TODO EL PUEBLO SE CONGELÓ… MENOS TÚ 😨"** (3 s) | Zumbido grave desde el fotograma 0 | **Zoom rápido** a la cara |
-| **0:03–0:07** | Sales a la calle: el señor de los raspaos congelado sirviendo, el jarabe **suspendido en el aire**; una moto congelada a media calle | 🎙️ *"Las calles están llenas… pero nadie se mueve. Ni la gente. Ni los pájaros. Ni el agua."* | Arriba, pequeño: **"DÍA 1"** | Silencio de pueblo: ni grillos ni viento (inquietante) | Paneo lento por la calle; partículas de polvo quietas |
+| **0:03–0:07** | Sales a la calle: un señor congelado sirviendo un vaso de agua, el chorro **suspendido en el aire**; una moto congelada a media calle | 🎙️ *"Las calles están llenas… pero nadie se mueve. Ni la gente. Ni los pájaros. Ni el agua."* | Arriba, pequeño: **"DÍA 1"** | Silencio de pueblo: ni grillos ni viento (inquietante) | Paneo lento por la calle; partículas de polvo quietas |
 | **0:07–0:10** | La torre de la iglesia: el reloj marca **3:00** | 🎙️ *"Todos los relojes del pueblo se pararon a las tres en punto."* | — | Tic de reloj **que no avanza** (un solo tic) | Zoom al reloj |
 | **0:10–0:16** | Te acercas a tu vecina congelada y vas a tocarle el hombro… sus **ojos giran hacia tu mano**, solo los ojos | 🎙️ *"Regla número uno: no toques a nadie. Porque aunque estén congelados… sienten."* | **"REGLA 1"** | Golpe seco cuando giran los ojos | Primer plano de los ojos |
 | **0:16–0:19** | Retrocedes de golpe; la vecina sigue quieta como si nada | — | — | Latido empieza | Cámara en mano, temblor leve |
@@ -41,7 +41,7 @@ Final: el reloj de la iglesia avanza a las **3:01**… y **todos los congelados 
 - **Narrador:** en segunda persona ("te despiertas", "escuchas"), voz baja y tensa, **como contándole un secreto al espectador**.
 - **Las reglas:** di "Regla número uno…" un poco más lento y con más peso.
 - **La silueta:** voz grave, susurrada, sin gritar.
-- Toque costeño: el raspao, la tienda del pueblo, la plaza, la iglesia.
+- Lenguaje neutro, sin regionalismos: que se entienda igual en cualquier país.
 
 ## Sonido (resumen)
 1. Zumbido grave desde el fotograma 0.
@@ -52,7 +52,7 @@ Final: el reloj de la iglesia avanza a las **3:01**… y **todos los congelados 
 
 ## Animación (lo que ahorra tiempo)
 - **Los congelados:** dibujos quietos (ahorro grande). Solo animas sus **ojos** en la regla 1 y el **giro de cabezas** del final.
-- **Lo que da vida:** el protagonista, la cámara siempre moviéndose, y detalles suspendidos (jarabe del raspao, pájaros, gotas de agua, polvo).
+- **Lo que da vida:** el protagonista, la cámara siempre moviéndose, y detalles suspendidos (el chorro de agua, pájaros, gotas de agua, polvo).
 - **Textos de regla y día:** simples, arriba o al centro, sin mapas ni radares.
 
 ---
